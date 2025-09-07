@@ -4,11 +4,11 @@ from decouple import config, Csv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = ['_1kkbb!c7pv+l=q4)s7^yk9(f07s#cjj)b#$v8g3=8+z+a4-am']
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','technographix.pythonanywhere.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
