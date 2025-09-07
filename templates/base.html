@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TechnoGraphix - Premium Digital Agency Mumbai{% endblock %}</title>
+    <meta name="description" content="{% block description %}Mumbai's leading digital agency specializing in web development, app development, graphic design, video editing, SEO, and social media marketing.{% endblock %}">
+    
+    <!-- SEO Meta Tags -->
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="TechnoGraphix">
+    <meta name="keywords" content="{% block keywords %}web development, app development, graphic design, digital agency, Mumbai, SEO, social media marketing{% endblock %}">
+    
+    <!-- Language Variants -->
+    <link rel="alternate" href="{{ request.build_absolute_uri }}" hreflang="en-IN">
+    
+    <!-- PWA Support -->
+    <meta name="theme-color" content="#0ea5e9">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "TechnoGraphix",
+        "url": "{{ request.scheme }}://{{ request.get_host }}/",
+        "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/logo.png' %}",
+        "sameAs": [
+            "https://facebook.com/technographix",
+            "https://twitter.com/technographix",
+            "https://linkedin.com/company/technographix",
+            "https://instagram.com/technographix"
+        ]
+    }
+    </script>
+    
+    <!-- Social Media Meta Tags -->
+    <meta property="og:title" content="{% block og_title %}{{ block.super }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ block.super }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% static 'images/og-image.jpg' %}{% endblock %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'images/favicon/site.webmanifest' %}">
+    
+    <!-- Preload critical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="{% static 'css/critical.css' %}" as="style">
+    <link rel="preload" href="{% static 'js/theme.js' %}" as="script">
+    <link rel="preload" href="{% static 'fonts/inter-var.woff2' %}" as="font" type="font/woff2" crossorigin>
+    
+    <!-- Critical CSS -->
+    {% load static %}
+    
+    <link rel="stylesheet" href="{% static 'css/critical.css' %}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{% static 'css/critical.css' %}"></noscript>
+    
+    <!-- Non-critical CSS -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{% static 'css/themes.css' %}" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+        <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+        <link rel="stylesheet" href="{% static 'css/components.css' %}">
+        <link rel="stylesheet" href="{% static 'css/themes.css' %}">
+    </noscript>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Skip to main content -->
+    <a href="#main-content" class="skip-to-main">Skip to main content</a>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar" aria-label="Main navigation">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="{% url 'core:home' %}" aria-label="TechnoGraphix Home">
+                    <img src="{% static 'images/logo.png' %}" alt="" class="logo-img" loading="eager" width="150" height="50">
+                    <span class="logo-text">TechnoGraphix</span>
+                </a>
+            </div>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="{% url 'core:home' %}" class="nav-link">Home</a>
+                <a href="#services" class="nav-link">Services</a>
+                <a href="{% url 'core:portfolio' %}" class="nav-link">Portfolio</a>
+                <a href="{% url 'blog:index' %}" class="nav-link">Blog</a>
+                <a href="{% url 'core:about' %}" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <span class="theme-icon sun-icon">☀️</span>
+                    <span class="theme-icon moon-icon">🌙</span>
+                </button>
+                <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="{% static 'images/logo.png' %}" alt="TechnoGraphix" class="footer-logo-img">
+                        <span class="footer-logo-text">TechnoGraphix</span>
+                    </div>
+                    <p class="footer-description">
+                        Mumbai's premier digital agency crafting exceptional digital experiences 
+                        that drive business growth and innovation.
+                    </p>
+                    <div class="social-links" aria-label="Social media links">
+                        <a href="https://facebook.com/technographix" class="social-link" aria-label="Follow us on Facebook" rel="noopener noreferrer">
+                            <svg class="social-icon" aria-hidden="true" focusable="false" width="24" height="24">
+                                <use href="{% static 'images/sprites.svg' %}#facebook"></use>
+                            </svg>
+                            <span class="sr-only">Facebook</span>
+                        </a>
+                        <a href="https://twitter.com/technographix" class="social-link" aria-label="Follow us on Twitter" rel="noopener noreferrer">
+                            <svg class="social-icon" aria-hidden="true" focusable="false" width="24" height="24">
+                                <use href="{% static 'images/sprites.svg' %}#twitter"></use>
+                            </svg>
+                            <span class="sr-only">Twitter</span>
+                        </a>
+                        <a href="https://linkedin.com/company/technographix" class="social-link" aria-label="Follow us on LinkedIn" rel="noopener noreferrer">
+                            <svg class="social-icon" aria-hidden="true" focusable="false" width="24" height="24">
+                                <use href="{% static 'images/sprites.svg' %}#linkedin"></use>
+                            </svg>
+                            <span class="sr-only">LinkedIn</span>
+                        </a>
+                        <a href="https://instagram.com/technographix" class="social-link" aria-label="Follow us on Instagram" rel="noopener noreferrer">
+                            <svg class="social-icon" aria-hidden="true" focusable="false" width="24" height="24">
+                                <use href="{% static 'images/sprites.svg' %}#instagram"></use>
+                            </svg>
+                            <span class="sr-only">Instagram</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-title">Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#services">Web Development</a></li>
+                        <li><a href="#services">App Development</a></li>
+                        <li><a href="#services">Graphic Design</a></li>
+                        <li><a href="#services">Video Editing</a></li>
+                        <li><a href="#services">SEO</a></li>
+                        <li><a href="#services">Social Media Marketing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-title">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'core:about' %}">About Us</a></li>
+                        <li><a href="{% url 'core:portfolio' %}">Portfolio</a></li>
+                        <li><a href="{% url 'blog:index' %}">Blog</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#careers">Careers</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-title">Newsletter</h3>
+                    <p class="footer-newsletter-text">
+                        Stay updated with our latest insights and industry trends.
+                    </p>
+                    <form class="newsletter-form" id="newsletter-form">
+                        <input type="email" placeholder="Enter your email" class="newsletter-input" required>
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2025 TechnoGraphix. All rights reserved.</p>
+                    <div class="footer-bottom-links">
+                        <a href="#privacy">Privacy Policy</a>
+                        <a href="#terms">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+    <script src="/static/js/theme.js"></script>
+    <script src="/static/js/navigation.js"></script>
+    <script src="/static/js/animations.js"></script>
+    <script src="/static/js/forms.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
