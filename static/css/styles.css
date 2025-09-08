@@ -66,6 +66,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;  /* Prevent horizontal scroll */
 }
 
 body {
@@ -73,6 +74,9 @@ body {
   line-height: 1.5;
   color: var(--gray-700);
   background: var(--gray-50);
+  overflow-x: hidden;  /* Prevent horizontal scroll */
+  width: 100%;        /* Ensure body doesn't exceed viewport */
+  position: relative;  /* Create new stacking context */
 }
 
 img {
@@ -85,6 +89,9 @@ img {
   max-width: var(--container);
   margin: 0 auto;
   padding: 0 var(--container-padding);
+  width: 100%;
+  overflow-x: hidden;  /* Prevent horizontal scroll */
+  position: relative;  /* Create new stacking context */
 }
 
 /* Typography */
@@ -370,4 +377,25 @@ input:focus, select:focus, textarea:focus {
   font-size: 0.875rem;
   font-weight: 500;
   margin-bottom: var(--space-6);
+}
+
+/* Horizontal Scroll Fixes */
+.hscroll__viewport {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  max-width: 100vw;
+  margin: 0 calc(var(--container-padding) * -1);
+}
+
+.hscroll__track {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--container-padding);
+  width: max-content;
+  margin: 0 auto;
+}
+
+.hscroll__viewport::-webkit-scrollbar {
+  display: none;
 }

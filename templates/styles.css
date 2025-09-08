@@ -107,9 +107,21 @@ main > .section:first-of-type{position:relative;z-index:2}
 .team{position:relative;background:linear-gradient(180deg, transparent, color-mix(in oklab, var(--primary) 6%, transparent) 30%, transparent)}
 .team__grid{display:none}
 /* Deck */
-.team .deck{position:sticky;top:72px;z-index:1;width:clamp(280px, 64vw, 480px);height:clamp(380px, 78vh, 640px);margin-inline:auto;perspective:1400px;perspective-origin:50% 30%;isolation:isolate}
+/* styles.css (Add this rule) */
+
+#team {
+  /* Make the section span the full browser width */
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
+  /* Clip any overflow at the very edge of the screen */
+  overflow-x: clip;
+}
+.team .deck{position:sticky;top:72px;z-index:1;width:clamp(280px, 64vw, 480px);height:clamp(380px, 78vh, 640px);margin-inline:auto;perspective:1400px;perspective-origin:50% 30%;isolation:isolate; }
 .team .deck.is-locked{position:fixed;top:72px;left:0;right:0;margin-inline:auto;transform:translateZ(0)}
-.team .deck .card{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(180deg, color-mix(in oklab, var(--card) 92%, transparent), #0b1218);border:1px solid color-mix(in oklab, var(--accent) 12%, var(--card));border-radius:22px;box-shadow:0 16px 60px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.02) inset;transform-style:preserve-3d;transition:box-shadow .3s ease, filter .3s ease;will-change:transform, opacity, filter;overflow:hidden}
+.team .deck .card{position:absolute;inset: 0; display:grid;place-items:center;background:linear-gradient(180deg, color-mix(in oklab, var(--card) 92%, transparent), #0b1218);border:1px solid color-mix(in oklab, var(--accent) 12%, var(--card));border-radius:22px;box-shadow:0 16px 60px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.02) inset;transform-style:preserve-3d;transition:box-shadow .3s ease, filter .3s ease;will-change:transform, opacity, filter;overflow: hidden;}
 .team .deck .card::before{content:"";position:absolute;inset:-1px;background:radial-gradient(600px 220px at 50% -20%, color-mix(in oklab, var(--primary) 18%, transparent) 0%, transparent 60%),radial-gradient(500px 260px at 80% 120%, color-mix(in oklab, var(--accent) 12%, transparent) 0%, transparent 60%);mix-blend-mode:screen;opacity:.35;pointer-events:none}
 .team .deck .card:hover{box-shadow:0 30px 120px rgba(46,230,184,.25);transform:none !important}
 .team .deck .inner{display:flex;flex-direction:column;align-items:center;gap:14px;padding:28px;text-align:center;transform:translateZ(40px)}
@@ -135,7 +147,7 @@ main > .section:first-of-type{position:relative;z-index:2}
 @media (max-width: 680px){
   .section{padding:60px 0}
   .team .deck{top:16vh;height:70vh;width:min(88vw,420px)}
-  .team .deck .inner{padding:22px}
+  .team .deck .inner{padding:0px}
 }
 @media (prefers-reduced-motion: reduce){
   .team .deck .card{transition:none}
@@ -205,3 +217,10 @@ html.dark .slider__arrow{background:rgba(20,20,20,.8);color:#fff}
 .tilt{transform-style:preserve-3d}
 .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s, transform .6s}
 .reveal.is-visible{opacity:1;transform:none}
+
+/* styles.css */
+/* styles.css (Add this final rule) */
+.contact__formWrap {
+  position: relative;
+  overflow: clip;
+}
