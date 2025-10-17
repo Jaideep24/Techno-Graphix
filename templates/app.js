@@ -61,7 +61,7 @@
   };
   
   const state={vw:0,vh:0,tw:0};
-  function measure(){state.vw=innerWidth;state.vh=innerHeight;state.tw=track.scrollWidth;const extra=Math.max(0,state.tw-state.vw);section.style.minHeight=(state.vh+extra)+"px";}
+  function measure(){state.vw=innerWidth;state.vh=innerHeight;state.tw=track.scrollWidth*1.3;const extra=Math.max(0,state.tw-state.vw);section.style.minHeight=(state.vh+extra)+"px";}
   function onScroll(){
     const rect=section.getBoundingClientRect();
     const start=rect.top; const end=rect.bottom-state.vh;

@@ -67,6 +67,7 @@
       </section>
 
       <section id="portfolio" class="section hscroll" data-hscroll>
+      <div class="hscroll__bg" style="position:sticky; top:3vh;">
         <div class="container hscroll__header">
           <div>
             <h2 class="section__title">Portfolio</h2>
@@ -93,6 +94,7 @@
           {% endfor %}
           </div>
         </div>
+      </div>
       </section>
 
       <section id="about" class="section">
@@ -152,12 +154,12 @@
       <section id="testimonials" class="section">
         <div class="container">
           <h2 class="section__title">Testimonials</h2>
-          <div class="slider" id="reviews-slider">
-            <button class="slider__arrow slider__prev" aria-label="Previous review" type="button" title="Previous">
+          <div class="slider" id="reviews-slider" style="padding-left:40px; padding-right:40px;">
+            <button class="slider__arrow slider__prev" aria-label="Previous review" type="button" title="Previous" style="left:0;">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
             <div class="slider__track"></div>
-            <button class="slider__arrow slider__next" aria-label="Next review" type="button" title="Next">
+            <button class="slider__arrow slider__next" aria-label="Next review" type="button" title="Next" style="right:0;">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
             </button>
           </div>
