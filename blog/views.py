@@ -1,130 +1,171 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
-from django.db.models import Q
+from django.db.models.query import QuerySet
+from django.shortcuts import render, redirect
+import requests
+from django.views import View
+from django.views.generic import ListView, DetailView, DeleteView, TemplateView, UpdateView
+from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 import json
-from .models import Post, Category, Comment
+from .forms import *
+from .models import *
+from django.core.mail import send_mail
+import re
+from django.conf import settings
+from PIL import Image, ImageDraw, ImageFont, ImageOps
+import random
+import string
+from io import BytesIO
+import datetime
+import csv
+from datetime import datetime
+from django.core.mail import EmailMessage
+def view(request):
+    userlist=Logger.objects.all().values()
+    if request.method=="POST":
+        print('done')
+        if "username" in request.POST:
+            print("its working till here")
+            for i in userlist:
+                if i["user_name"]==request.POST["username"] and i["password"]==request.POST["password"]:
+                    return render(request,'blog/view_blog.html',{"article":Article.objects.all()})
+                else:
+                    return render(request, 'blog/login.html',{"warning":"error"}) 
+    elif request.method=="GET":
+        return(render(request,'blog/login.html'))
 
-from django.core.paginator import Paginator
-from django.views.decorators.cache import cache_page
-from django.core.cache import cache
-from django.db.models import F
+class Index(ListView):
+    model = Article
+    template_name = 'blog/index(2).html'
+    context_object_name = 'articles'
+    ordering = ['-date']
 
-@cache_page(60 * 15)  # Cache for 15 minutes
-def blog_index(request):
-    search_query = request.GET.get('search', '')
-    category_slug = request.GET.get('category', '')
-    page = request.GET.get('page', 1)
-    
-    # Get posts from cache or database
-    cache_key = f'blog_posts_{search_query}_{category_slug}_{page}'
-    posts = cache.get(cache_key)
-    
-    if posts is None:
-        posts = Post.objects.filter(published=True)
-        
-        if search_query:
-            posts = posts.filter(
-                Q(title__icontains=search_query) | 
-                Q(content__icontains=search_query) |
-                Q(excerpt__icontains=search_query)
-            )
-        
-        if category_slug:
-            posts = posts.filter(category__slug=category_slug)
-        
-        # Cache the queryset
-        cache.set(cache_key, posts, 60 * 15)
-    
-    # Paginate results
-    paginator = Paginator(posts, 10)  # 10 posts per page
-    page_obj = paginator.get_page(page)
-    
-    # Get categories from cache or database
-    categories = cache.get('blog_categories')
-    if categories is None:
-        categories = Category.objects.all()
-        cache.set('blog_categories', categories, 60 * 60)  # Cache for 1 hour
-    
-    # Get featured posts from cache or database
-    featured_posts = cache.get('featured_posts')
-    if featured_posts is None:
-        featured_posts = Post.objects.filter(published=True, featured=True)[:3]
-        cache.set('featured_posts', featured_posts, 60 * 30)  # Cache for 30 minutes
-    
-    context = {
-        'posts': posts,
-        'categories': categories,
-        'featured_posts': featured_posts,
-        'search_query': search_query,
-        'current_category': category_slug,
-    }
-    return render(request, 'blog/index.html', context)
 
-@cache_page(60 * 5)  # Cache for 5 minutes
-def blog_detail(request, slug):
-    post = get_object_or_404(Post, slug=slug, published=True)
-    
-    # Atomic increment of views
-    Post.objects.filter(id=post.id).update(views=F('views') + 1)
-    
-    # Get comments from cache or database
-    cache_key = f'post_comments_{post.id}'
-    comments = cache.get(cache_key)
-    if comments is None:
-        comments = Comment.objects.filter(post=post, approved=True)
-        cache.set(cache_key, comments, 60 * 5)  # Cache for 5 minutes
-    
-    # Get related posts from cache or database
-    cache_key = f'related_posts_{post.id}'
-    related_posts = cache.get(cache_key)
-    if related_posts is None:
-        related_posts = Post.objects.filter(
-            category=post.category, 
-            published=True
-        ).exclude(id=post.id)[:3]
-        cache.set(cache_key, related_posts, 60 * 30)  # Cache for 30 minutes
-    
-    context = {
-        'post': post,
-        'comments': comments,
-        'related_posts': related_posts,
-    }
-    return render(request, 'blog/detail.html', context)
-
-@csrf_exempt
-@require_http_methods(["POST"])
-def add_comment(request, slug):
-    try:
-        post = get_object_or_404(Post, slug=slug, published=True)
-        data = json.loads(request.body)
+submission=False
+confirmation=False
+class Blogspace(ListView):
+    model = Article
+    template_name = 'blog/index (2).html'
+    context_object_name = 'articles'
+    ordering = ['-date']
+    def get_context_data(self, **kwargs):
+        global confirmation
+        global submission
         
-        comment = Comment.objects.create(
-            post=post,
-            name=data.get('name'),
-            email=data.get('email'),
-            content=data.get('content')
-        )
-        
-        return JsonResponse({
-            'success': True, 
-            'message': 'Comment submitted! It will appear after approval.'
-        })
-    except Exception as e:
-        return JsonResponse({
-            'success': False, 
-            'message': 'Failed to submit comment. Please try again.'
-        })
+        if confirmation:
+            submission=True
+            confirmation=False
+        else:
+            submission=False
+        context = super(Blogspace,self).get_context_data(**kwargs)
+        context['submitted']=submission
+        return context
+    def post(self,  request, **kwargs):
+        global confirmation
+        email=request.POST.get('email')
+        self.object_list = self.get_queryset()
+        if not email:
+            # Handle error: missing data
+            context = self.get_context_data()
+            context['error'] = 'Email is required.'
+            return render(request, self.template_name, context)
 
-@csrf_exempt
-@require_http_methods(["POST"])
-def like_post(request, slug):
-    try:
-        post = get_object_or_404(Post, slug=slug, published=True)
-        post.likes += 1
-        post.save()
-        return JsonResponse({'success': True, 'likes': post.likes})
-    except Exception as e:
-        return JsonResponse({'success': False, 'message': 'Failed to like post.'})
+        # Create and save model instance
+        try:
+            certificate = subscriber(email=email)
+            certificate.save()
+            values_list=[email]
+            subject = 'New Subscription'
+            message = f"Thank you for subscribing to our blogs! 🎉\nWe’re thrilled to have you join our community of readers. You’ve just taken the first step toward receiving insightful articles, exciting updates, and exclusive content right to your inbox. \nRegards,\nViir Phuria"
+            from_email = 'virvphuria@gmail.com'  # Replace with your email address
+
+            # Send email
+            EmailMessage(subject, message, from_email, to=["virvphuria@gmail.com"],bcc=values_list).send()
+            confirmation=True
+            return HttpResponseRedirect(request.path_info)
+        except ValueError as e:
+            # Handle date parsing error or other validation issues
+            context = self.get_context_data()
+            context['error'] = f'Invalid input: {e}'
+            return render(request, self.template_name, context)
+
+class DetailArticleView(DetailView):
+    model = Article
+    template_name = 'blog/blog.html'
+    context_object_name = 'article'
+        
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailArticleView,self).get_context_data(**kwargs)
+        context['comment_form']=CommentForm(initial={'article':self.object})
+        context['comment']=Comment.objects.filter(article=self.object)
+        return(context)
+    def post(self, request, **kwargs):
+        self.object = self.get_object()
+        form = CommentForm(request.POST)
+        print(request.POST)
+        print("hi")
+        if form.is_valid():
+            form.save(commit=False)
+            form.article=self.object
+            form.save()
+            return HttpResponseRedirect(self.request.path_info)
+            
+        elif request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            model_id = self.kwargs['pk']  # Assuming your model uses pk as the primary key
+            model = self.get_object()
+            print("ajax")
+            action = request.POST.get('action')
+            # Logic to update the likes of the model
+            # Example:
+            if action == 'like':
+                print("yo")
+                if model.likes is not None:
+                    model.likes += 1
+                else:
+                    model.likes = 1
+            elif action == 'unlike':
+                if model.likes is not None and model.likes > 0:
+                    model.likes -= 1
+            model.save()
+            return JsonResponse({'success': True,'likes': model.likes})
+        else:
+            print("error is therr",form.errors)
+            return self.render_to_response(self.get_context_data(form=form, error_data="error"))
+    
+
+class DeleteArticleView(DeleteView):
+    model = Article
+    template_name = 'blog/blog_delete.html'
+    success_url = reverse_lazy('login')
+
+class CreateBlogView(View):
+    template_name = 'blog/editor.html'
+
+    def get(self, request):
+        form = ArticleForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = ArticleForm(request.POST, request.FILES)
+        if form.is_valid():
+            blog = form.save(commit=False)
+            blog.date = timezone.now()  # Override any form value
+            blog.save()
+            entries = subscriber.objects.all()
+            values_list = [entry.email for entry in entries]
+            subject = 'New Blog'
+            message = f"Hey there, a new blog is waiting for you!\nTitle: {form.cleaned_data['title']}\nRegards,\nViir Phuria"
+            from_email = 'virvphuria@gmail.com'  # Replace with your email address
+
+            # Send email
+            EmailMessage(subject, message, from_email, to=["virvphuria@gmail.com"],bcc=values_list).send()
+            return redirect('blog:blogspace')
+        else:
+            print("Form is invalid")
+        return render(request, self.template_name, {'form': form})
+class UpdateBlogView(UpdateView):
+    model=Article
+    fields=["title","content","image"]
+    template_name='blog/update_blog.html'
+    success_url='/edit'

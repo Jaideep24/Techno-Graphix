@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css" />
     <script>document.documentElement.classList.remove('no-js')</script>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <style>
@@ -172,14 +171,16 @@
           <p class="section__lead">Django‑powered blog coming next. We’ll integrate categories, search, likes and comments.</p>
           <div class="grid grid--3">
           {% for blog in blog_posts %}
+          <a style="text-decoration:none;" href="{% url 'blog:detail_blog' blog.id %}">
             <article class="post tilt">
               <div class="post__media" style="overflow-y:hidden;"> <img src="media/{{ blog.image }}"> </div>
               <div class="post__content">
                 <div class="post__meta"><span class="post__tag"> {{ blog.category}} </span><time> {{ blog.date }} </time></div>
                 <h3>{{ blog.title }}</h3>
-                <p>{{ blog.excerpt }}</p>
+                <p>{{ blog.content }}</p>
               </div>
             </article>
+            </a>
             {% endfor %}
             <article class="post tilt">
               <div class="post__media"></div>
@@ -197,6 +198,13 @@
                 <p>Technical setup and content playbook that moves the needle.</p>
               </div>
             </article>
+          </div>
+          
+          <!-- View More Button -->
+          <div style="text-align: center; margin-top: 3rem;">
+            <a href="{% url 'blog:blogspace' %}" class="btn btn--primary tilt">
+              View More Articles
+            </a>
           </div>
         </div>
       </section>

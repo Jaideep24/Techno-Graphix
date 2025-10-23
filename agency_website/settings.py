@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.sitemaps',
     'core',
+    'blog',
 ]
 
 MIDDLEWARE = [

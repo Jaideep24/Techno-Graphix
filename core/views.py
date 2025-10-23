@@ -6,6 +6,7 @@ from django.views.decorators.http import require_POST, require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
+from blog.models import *
 from .models import (
     Service,
     Portfolio,
@@ -26,7 +27,7 @@ def home(request):
         'team': TeamMember.objects.all(),
         'stats': Stats.objects.first(),  # We only need one instance
         'testimonials': Testimonial.objects.all(),
-        'blog_posts': BlogPost.objects.all()  # Latest 3 posts
+        'blog_posts': Article.objects.all()  # Latest 3 posts
     }
     return render(request, 'index.html', context)
 

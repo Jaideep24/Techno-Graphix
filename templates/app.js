@@ -61,7 +61,7 @@
   };
   
   const state={vw:0,vh:0,tw:0};
-  function measure(){state.vw=innerWidth;state.vh=innerHeight;state.tw=track.scrollWidth*1.3;const extra=Math.max(0,state.tw-state.vw);section.style.minHeight=(state.vh+extra)+"px";}
+  function measure(){state.vw=innerWidth;state.vh=innerHeight;state.tw=track.scrollWidth*1.03;const extra=Math.max(0,state.tw-state.vw);section.style.minHeight=(state.vh+extra)+"px";}
   function onScroll(){
     const rect=section.getBoundingClientRect();
     const start=rect.top; const end=rect.bottom-state.vh;
@@ -117,11 +117,12 @@
 // Testimonials slider with Google reviews + arrows
 (function(){
   const wrap=document.getElementById('reviews-slider'); if(!wrap) return; const track=wrap.querySelector('.slider__track'); let i=0; let data=[]; let timer=null;
-  function render(){track.innerHTML=data.map(rv=>`<div class='review'><div class='review__card'><div class='review__head'>${rv.profile?`<img class='review__avatar' src='${rv.profile}' alt='${rv.author}'>`:`<div class='review__avatar'></div>`}<div><div class='review__name'>${rv.author}</div><div class='review__time'>${rv.time||'Google Review'}</div></div></div><div class='review__text'>“${rv.text}”</div><div class='stars'>${'★'.repeat(Math.round(rv.rating||5))}${'☆'.repeat(5-Math.round(rv.rating||5))}</div></div></div>`).join('');}
-  function go(n){if(!data.length)return; i=(n+data.length)%data.length; track.style.transform=`translateX(-${i*100}%)`;}
+  function render(){track.innerHTML=data.map((rv,idx)=>`<div class='review' data-index='${idx}'><div class='review__card'><div class='review__head'>${rv.profile?`<img class='review__avatar' src='${rv.profile}' alt='${rv.author}'>`:`<div class='review__avatar'></div>`}<div><div class='review__name'>${rv.author}</div><div class='review__time'>${rv.time||'Google Review'}</div></div></div><div class='review__text'>"${rv.text}"</div><div class='stars'>${'★'.repeat(Math.round(rv.rating||5))}${'☆'.repeat(5-Math.round(rv.rating||5))}</div></div></div>`).join(''); updateOpacity();}
+  function updateOpacity(){const reviews=track.querySelectorAll('.review'); reviews.forEach((review,idx)=>{const card=review.querySelector('.review__card'); if(idx===i){card.style.opacity='1'; card.style.transform='scale(1)';} else {card.style.opacity='0.3'; card.style.transform='scale(0.95)';}});}
+  function go(n){if(!data.length)return; i=(n+data.length)%data.length; track.style.transform=`translateX(-${i*100}%)`; updateOpacity();}
   function play(){stop(); timer=setInterval(()=>go(i+1),3500);} function stop(){if(timer)clearInterval(timer);}
   function fallback(){data=[{author:'Aarav Shah',rating:5,text:'Phenomenal team. Speed, UX and SEO nailed.'},{author:'Riya Kapoor',rating:5,text:'Launch-ready assets and app. Highly recommended.'},{author:'Vikram Mehta',rating:5,text:'World-class craft from Mumbai.'}]; render(); play();}
-  fetch('/api/reviews').then(r=>r.json()).then(d=>{data=(d.reviews||[]).slice(0,6); if(!data.length){fallback();return;} render(); play();}).catch(fallback);
+  fallback();
   const prevBtn=wrap.querySelector('.slider__prev');
   const nextBtn=wrap.querySelector('.slider__next');
   prevBtn.addEventListener('click',()=>{stop(); go(i-1); play();});
