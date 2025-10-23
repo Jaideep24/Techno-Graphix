@@ -13,6 +13,10 @@ django-debug-toolbar>=4.2.0
 django-storages>=1.13.2
 boto3>=1.28.0  # for AWS S3 if needed
 redis>=4.6.0  # for caching if needed
-
+django-phonenumber-field
+django-tinymce
+django-multiselectfield
+phonenumbers
+requests
 # Node.js/JS not required in requirements.txt
 # Add any additional Python dependencies below
