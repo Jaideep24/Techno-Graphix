@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script>document.documentElement.classList.remove('no-js')</script>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <style>
@@ -18,23 +19,37 @@
     <header class="nav" id="top">
       <div class="container nav__inner">
         <a href="#top" class="brand">
-          
           <img src="media/portfolio/logo.png" style="height:52px; width:52px;">
-          
           <span class="brand__text">Techno Graphix</span>
         </a>
-        <button class="nav__menuBtn" id="menu-toggle" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
-        <nav class="nav__links" id="primary-nav" aria-label="Primary">
+        
+        <nav class="nav__links" id="primary-nav">
           <a href="#services">Services</a>
           <a href="#portfolio">Portfolio</a>
           <a href="#about">About</a>
           <a href="#stats">Stats</a>
           <a href="#testimonials">Testimonials</a>
+          <a href="#blog">Blog</a>
           <a href="#contact">Contact</a>
-          <button id="theme-toggle" class="btn btn--ghost" aria-label="Toggle dark mode">Dark</button>
+          
         </nav>
+        
+        <div class="nav__right">
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+            </svg>
+            <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+            <span class="hamburger__line"></span>
+            <span class="hamburger__line"></span>
+            <span class="hamburger__line"></span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -113,16 +128,16 @@
       </section>
 
       <section id="team" class="section team">
-        <div class="container deck">
+        <div class="container">
           <h2 class="section__title">Our Team</h2>
           <p class="section__lead">A compact, world‑class crew crafting design, engineering, and growth. Scroll to reveal the deck.</p>
-          <div class="deck" aria-label="Team member cards (scroll to cycle)" style="left:-20px;">
+          <div class="deck" aria-label="Team member cards (scroll to cycle)">
           {% for member in team %}
             <article class="card" data-pos="0">
               <div class="inner">
-                <div class="avatar"><img alt="Aarav Shah" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop" /></div>
+                <div class="avatar"><img alt="{{ member.name }}" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop" /></div>
                 <div class="name">{{ member.name }}</div>
-                <div class="role">{{ member.role }}r</div>
+                <div class="role">{{ member.role }}</div>
                 <div class="socials" aria-label="Social links">
                   <a href="{{ member.linkedin }}" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM0 8.5h5V24H0zM8 8.5h4.8v2.1h.1c.7-1.3 2.5-2.7 5.1-2.7 5.5 0 6.5 3.6 6.5 8.3V24h-5v-6.9c0-1.7 0-3.9-2.4-3.9s-2.7 1.9-2.7 3.8V24H8z"/></svg></a>
                   <a href="{{ member.twitter }}" aria-label="Twitter"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23 4.5a9.4 9.4 0 0 1-2.7.7 4.7 4.7 0 0 0 2-2.6 9.5 9.5 0 0 1-3 1.2 4.7 4.7 0 0 0-8 4.3A13.3 13.3 0 0 1 1.6 3.2a4.7 4.7 0 0 0 1.4 6.2 4.6 4.6 0 0 1-2.1-.6v.1a4.7 4.7 0 0 0 3.7 4.6 4.8 4.8 0 0 1-2.1.1 4.7 4.7 0 0 0 4.4 3.2A9.5 9.5 0 0 1 0 20.5 13.3 13.3 0 0 0 7.2 22c8.7 0 13.5-7.2 13.5-13.5v-.6A9.5 9.5 0 0 0 23 4.5z"/></svg></a>
@@ -132,11 +147,9 @@
                 <span class="chip">{{ i }}</span>
                 {% endfor %}
                 </div>
-                
               </div>
             </article>
-            {% endfor %}
-            </div>
+          {% endfor %}
           </div>
         </div>
       </section>
@@ -147,7 +160,6 @@
           <div class="stat" data-count="98"><div class="stat__num">0</div><div class="stat__label">Client Satisfaction</div></div>
           <div class="stat" data-count="8"><div class="stat__num">0</div><div class="stat__label">Years of Experience</div></div>
         </div>
-</div>
       </section>
 
       <section id="testimonials" class="section">
@@ -182,22 +194,7 @@
             </article>
             </a>
             {% endfor %}
-            <article class="post tilt">
-              <div class="post__media"></div>
-              <div class="post__content">
-                <div class="post__meta"><span class="post__tag">Engineering</span><time>Jul 2025</time></div>
-                <h3>Shipping a cross‑platform fitness app</h3>
-                <p>From design system to animations — lessons learned.</p>
-              </div>
-            </article>
-            <article class="post tilt">
-              <div class="post__media"></div>
-              <div class="post__content">
-                <div class="post__meta"><span class="post__tag">Growth</span><time>Jun 2025</time></div>
-                <h3>SEO quick wins for new brands</h3>
-                <p>Technical setup and content playbook that moves the needle.</p>
-              </div>
-            </article>
+            
           </div>
           
           <!-- View More Button -->
@@ -222,13 +219,15 @@
                 <input type="text" name="name" required minlength="2" placeholder="Your name" />
                 <input type="email" name="email" required placeholder="Your email" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" />
               </div>
+              <input type="tel" name="phone" required placeholder="Your phone number" pattern="[0-9]{10}" title="Please enter a valid phone number (10 digits)" />
               <select name="service" required>
                 <option value="" disabled selected>Select service</option>
                 <option value="web">Web Development</option>
                 <option value="app">App Development</option>
                 <option value="design">Graphic Design</option>
-                <option value="branding">Brand Identity</option>
+                <option value="branding">ML/AI</option>
                 <option value="marketing">Digital Marketing</option>
+                <option value="marketing">Other</option>
               </select>
               <textarea name="message" rows="6" required minlength="10" placeholder="Your message"></textarea>
               <div class="contact__actions">
@@ -240,28 +239,27 @@
       </section>
     </main>
 
-    <footer class="footer">
-      <div class="container footer__inner">
-        <div>
-          <div class="brand brand--footer"><span class="brand__dot"></span><span class="brand__text">Techno Graphix</span></div>
-          <p>Mumbai • Digital Agency crafting web, apps, design and growth.</p>
+    <footer class="margin-t-80">
+        <div class="container">
+            <div class="br-footer-detail">
+                <div class="br-copy">
+                    Copyright © Techno Graphix all rights reserved. Powered by <a class="site-name" href="https://technographix.netlify.app/" target="_blank">Techno Graphix</a>.
+                </div>
+                
+                <div class="br-social">
+                    <ul>
+                        <li><a href="https://www.facebook.com/techno.graphix.vir/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a href="https://www.instagram.com/techno_graphix" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                        <li><a href="https://linkedin.com/company/technographix" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                        <li><a href="https://wa.me//9819185865" target="_blank"><i class="fa fa-whatsapp" aria-hidden="true"></i></a></li>
+                        <li><a href="tel:9819185865" target="_blank"><i class="fa fa-phone" aria-hidden="true"></i></a></li>
+                        <li><a href="https://github.com/Viir-Phuria" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+                        <li><a href="mailto:viir.technographix@gmail.com" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+                        <li><a href="https://g.page/r/CQNFRIPNOr4AEBM" target="_blank"><i class="fa fa-google" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="footer__links">
-          <div>
-            <h4>Links</h4>
-            <a href="#services">Services</a>
-            <a href="#portfolio">Portfolio</a>
-            <a href="#blog">Blog</a>
-          </div>
-          <div>
-            <h4>Social</h4>
-            <a href="#">Twitter</a>
-            <a href="#">Instagram</a>
-            <a href="#">LinkedIn</a>
-          </div>
-        </div>
-        <div class="footer__copy">© <span id="copy-year"></span> Techno Graphix. All rights reserved.</div>
-      </div>
     </footer>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>

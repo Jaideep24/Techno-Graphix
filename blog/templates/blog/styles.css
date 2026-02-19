@@ -8,8 +8,8 @@
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #f8fafc;
+    color: var(--fg, #333);
+    background-color: var(--bg, #f8fafc);
 }
 a{
     text-decoration:none;
@@ -25,7 +25,7 @@ ul{
 
 /* Header & Navigation */
 .header {
-    background: #000;
+    background: var(--card, #000);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
@@ -42,6 +42,8 @@ ul{
     align-items: center;
     margin: 0 auto;
     padding: 0 20px;
+    max-width: 1200px;
+    height: 64px;
 }
 
 .logo {
@@ -49,7 +51,7 @@ ul{
     align-items: center;
     font-size: 1.5rem;
     font-weight: 700;
-    color: #4f46e5;
+    color: var(--primary, #4f46e5);
     gap: 0.5rem;
 }
 
@@ -57,11 +59,14 @@ ul{
     display: flex;
     list-style: none;
     gap: 2rem;
+    margin: 0;
+    padding: 0;
+    align-items: center;
 }
 
 .nav-link {
     text-decoration: none;
-    color: #fff;
+    color: var(--fg, #fff);
     font-weight: 500;
     transition: color 0.3s ease;
     position: relative;
@@ -69,7 +74,7 @@ ul{
 
 .nav-link:hover,
 .nav-link.active {
-    color: #4f46e5;
+    color: var(--primary, #4f46e5);
 }
 
 .nav-link.active::after {
@@ -79,7 +84,7 @@ ul{
     left: 0;
     right: 0;
     height: 2px;
-    background: #4f46e5;
+    background: var(--primary, #4f46e5);
     border-radius: 1px;
 }
 
@@ -92,14 +97,14 @@ ul{
 .bar {
     width: 25px;
     height: 3px;
-    background: #333;
+    background: var(--fg, #333);
     margin: 3px 0;
     transition: 0.3s;
 }
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--primary, #00B4D8);
     color: white;
     padding: 1rem 0;
     text-align: center;
@@ -140,7 +145,7 @@ ul{
 .cta-button {
     display: inline-block;
     background: #fff;
-    color: #4f46e5;
+    color: var(--primary, #4f46e5);
     padding: 1rem 2rem;
     text-decoration: none;
     border-radius: 8px;
@@ -170,7 +175,7 @@ ul{
 .section-header h2 {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #1e293b;
+    color: var(--fg, #1e293b);
 }
 
 .filter-options {
@@ -181,9 +186,9 @@ ul{
 
 .filter-btn {
     padding: 0.5rem 1rem;
-    border: 2px solid #e2e8f0;
-    background: white;
-    color: #64748b;
+    border: 2px solid var(--border, #e2e8f0);
+    background: var(--card, white);
+    color: var(--muted-fg, #64748b);
     border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -192,25 +197,26 @@ ul{
 
 .filter-btn:hover,
 .filter-btn.active {
-    border-color: #4f46e5;
-    background: #4f46e5;
+    border-color: var(--primary, #4f46e5);
+    background: var(--primary, #4f46e5);
     color: white;
 }
 
 .blogs-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(350px, 100%), 1fr));
     gap: 2rem;
     margin-bottom: 3rem;
 }
 
 .blog-card {
-    background: white;
+    background: var(--card, white);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
+    border: 1px solid var(--border, transparent);
 }
 
 .blog-card:hover {
@@ -229,7 +235,7 @@ ul{
     position: absolute;
     top: 1rem;
     left: 1rem;
-    background: #4f46e5;
+    background: var(--primary, #4f46e5);
     color: white;
     padding: 0.25rem 0.75rem;
     border-radius: 15px;
@@ -246,12 +252,12 @@ ul{
     font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
-    color: #1e293b;
+    color: var(--fg, #1e293b);
     line-height: 1.4;
 }
 
 .blog-excerpt {
-    color: #64748b;
+    color: var(--muted-fg, #64748b);
     margin-bottom: 1rem;
     line-height: 1.6;
 }
@@ -261,7 +267,7 @@ ul{
     justify-content: space-between;
     align-items: center;
     font-size: 0.875rem;
-    color: #64748b;
+    color: var(--muted-fg, #64748b);
 }
 
 .author-info {
@@ -283,7 +289,7 @@ ul{
 
 .load-more-btn {
     padding: 1rem 2rem;
-    background: #4f46e5;
+    background: var(--primary, #4f46e5);
     color: white;
     border: none;
     border-radius: 8px;
@@ -293,7 +299,7 @@ ul{
 }
 
 .load-more-btn:hover {
-    background: #3730a3;
+    background: var(--primary-2, #3730a3);
 }
 
 /* Blog Post Page */
@@ -312,7 +318,7 @@ ul{
 }
 
 .category {
-    background: #4f46e5;
+    background: var(--primary, #4f46e5);
     color: white;
     padding: 0.25rem 0.75rem;
     border-radius: 15px;
@@ -322,7 +328,7 @@ ul{
 }
 
 .date {
-    color: #64748b;
+    color: var(--muted-fg, #64748b);
     font-size: 0.875rem;
 }
 
@@ -331,7 +337,7 @@ ul{
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 1.5rem;
-    color: #1e293b;
+    color: var(--fg, #1e293b);
 }
 
 .author-info {
@@ -353,12 +359,12 @@ ul{
 
 .author-name {
     font-weight: 600;
-    color: #1e293b;
+    color: var(--fg, #1e293b);
 }
 
 .read-time {
     font-size: 0.875rem;
-    color: #64748b;
+    color: var(--muted-fg, #64748b);
 }
 
 .blog-image {
@@ -377,16 +383,18 @@ ul{
     font-size: 1.1rem;
     line-height: 1.8;
     margin-bottom: 3rem;
+    color: var(--fg, inherit);
 }
 
 .blog-content p {
     margin-bottom: 1.5rem;
+    color: var(--muted-fg, inherit);
 }
 
 .blog-content h2,
 .blog-content h3 {
     margin: 2rem 0 1rem;
-    color: #1e293b;
+    color: var(--fg, #1e293b);
 }
 
 .blog-content ul,
@@ -405,8 +413,8 @@ ul{
     justify-content: space-between;
     align-items: center;
     padding: 2rem 0;
-    border-top: 1px solid #e2e8f0;
-    border-bottom: 1px solid #e2e8f0;
+    border-top: 1px solid var(--border, #e2e8f0);
+    border-bottom: 1px solid var(--border, #e2e8f0);
     margin-bottom: 3rem;
 }
 
@@ -420,17 +428,18 @@ ul{
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1rem;
-    background: white;
-    border: 2px solid #e2e8f0;
+    background: var(--card, white);
+    border: 2px solid var(--border, #e2e8f0);
     border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 500;
+    color: var(--fg, inherit);
 }
 
 .action-btn:hover {
-    border-color: #4f46e5;
-    color: #4f46e5;
+    border-color: var(--primary, #4f46e5);
+    color: var(--primary, #4f46e5);
 }
 
 .like-btn.liked {
@@ -447,7 +456,7 @@ ul{
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1rem;
-    background: #4f46e5;
+    background: var(--primary, #4f46e5);
     color: white;
     text-decoration: none;
     border-radius: 25px;
@@ -456,7 +465,7 @@ ul{
 }
 
 .edit-btn:hover {
-    background: #3730a3;
+    background: var(--primary-2, #3730a3);
 }
 
 /* Comments Section */
@@ -467,7 +476,7 @@ ul{
 .comments-section h3 {
     font-size: 1.5rem;
     margin-bottom: 2rem;
-    color: #1e293b;
+    color: var(--fg, #1e293b);
 }
 
 .comment-form {
@@ -490,16 +499,18 @@ ul{
 .comment-input-container textarea {
     width: 100%;
     padding: 1rem;
-    border: 2px solid #e2e8f0;
+    border: 2px solid var(--border, #e2e8f0);
     border-radius: 8px;
     resize: vertical;
     font-family: inherit;
     margin-bottom: 1rem;
+    background: var(--card, white);
+    color: var(--fg, inherit);
 }
 
 .comment-input-container textarea:focus {
     outline: none;
-    border-color: #4f46e5;
+    border-color: var(--primary, #4f46e5);
 }
 
 .comment-actions {
@@ -511,15 +522,15 @@ ul{
 .cancel-btn {
     padding: 0.5rem 1rem;
     background: transparent;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border, #e2e8f0);
     border-radius: 6px;
     cursor: pointer;
-    color: #64748b;
+    color: var(--muted-fg, #64748b);
 }
 
 .submit-btn {
     padding: 0.5rem 1rem;
-    background: #4f46e5;
+    background: var(--primary, #4f46e5);
     color: white;
     border: none;
     border-radius: 6px;
@@ -531,7 +542,7 @@ ul{
     display: flex;
     gap: 1rem;
     padding: 1.5rem 0;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--border, #e2e8f0);
 }
 
 .comment:last-child {
@@ -544,19 +555,20 @@ ul{
 
 .comment-author {
     font-weight: 600;
-    color: #1e293b;
+    color: var(--fg, #1e293b);
     margin-bottom: 0.25rem;
 }
 
 .comment-date {
     font-size: 0.875rem;
-    color: #64748b;
+    color: var(--muted-fg, #64748b);
     margin-bottom: 0.5rem;
 }
 
 .comment-text {
     line-height: 1.6;
     margin-bottom: 0.5rem;
+    color: var(--muted-fg, inherit);
 }
 
 .comment-actions-inline {
@@ -567,14 +579,14 @@ ul{
 .comment-action {
     background: none;
     border: none;
-    color: #64748b;
+    color: var(--muted-fg, #64748b);
     cursor: pointer;
     font-size: 0.875rem;
     padding: 0.25rem 0;
 }
 
 .comment-action:hover {
-    color: #4f46e5;
+    color: var(--primary, #4f46e5);
 }
 
 /* Editor Page */
@@ -591,7 +603,7 @@ ul{
 
 .editor-header h1 {
     font-size: 2rem;
-    color: #1e293b;
+    color: var(--fg, #1e293b);
 }
 
 .editor-actions {
@@ -632,10 +644,11 @@ ul{
 }
 
 .blog-form {
-    background: white;
+    background: var(--card, white);
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border, transparent);
 }
 
 .form-group {
@@ -652,7 +665,7 @@ ul{
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #1e293b;
+    color: var(--fg, #1e293b);
 }
 
 .form-group input,
@@ -660,17 +673,19 @@ ul{
 .form-group textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 2px solid #e2e8f0;
+    border: 2px solid var(--border, #e2e8f0);
     border-radius: 8px;
     font-family: inherit;
     font-size: 1rem;
+    background: var(--card, white);
+    color: var(--fg, inherit);
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #4f46e5;
+    border-color: var(--primary, #4f46e5);
 }
 
 .image-preview {
@@ -689,17 +704,17 @@ ul{
     display: flex;
     gap: 0.5rem;
     padding: 0.75rem;
-    border: 2px solid #e2e8f0;
+    border: 2px solid var(--border, #e2e8f0);
     border-bottom: none;
     border-radius: 8px 8px 0 0;
-    background: #f8fafc;
+    background: var(--muted, #f8fafc);
     flex-wrap: wrap;
 }
 
 .toolbar-btn {
     padding: 0.5rem;
-    background: white;
-    border: 1px solid #e2e8f0;
+    background: var(--card, white);
+    border: 1px solid var(--border, #e2e8f0);
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -708,38 +723,40 @@ ul{
     display: flex;
     align-items: center;
     justify-content: center;
+    color: var(--fg, inherit);
 }
 
 .toolbar-btn:hover {
-    background: #4f46e5;
+    background: var(--primary, #4f46e5);
     color: white;
 }
 
 .toolbar-btn.active {
-    background: #4f46e5;
+    background: var(--primary, #4f46e5);
     color: white;
 }
 
 .toolbar-separator {
     width: 1px;
-    background: #e2e8f0;
+    background: var(--border, #e2e8f0);
     margin: 0 0.5rem;
 }
 
 .content-editor {
     min-height: 400px;
     padding: 1rem;
-    border: 2px solid #e2e8f0;
+    border: 2px solid var(--border, #e2e8f0);
     border-top: none;
     border-radius: 0 0 8px 8px;
-    background: white;
+    background: var(--card, white);
     line-height: 1.6;
     font-size: 1rem;
+    color: var(--fg, inherit);
 }
 
 .content-editor:focus {
     outline: none;
-    border-color: #4f46e5;
+    border-color: var(--primary, #4f46e5);
 }
 
 .content-editor:empty:before {
@@ -765,14 +782,15 @@ ul{
     .nav-menu {
         position: fixed;
         left: -100%;
-        top: 50px;
+        top: 64px;
         flex-direction: column;
-        background-color: white;
+        background-color: var(--card, white);
         width: 100vw;
         text-align: center;
         transition: 0.3s;
-        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.1);
         padding: 2rem 0;
+        border-bottom: 1px solid var(--border, #e2e8f0);
     }
     
     .nav-menu.active {

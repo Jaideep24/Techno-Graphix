@@ -64,7 +64,7 @@
 
     .blogs-list {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(min(350px, 100%), 1fr));
         gap: 2rem;
         margin-top: 2rem;
         list-style: none;
@@ -72,12 +72,12 @@
     }
 
     .blog-item {
-        background: white;
+        background: var(--card, white);
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         transition: all 0.3s ease;
-        border: 1px solid #f0f0f0;
+        border: 1px solid var(--border, #f0f0f0);
     }
 
     .blog-item:hover {
@@ -180,29 +180,29 @@
     }
 
     /* Dark mode styles */
-    body.dark .blog-item {
-        background: #202337;
-        border-color: #353250;
+    html.dark .blog-item {
+        background: var(--card);
+        border-color: var(--border);
     }
 
-    body.dark .blog-item-body {
-        background: #202337;
+    html.dark .blog-item-body {
+        background: var(--card);
     }
 
-    body.dark .empty-state {
-        color: #a5a3b3;
+    html.dark .empty-state {
+        color: var(--muted-fg);
     }
 
-    body.dark .empty-state i {
-        color: #a5a3b3;
+    html.dark .empty-state i {
+        color: var(--muted-fg);
     }
 
-    body.dark .empty-state h3 {
-        color: #EEEEEE;
+    html.dark .empty-state h3 {
+        color: var(--fg);
     }
 
-    body.dark .empty-state p {
-        color: #a5a3b3;
+    html.dark .empty-state p {
+        color: var(--muted-fg);
     }
 
     @media (max-width: 768px) {

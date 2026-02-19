@@ -96,6 +96,7 @@ class BlogPost(models.Model):
 class Contact(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(validators=[EmailValidator()])
+    phone = models.CharField(max_length=15)
     service = models.CharField(max_length=50, choices=[
         ('web', 'Web Development'),
         ('app', 'App Development'),

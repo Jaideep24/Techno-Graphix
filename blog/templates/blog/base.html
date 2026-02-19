@@ -4,10 +4,84 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://bootswatch.com/5/simplex/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<title>Django Blog</title>
   <style>
+    /* Core Theme Variables - Consistent with main site */
+    :root {
+      --tg-cyan: #00B4D8;
+      --tg-orange: #FF6F3C;
+      --tg-black: #1C1C1C;
+      --tg-white: #F5F5F5;
+      --tg-gray: #4A4A4A;
+      --bg: var(--tg-white);
+      --fg: var(--tg-black);
+      --card: #fff;
+      --muted: #e5e5e5;
+      --muted-fg: #666;
+      --primary: var(--tg-cyan);
+      --primary-2: var(--tg-orange);
+      --border: #ddd;
+    }
+    
+    html.dark {
+      --bg: hsl(200 70% 6%);
+      --fg: hsl(180 25% 96%);
+      --card: hsl(230 25% 14%);
+      --muted: hsl(200 15% 16%);
+      --muted-fg: hsl(180 9% 65%);
+      --primary: hsl(164 72% 45%);
+      --border: hsl(200 15% 20%);
+    }
+
+    body {
+      background-color: var(--bg) !important;
+      color: var(--fg);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Dark mode support */
+    h1, h2, h3, h4, h5, h6 { color: var(--fg); }
+    p { color: var(--muted-fg); }
+    .card { background: var(--card) !important; border: 1px solid var(--border) !important; }
+    .card-title { color: var(--fg) !important; }
+    .card-body { color: var(--muted-fg); }
+    .form-control { background: var(--card) !important; border: 1px solid var(--border) !important; color: var(--fg) !important; }
+    .my-3 { color: var(--fg) !important; }
+    
+    /* Theme Toggle */
+    /* Theme Toggle - Elegant Sun/Moon */
+    .theme-toggle {
+      background: transparent;
+      border: none;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      position: relative;
+      color: var(--fg);
+      transition: color 0.3s ease;
+    }
+    .theme-toggle:hover { color: var(--primary); }
+    .theme-toggle__icon {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .theme-toggle__icon--sun { opacity: 1; transform: rotate(0deg) scale(1); }
+    .theme-toggle__icon--moon { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+    html.dark .theme-toggle__icon--sun { opacity: 0; transform: rotate(90deg) scale(0.5); }
+    html.dark .theme-toggle__icon--moon { opacity: 1; transform: rotate(0deg) scale(1); }
+
 	.row{
 		width:100% !important;
 	}
@@ -259,24 +333,13 @@ input[type="submit"].enabled {
 
   .signin {
     padding: 10px;
+    width: min(400px, calc(100vw - 40px)) !important;
+    max-width: 100%;
   }
 
   .inputBox i, .inputBox .toggle-password {
     font-size: 14px;
   }
-}
-.logo{
-    opacity:0;
-}
-
-@media (max-width:500px){
-    .logo{
-        opacity:1;
-    }
-    #headish{
-        opacity:0;
-        width:200px
-    }
 }
 	</style>
 </head>
@@ -284,30 +347,39 @@ input[type="submit"].enabled {
 	<style>
     {% include 'blog/styles.css' %}
     </style>
-    <header class="header" style="position: relative; z-index: 1001;">
-        <nav class="navba" style="height:50px; padding:0.5rem 0; position: relative; z-index: 1002;">
-            <div class="nav-container" >
-                <div class="logo" style="color: white; font-size: 24px; font-family: Arial, sans-serif; font-weight: 900;">
-                    <span style="color: white !important;">BlogSpace</span>
-                </div>
-                <h4 id="headish" style="color: white; font-size: 24px; font-family: Arial, sans-serif; font-weight: 900; position: absolute; top: 50%; left: 8px; transform: translate(0,-50%);">VIIR PHURIA &nbsp &nbsp BlogSpace</h4>
-                <div class="nav-menu-wrapper">
-                <ul class="nav-menu" style="background-color:black; z-index:1002">
+    <header class="header" style="position: sticky; top:0; z-index: 1001;">
+        <nav class="navbar" style="height:64px; background-color:var(--card); border-bottom: 1px solid var(--border);">
+            <div class="nav-container" style="max-width:1200px; margin:0 auto; padding:0 24px; height:64px;">
+                <a href="/" class="logo" style="color: var(--fg); font-size: 20px; font-family: 'Inter', sans-serif; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 12px; flex-shrink:0;">
+                    <img src="/media/portfolio/logo.png" style="height:44px; width:44px; display:block;">
+                    <span style="color: var(--fg); white-space:nowrap;">Techno Graphix</span>
+                </a>
+                <ul class="nav-menu" style="background-color:var(--card);">
                     <li class="nav-item">
-                        <a href="/#blog" class="nav-link">Home</a>
+                        <a href="/#blog" class="nav-link" style="color: var(--fg);">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'blog:blogspace' %}" class="nav-link">BlogSpace</a>
+                        <a href="{% url 'blog:blogspace' %}" class="nav-link" style="color: var(--fg);">BlogSpace</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'blog:login' %}" class="nav-link">Write</a>
+                        <a href="{% url 'blog:login' %}" class="nav-link" style="color: var(--fg);">Write</a>
                     </li>
                 </ul>
-                </div>
-                <div class="hamburger">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
+                <div style="display:flex; align-items:center; gap:12px; flex-shrink:0;">
+                    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                        <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                          <circle cx="12" cy="12" r="4"></circle>
+                          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                        </svg>
+                        <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <div class="hamburger">
+                        <span class="bar" style="background: var(--fg);"></span>
+                        <span class="bar" style="background: var(--fg);"></span>
+                        <span class="bar" style="background: var(--fg);"></span>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -320,63 +392,36 @@ input[type="submit"].enabled {
 	<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 	<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 	<script>
-		const isDarkMode = localStorage.getItem('darkMode') === 'true';
-
-// Apply dark mode if preference is true
-
+// Theme toggle - synced with core template (uses 'theme' key)
 document.addEventListener("DOMContentLoaded", () => {
-    // Apply theme on load based on localStorage
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
-    document.body.classList.toggle("light", !isDarkMode);
-    document.body.classList.toggle("dark", isDarkMode);
-    document.body.classList.toggle('darkmode', isDarkMode); 
+    const root = document.documentElement;
+    const stored = localStorage.getItem('theme');
+    const isDarkMode = stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    
+    if (isDarkMode) {
+        root.classList.add('dark');
+    }
+    
+    // Update login page animations based on theme
     document.querySelectorAll("section span").forEach(x => x.classList.toggle("green", isDarkMode));
     document.querySelectorAll("section span").forEach(x => x.classList.toggle("blue", !isDarkMode));
-    const toggleCheckbox = document.getElementById("toggle");
-    if (toggleCheckbox) toggleCheckbox.checked = isDarkMode;
-
-    applyDarkModeStyles(isDarkMode);  // Update inline styles for legacy parts
+    
+    // Theme toggle button
+    const btn = document.getElementById('theme-toggle');
+    if (btn) {
+        btn.addEventListener('click', () => {
+            root.classList.toggle('dark');
+            const newIsDark = root.classList.contains('dark');
+            localStorage.setItem('theme', newIsDark ? 'dark' : 'light');
+            
+            // Update login page animations
+            document.querySelectorAll("section span").forEach(x => x.classList.toggle("green", newIsDark));
+            document.querySelectorAll("section span").forEach(x => x.classList.toggle("blue", !newIsDark));
+        });
+    }
 });
-		function something(x)
-		{
-			if(x.style.color=="black")
-			{
-				x.style.color="white";
-			}
-			else
-			{
-				x.style.color="black";
-			}
-		}
-		function some(y)
-		{
-			y.classList.toggle("text-muted");
-			if(y.style.color=="#FFC107")
-			{
-				y.style.color="";
-			}
-			else
-			{
-				y.style.color="#FFC107";
-			}
-		}
-		function darktheme()
-		{
-			document.body.classList.toggle("darkmode");
-			document.querySelectorAll(".navbar-brand").forEach(something);
-			document.querySelectorAll(".nav-link").forEach(something);
-			document.querySelectorAll("p").forEach(some);
-			document.querySelectorAll("span").forEach(some);
-			document.querySelectorAll(".card-body").forEach(x => x.classList.toggle('darkmode'));
-      document.querySelectorAll("section span").forEach(x => x.classList.toggle("green"));
-      document.querySelectorAll("section span").forEach(x => x.classList.toggle("blue"));
-      document.getElementById("menuthing").classList.toggle("navbar-light");
-      document.getElementById("menuthing").classList.toggle("navbar-dark");
-      			const currentMode = document.body.classList.contains('darkmode');
-		    localStorage.setItem('darkMode', currentMode);
 
-		}
-		function myFunction() {
+function myFunction() {
   var x = document.getElementById("password");
   if (x.type === "password") {
     x.type = "text";
@@ -384,7 +429,7 @@ document.addEventListener("DOMContentLoaded", () => {
     x.type = "password";
   }
   document.getElementById('something').classList.toggle('fa-eye');
-    document.getElementById('something').classList.toggle('fa-eye-slash');
+  document.getElementById('something').classList.toggle('fa-eye-slash');
 }
 	</script>
 	<script>

@@ -8,7 +8,7 @@ SECRET_KEY = ['_1kkbb!c7pv+l=q4)s7^yk9(f07s#cjj)b#$v8g3=8+z+a4-am']
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost','technographix.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','technographix.pythonanywhere.com','192.168.29.127']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -139,9 +139,9 @@ ADMIN_EMAIL = config('ADMIN_EMAIL', default='admin@example.com')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email Configuration
-EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
-EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
-EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Replace with your SMTP server address
+EMAIL_PORT = 587  # Replace with your SMTP server port (587 for TLS)
+EMAIL_USE_TLS = True  # Enable TLS encryption
+EMAIL_HOST_USER = 'virvphuria@gmail.com'  # Replace with your email address
+EMAIL_HOST_PASSWORD = 'uzig dgik ahga lyrw'  # Replace with your email password or app password

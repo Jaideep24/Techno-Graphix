@@ -4,8 +4,7 @@
   const root=document.documentElement;
   const stored=localStorage.getItem('theme');
   if(stored==='dark'||(!stored&&window.matchMedia('(prefers-color-scheme: dark)').matches)) root.classList.add('dark');
-  btn.textContent=root.classList.contains('dark')?'Light':'Dark';
-  btn.addEventListener('click',()=>{root.classList.toggle('dark');localStorage.setItem('theme',root.classList.contains('dark')?'dark':'light');btn.textContent=root.classList.contains('dark')?'Light':'Dark';});
+  btn.addEventListener('click',()=>{root.classList.toggle('dark');localStorage.setItem('theme',root.classList.contains('dark')?'dark':'light');});
 })();
 
 // Smooth in-page scroll
@@ -150,33 +149,29 @@
 })();
 
 // Contact form: Django-compatible (POST) with optional AJAX enhancement
+// Contact form: Django-compatible (POST) with optional AJAX enhancement
 (function(){
   const form=document.getElementById('contact-form'); const toast=document.getElementById('toast'); if(!form) return;
   form.addEventListener('submit',async (e)=>{
     e.preventDefault();
-    const fd=new FormData(form); // Send to Django if action is set, else AJAX to /api/contact (not implemented here)
-    try{ const action=form.getAttribute('action'); if(action){ await fetch(action,{method:'POST',body:fd}); }
-    $.ajax({
-        url: '/contact/submit/',
-        type: 'POST',
-        data: {
-            'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
-            'name': $('input[name="name"]').val(),
-            'email': $('input[name="email"]').val(),
-            'service': $('select[name="service"]').val(),
-            'message': $('textarea[name="message"]').val()
-             // Get from hidden input
-        },
-        dataType: 'json',
-        success: function(data) {
-            console.log(data);
-        },
-        error: function(xhr, status, error) {
-            console.error('Error:', error);
-        }
-    });
-     showToast("Message sent! We'll get back within 24h."); form.reset(); }
-    catch(err){ showToast('Failed to send. Please try again.'); }
+    try{
+      const response = await fetch('/contact/submit/', {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {'X-Requested-With': 'XMLHttpRequest'},
+        credentials: 'same-origin'
+      });
+      const data = await response.json();
+      if(response.ok && data.success) {
+        showToast("Message sent! We'll get back within 24h."); 
+        form.reset();
+      } else {
+        showToast(data.message || 'Failed to send. Please try again.');
+      }
+    } catch(err){ 
+      console.error(err);
+      showToast('Failed to send. Please try again.'); 
+    }
   });
   function showToast(msg){ toast.textContent=msg; toast.classList.add('is-visible'); setTimeout(()=>toast.classList.remove('is-visible'),2000); }
 })();
@@ -184,17 +179,44 @@
 // Footer year
 document.getElementById('copy-year').textContent=new Date().getFullYear();
 
-// Mobile nav toggle
+// Mobile nav toggle - Hamburger Menu
 (function(){
-  const header=document.querySelector('.nav');
-  const btn=document.getElementById('menu-toggle');
-  const menu=document.getElementById('primary-nav');
-  if(!header||!btn||!menu) return;
-  function close(){ header.classList.remove('is-open'); btn.setAttribute('aria-expanded','false'); }
-  btn.addEventListener('click',()=>{ const open=!header.classList.contains('is-open'); header.classList.toggle('is-open',open); btn.setAttribute('aria-expanded', String(open)); });
-  menu.addEventListener('click',e=>{ if(e.target.tagName==='A'||e.target.closest('a')) close(); });
-  addEventListener('resize',()=>{ if(innerWidth>860) close(); });
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('primary-nav');
+  
+  if (!hamburger || !navLinks) return;
+  
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+  });
+  
+  // Close menu when clicking a link
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      navLinks.classList.remove('active');
+    });
+  });
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+      hamburger.classList.remove('active');
+      navLinks.classList.remove('active');
+    }
+  });
+  
+  // Close menu on resize above 860px
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 860) {
+      hamburger.classList.remove('active');
+      navLinks.classList.remove('active');
+    }
+  });
 })();
+
+// Team deck scroll-hijack flip animation
 (function(){
   const section = document.getElementById('team');
   if (!section) return;
@@ -204,71 +226,137 @@ document.getElementById('copy-year').textContent=new Date().getFullYear();
 
   const cards = [...deck.querySelectorAll('.card')];
   const n = cards.length;
-  if (!n) return;
+  if (n === 0) return;
 
   const clamp = (v,min,max) => Math.max(min, Math.min(max, v));
-  const base = (i) => {
-    const dz = -i * 60;
-    const dy = i * 12;
-    const rz = (i % 2 ? -2 : 2);
-    return `translate3d(0,${dy}px,${dz}px) rotateZ(${rz}deg)`;
-  };
 
-  let vh = innerHeight, sh = 0;
+  // Each card gets SCROLL_PER_CARD px of wheel delta to fully flip out
+  const SCROLL_PER_CARD = 250;
+  const TOTAL_SCROLL = (n - 1) * SCROLL_PER_CARD;
 
-  function layout() {
-    vh = innerHeight;
+  let isLocked = false;
+  let virtualScroll = 0;
+  let animationComplete = false;
+  let savedScrollY = 0;
 
-    // prepare cards
-    cards.forEach((c,i) => {
-      c.style.willChange = 'transform,opacity,filter';
-      c.style.zIndex = String(n - i);
-      c.style.transformOrigin = '50% 60%';
-      c.style.transform = base(i);
-      c.style.opacity = '1';
-      c.style.filter = 'none';
-    });
-
-    // total scroll length = enough to flip all cards
-    const interval = vh * 1; // scroll space per card
-    const virtual = (n - 1) * interval;
-    sh = vh + virtual;
-
-    // make section tall enough
-    section.style.minHeight = sh + "px";
-
-    onScroll();
+  // Base stacked position — cards fan out slightly so you can see them
+  function baseTransform(i) {
+    const dz = -i * 40;          // each card pushed back in Z
+    const dy =  i * 8;           // each card nudged down slightly
+    const rz = (i % 2 ? -1.5 : 1.5); // slight tilt left/right
+    return { dy, dz, rz };
   }
 
-  function render(p) {
-    for (let i = 0; i < n; i++) {
-      const local = clamp(p - i, 0, 1);
-      const lift = 1 - clamp(Math.abs(p - i), 0, 1);
-      const ty = -120 * local;
-      const rx = 80 * local;
-      const tz = 110 * local;
-      const sc = 1 + lift * 0.02;
-      const blur = local * 0.8;
+  function initCards() {
+    cards.forEach((c, i) => {
+      const { dy, dz, rz } = baseTransform(i);
+      c.style.transition   = 'none';
+      c.style.willChange   = 'transform, opacity, filter';
+      c.style.zIndex       = String(n - i);
+      c.style.opacity      = '1';
+      c.style.filter       = 'none';
+      c.style.pointerEvents = 'auto';
+      c.style.transform    = `translate3d(0,${dy}px,${dz}px) rotateZ(${rz}deg)`;
+    });
+  }
 
-      cards[i].style.transform =
-        `${base(i)} translateY(${ty}px) rotateX(${rx}deg) translateZ(${tz}px) scale(${sc})`;
-      cards[i].style.opacity = (1 - local).toFixed(3);
-      cards[i].style.filter = `blur(${blur}px)`;
+  function renderCards(progress) {
+    // progress: 0 → n-1  (fractional: 0.0 = all stacked, 1.0 = first card gone)
+    for (let i = 0; i < n; i++) {
+      const card = cards[i];
+      const p = clamp(progress - i, 0, 1);   // how far this card has flipped (0-1)
+      const { dy, dz, rz } = baseTransform(i);
+
+      const ty    = -220 * p;            // fly upward
+      const rx    =  80  * p;            // rotate around X axis (flip up)
+      const tz    =  120 * p;            // move toward camera
+      const scale =  1   - p * 0.12;
+      const alpha =  1   - p;
+      const blur  =       p * 5;
+
+      card.style.transform = [
+        `translate3d(0, ${dy + ty}px, ${dz + tz}px)`,
+        `rotateX(${rx}deg)`,
+        `rotateZ(${rz * (1 - p)}deg)`,
+        `scale(${scale})`
+      ].join(' ');
+      card.style.opacity      = Math.max(0, alpha).toFixed(3);
+      card.style.filter       = blur > 0.1 ? `blur(${blur.toFixed(1)}px)` : 'none';
+      card.style.pointerEvents = p > 0.5 ? 'none' : 'auto';
     }
   }
 
-  function onScroll() {
-    const rect = section.getBoundingClientRect();
-    const scrolled = clamp(-rect.top, 0, sh - vh);
-    const ratio = (sh - vh ? scrolled / (sh - vh) : 0);
-
-    // map scroll to card index progression
-    const p = ratio * ((n - 1) - 1e-4);
-
-    render(p);
+  function lockScroll() {
+    savedScrollY = window.scrollY;
+    // Lock by fixing body position (works even when body has overflow-x:hidden)
+    document.body.style.position = 'fixed';
+    document.body.style.top      = `-${savedScrollY}px`;
+    document.body.style.left     = '0';
+    document.body.style.right    = '0';
   }
 
-  addEventListener('resize', layout);
-  addEventListener('scroll', onScroll, { passive: true });
-  layout();
+  function unlockScroll(restorePos) {
+    document.body.style.position = '';
+    document.body.style.top      = '';
+    document.body.style.left     = '';
+    document.body.style.right    = '';
+    if (restorePos !== undefined) {
+      window.scrollTo(0, restorePos);
+    }
+  }
+
+  function deckCenteredInViewport() {
+    const r = deck.getBoundingClientRect();
+    const mid = r.top + r.height / 2;
+    return mid > window.innerHeight * 0.2 && mid < window.innerHeight * 0.8;
+  }
+
+  function onWheel(e) {
+    const down = e.deltaY > 0;
+    const up   = e.deltaY < 0;
+
+    // ── Trigger lock ──────────────────────────────────────────────────────────
+    if (!isLocked && !animationComplete && deckCenteredInViewport() && down) {
+      isLocked = true;
+      lockScroll();
+    }
+
+    if (isLocked) {
+      e.preventDefault();
+
+      virtualScroll = clamp(virtualScroll + e.deltaY, 0, TOTAL_SCROLL);
+      renderCards(virtualScroll / SCROLL_PER_CARD);
+
+      // ── Finished scrolling through all cards ──────────────────────────────
+      if (down && virtualScroll >= TOTAL_SCROLL) {
+        isLocked = false;
+        animationComplete = true;
+        unlockScroll(savedScrollY);
+        return;
+      }
+
+      // ── Scrolled back to start — release upward ───────────────────────────
+      if (up && virtualScroll <= 0) {
+        isLocked = false;
+        unlockScroll(savedScrollY);
+        return;
+      }
+    }
+
+    // ── Reset when user scrolls back up past the section ─────────────────────
+    if (animationComplete) {
+      const rect = section.getBoundingClientRect();
+      if (rect.top > window.innerHeight * 0.5) {
+        animationComplete = false;
+        virtualScroll = 0;
+        initCards();
+      }
+    }
+  }
+
+  window.addEventListener('wheel', onWheel, { passive: false });
+  window.addEventListener('resize', initCards);
+
+  initCards();
 })();
+

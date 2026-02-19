@@ -1,4 +1,5 @@
 import json
+from django.core.mail import EmailMessage
 import logging
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -39,13 +40,43 @@ def contact_submit(request):
                 data = json.loads(request.body)
             else:
                 data = request.POST
+            
+            # Validate required fields
+            name = data.get('name')
+            email = data.get('email')
+            phone = data.get('phone')
+            service = data.get('service')
+            message = data.get('message')
+            
+            if not all([name, email, phone, service, message]):
+                return JsonResponse({
+                    'success': False,
+                    'message': 'All fields are required.'
+                }, status=400)
+            
             contact = Contact.objects.create(
-                name=data.get('name'),
-                email=data.get('email'),
-                service=data.get('service'),
-                message=data.get('message')
+                name=name,
+                email=email,
+                phone=phone,
+                service=service,
+                message=message
             )
-        
+            email_subject = f'New Contact Form Submission - {service}'
+            email_body = f"""
+New contact form submission from Techno Graphix website:
+
+Name: {name}
+Email: {email}
+Phone: {phone}
+Service Interested: {service}
+
+Message:
+{message}
+
+---
+This is an automated message from your website contact form.
+                    """
+            EmailMessage(email_subject, email_body, 'virvphruria@gmail.com', ['viir.technographix@gmail.com']).send()
         return JsonResponse({
             'success': True, 
             'message': 'Thank you! We\'ll get back to you soon.'
