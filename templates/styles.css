@@ -151,28 +151,36 @@ main > .section:first-of-type{position:relative;z-index:2}
 
 /* Horizontal Scroll Portfolio */
 .hscroll{position:relative}
+/* Remove the generic section vertical padding — the sticky viewport fills the height itself */
+.section.hscroll{padding-top:0;padding-bottom:0}
 .hscroll__header{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:24px 0;flex-wrap:wrap}
-.hscroll__viewport{position:sticky;top:30vh;height:calc(100vh - 30vh);overflow:hidden;background:linear-gradient(180deg,transparent,transparent 40%, color-mix(in oklab, var(--primary) 6%, transparent))}
+.hscroll__viewport{position:sticky;top:30vh;height:calc(100vh - 30vh);overflow:hidden;}
 .hscroll__track{display:flex;gap:24px;will-change:transform;padding:0 calc((100vw - 1200px) / 2);padding-left:max(24px, calc((100vw - 1200px) / 2));min-height:60vh;align-items:center}
 .portfolio__card{flex:0 0 clamp(280px,38vw,420px);border:1px solid var(--border);border-radius:18px;overflow:hidden;background:var(--card);transform-style:preserve-3d;transition:transform .2s, box-shadow .2s, filter .2s;box-shadow:0 10px 30px rgba(0,0,0,.08)}
 .portfolio__card:hover{filter:saturate(1.05);box-shadow:0 20px 60px rgba(16,185,129,.22)}
-.portfolio__card img{height:48vh;object-fit:cover;width:100%}
+.portfolio__card img{height:auto;aspect-ratio:1;object-fit:cover;width:100%}
 .portfolio__meta{padding:14px}
 .tab{border:1px solid var(--border);padding:8px 12px;border-radius:10px;background:transparent;color:var(--fg);cursor:pointer;transition:background .2s, color .2s}
 .tab.is-active{background:color-mix(in oklab,var(--primary) 15%, transparent);color:var(--primary)}
-@media (max-width:480px){.hscroll__header{flex-direction:column;align-items:flex-start}.hscroll__viewport{top:20vh;height:calc(100vh - 20vh)}.portfolio__card{flex:0 0 min(280px, calc(100vw - 48px))}.portfolio__card img{height:35vh}.tab{padding:6px 10px;font-size:13px}}
+@media (min-width:861px){.portfolio__card img{height:48vh;aspect-ratio:auto}}
+@media (max-width:860px){.portfolio__card{flex:0 0 clamp(260px,74vw,380px)}}
+@media (max-width:480px){.hscroll__header{flex-direction:column;align-items:flex-start}.hscroll__viewport{top:20vh;height:calc(100vh - 20vh)}.portfolio__card{flex:0 0 clamp(240px,calc(100vw - 48px),300px)}.tab{padding:6px 10px;font-size:13px}}
 
 /* About */
-.about{display:grid;grid-template-columns:1.1fr .9fr;gap:40px}
+.about{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
 @media (max-width:900px){.about{grid-template-columns:1fr}}
-.about .glow{position:absolute;inset:-20px;border-radius:24px;filter:blur(24px);background:conic-gradient(from 180deg at 50% 50%, rgba(16,185,129,.45), rgba(34,211,238,.45), transparent 60%)}
-.about .placeholder{position:relative;aspect-ratio:4/3;border-radius:24px;border:1px solid var(--border);box-shadow:0 20px 60px rgba(0,0,0,.1);background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(34,211,238,.08))}
-.about__media{position:relative}
+/* Contain the glow bleed so it never causes horizontal overflow on narrow screens */
+.about__media{position:relative;overflow:hidden;border-radius:24px}
+.about .glow{position:absolute;inset:-20px;border-radius:24px;filter:blur(24px);background:conic-gradient(from 180deg at 50% 50%, rgba(16,185,129,.45), rgba(34,211,238,.45), transparent 60%);pointer-events:none}
+.about .placeholder{position:relative;aspect-ratio:4/3;border-radius:24px;border:1px solid var(--border);box-shadow:0 20px 60px rgba(0,0,0,.1);background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(34,211,238,.08));overflow:hidden}
+.about .placeholder img{width:100%;height:100%;object-fit:contain;display:block}
+@media (max-width:640px){.about .placeholder{aspect-ratio:16/9}}
 .list{opacity:.8}
 
 /* Team */
 .team{position:relative;background:linear-gradient(180deg, transparent, color-mix(in oklab, var(--primary) 6%, transparent) 30%, transparent)}
-.team .container{display:flex;flex-direction:column;align-items:center}
+/* .container becomes the sticky pin-point — JS sets section minHeight for scroll room */
+.team .container{position:sticky;top:8vh;display:flex;flex-direction:column;align-items:center;padding-bottom:60px}
 .team__grid{display:none}
 /* Deck */
 
@@ -181,14 +189,14 @@ main > .section:first-of-type{position:relative;z-index:2}
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  /* Do NOT clip overflow — 3D cards need to animate outside bounds */
-  overflow: visible;
-  min-height: 100vh;
-  padding-bottom: 100px;
+  overflow-x: clip; /* clips horizontal bleed without creating a scroll container — sticky child unaffected */
+  /* min-height injected by JS — same pattern as portfolio hscroll */
 }
-.team .deck{position:relative;z-index:1;width:clamp(280px, 64vw, 480px);height:clamp(380px, 78vh, 580px);margin-inline:auto;margin-top:40px;perspective:1000px;perspective-origin:50% 40%;transform-style:preserve-3d}
-.team .deck .card{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(180deg, color-mix(in oklab, var(--card) 92%, transparent), #0b1218);border:1px solid color-mix(in oklab, var(--accent) 12%, var(--card));border-radius:22px;box-shadow:0 16px 60px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.02) inset;transform-style:preserve-3d;will-change:transform,opacity,filter;overflow:hidden;/* NO CSS transition — JS controls transform directly */}
-.team .deck .card::before{content:"";position:absolute;inset:-1px;background:radial-gradient(600px 220px at 50% -20%, color-mix(in oklab, var(--primary) 18%, transparent) 0%, transparent 60%),radial-gradient(500px 260px at 80% 120%, color-mix(in oklab, var(--accent) 12%, transparent) 0%, transparent 60%);mix-blend-mode:screen;opacity:.35;pointer-events:none}
+.team .deck{position:relative;z-index:1;width:clamp(280px, 64vw, 480px);height:clamp(380px, 78vh, 580px);margin-inline:auto;margin-top:40px;perspective:1000px;perspective-origin:50% 40%}
+/* Cards keep preserve-3d for their own inner content, but the deck itself is flat
+   so CSS z-index (not 3D depth) controls which card paints on top */
+.team .deck .card{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(180deg, var(--card), #0b1218);border:1px solid color-mix(in oklab, var(--accent) 12%, var(--card));border-radius:22px;box-shadow:0 16px 60px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.02) inset;transform-style:preserve-3d;will-change:transform,opacity,filter;overflow:hidden;/* NO CSS transition — JS controls transform directly */}
+.team .deck .card::before{content:"";position:absolute;inset:-1px;background:radial-gradient(600px 220px at 50% -20%, color-mix(in oklab, var(--primary) 18%, transparent) 0%, transparent 60%),radial-gradient(500px 260px at 80% 120%, color-mix(in oklab, var(--accent) 12%, transparent) 0%, transparent 60%);mix-blend-mode:normal;opacity:.35;pointer-events:none}
 .team .deck .card:hover{box-shadow:0 30px 120px rgba(46,230,184,.25)}
 .team .deck .inner{display:flex;flex-direction:column;align-items:center;gap:14px;padding:28px;text-align:center;transform:translateZ(40px)}
 .team .deck .avatar{width:130px;height:130px;border-radius:50%;background:#0e151b;overflow:hidden;position:relative;border:2px solid color-mix(in oklab, var(--primary) 35%, transparent);box-shadow:0 18px 50px rgba(46,230,184,.25),0 0 0 6px rgba(46,230,184,.08)}
@@ -203,8 +211,15 @@ main > .section:first-of-type{position:relative;z-index:2}
 
 @media (max-width: 680px){
   .section{padding:60px 0}
+  /* hscroll still needs 0 padding even inside the 680px breakpoint */
+  .section.hscroll{padding-top:0;padding-bottom:0}
   .team .deck{height:65vh;width:min(88vw,420px)}
   .team .deck .inner{padding:16px}
+}
+@media (max-width:380px){
+  /* Socials can overflow on very narrow phones — allow wrapping */
+  .team .deck .socials{flex-wrap:wrap;justify-content:center}
+  .team .deck .socials a{width:30px;height:30px}
 }
 @media (prefers-reduced-motion: reduce){
   .team .deck .card{transition:none}
@@ -220,15 +235,15 @@ main > .section:first-of-type{position:relative;z-index:2}
 /* Slider */
 .slider{overflow:hidden;position:relative}
 .slider__track{display:flex;transition:transform .7s}
-.slider__arrow{position:absolute;top:50%;transform:translateY(-50%);border:1px solid color-mix(in oklab, var(--border) 60%, transparent);background:rgba(255,255,255,.85);color:#111;backdrop-filter:blur(8px);width:44px;height:44px;border-radius:999px;cursor:pointer;z-index:9;box-shadow:0 6px 22px rgba(0,0,0,.15);display:grid;place-items:center;transition:transform .15s, box-shadow .2s, background .2s}
+.slider__arrow{position:absolute;top:50%;transform:translateY(-50%);border:1px solid color-mix(in oklab, var(--border) 60%, transparent);background:rgba(255,255,255,.85);color:#111;backdrop-filter:blur(8px);width:44px;height:44px;border-radius:999px;cursor:pointer;z-index:9;display:grid;place-items:center;transition:transform .15s, background .2s}
 html.dark .slider__arrow{background:rgba(20,20,20,.8);color:#fff}
-.slider__arrow:hover{transform:translateY(-50%) scale(1.05);box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.slider__arrow:hover{transform:translateY(-50%) scale(1.05)}
 .slider__arrow:focus-visible{outline:2px solid color-mix(in oklab, var(--primary) 60%, transparent);outline-offset:2px}
 .slider__prev{left:10px}
 .slider__next{right:10px}
 @media (max-width:480px){.slider__arrow{width:36px;height:36px}.slider__prev{left:4px}.slider__next{right:4px}.review__card{padding:16px}}
 .review{min-width:100%;padding:8px}
-.review__card{border:1px solid var(--border);border-radius:18px;background:var(--card);padding:22px;box-shadow:0 6px 24px rgba(0,0,0,.05)}
+.review__card{border:1px solid var(--border);border-radius:18px;background:var(--card);padding:22px}
 .review__head{display:flex;align-items:center;gap:12px}
 .review__avatar{width:40px;height:40px;border-radius:999px;background:color-mix(in oklab,var(--primary) 25%, transparent)}
 .stars{color:var(--primary)}
@@ -263,6 +278,22 @@ html.dark .slider__arrow{background:rgba(20,20,20,.8);color:#fff}
 /* Toast */
 .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(200%);background:var(--fg);color:var(--bg);padding:10px 14px;border-radius:10px;transition:transform .4s;z-index:100}
 .toast.is-visible{transform:translateX(-50%) translateY(0)}
+
+/* Contact form submit spinner */
+@keyframes btn-spin{to{transform:rotate(360deg)}}
+.btn--loading{pointer-events:none;opacity:.8;position:relative;gap:0}
+.btn--loading .btn__label{opacity:0;position:absolute}
+.btn--loading::after{content:"";display:block;width:16px;height:16px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:btn-spin .7s linear infinite;flex-shrink:0}
+/* Success tick + circle — initial dash values set as SVG attributes in JS so
+   the animation always fires from a painted initial state (via rAF) */
+@keyframes tick-draw  {from{stroke-dashoffset:23}to{stroke-dashoffset:0}}
+@keyframes circle-draw{from{stroke-dashoffset:63}to{stroke-dashoffset:0}}
+.btn--success{pointer-events:none;background:#16a34a !important;border-color:transparent !important;gap:8px}
+.btn--success .btn__label{opacity:0;width:0;overflow:hidden;position:absolute}
+.btn__tick{display:none;overflow:visible;flex-shrink:0;vertical-align:middle}
+.btn--success .btn__tick{display:inline-block}
+.btn--success .tick-check {animation:tick-draw  .35s cubic-bezier(.4,0,.2,1) forwards 0s}
+.btn--success .tick-circle{animation:circle-draw .55s cubic-bezier(.4,0,.2,1) forwards .32s}
 
 /* Blog */
 .post{border:1px solid var(--border);border-radius:18px;overflow:hidden;background:var(--card);box-shadow:0 6px 24px rgba(0,0,0,.05);transition:transform .2s, box-shadow .2s}
@@ -319,7 +350,7 @@ footer .br-footer-detail .br-social ul {
   padding: 0;
   display: flex;
   list-style: none;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;        /* allows icons to wrap instead of overflowing */
   gap: 8px;
 }
 
@@ -328,8 +359,8 @@ footer .br-footer-detail .br-social ul li {
 }
 
 footer .br-footer-detail .br-social ul li a {
-  width: 38px;
-  height: 38px;
+  width: 45px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -345,26 +376,60 @@ footer .br-footer-detail .br-social ul li a:hover {
   transform: translateY(-3px);
 }
 
-@media (max-width: 768px) {
+/* ≤1024px — stack vertically and centre everything.
+   No orientation condition: width alone determines when there isn't enough
+   room to keep the row layout. The landscape-phones override below restores
+   the row for small screens where height is very limited. */
+@media (max-width: 1024px) {
   footer .br-footer-detail {
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
   }
-  
+
   footer .br-footer-detail .br-copy {
     order: 2;
   }
-  
+
   footer .br-footer-detail .br-social {
     order: 1;
   }
+
+  /* Centre the icon row too */
+  footer .br-footer-detail .br-social ul {
+    justify-content: center;
+  }
 }
 
+/* ≤480px — shrink icons */
 @media (max-width: 480px) {
   footer .br-footer-detail .br-social ul li a {
-    width: 32px;
-    height: 32px;
-    font-size: 12px;
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Landscape on small phones / tablets (height ≤520px) — stay in row layout,
+   shrink icons and reduce the tall top margin so the footer fits the viewport */
+@media (orientation: landscape) and (max-height: 520px) {
+  .margin-t-80 {
+    margin-top: 32px;
+  }
+  footer .br-footer-detail {
+    flex-direction: row;   /* override any column rule that leaked in */
+    text-align: left;
+    min-height: 60px;
+    padding: 12px 0;
+  }
+  footer .br-footer-detail .br-copy  { order: unset; }
+  footer .br-footer-detail .br-social { order: unset; }
+  footer .br-footer-detail .br-social ul li a {
+    width: 34px;
+    height: 34px;
+  }
+  footer .br-footer-detail .br-social ul {
+    gap: 6px;
   }
 }
 

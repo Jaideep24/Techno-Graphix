@@ -27,7 +27,7 @@
           <a href="#services">Services</a>
           <a href="#portfolio">Portfolio</a>
           <a href="#about">About</a>
-          <a href="#stats">Stats</a>
+          <a href="#team">Team</a>
           <a href="#testimonials">Testimonials</a>
           <a href="#blog">Blog</a>
           <a href="#contact">Contact</a>
@@ -68,6 +68,20 @@
         </div>
       </section>
 
+      <section id="stats" class="section">
+        <div class="container stats">
+          {% if stats %}
+          <div class="stat" data-count="{{ stats.projects_delivered }}"><div class="stat__num">0</div><div class="stat__label">Projects Delivered</div></div>
+          <div class="stat" data-count="{{ stats.client_satisfaction }}"><div class="stat__num">0</div><div class="stat__label">Client Satisfaction</div></div>
+          <div class="stat" data-count="{{ stats.years_experience }}"><div class="stat__num">0</div><div class="stat__label">Years of Experience</div></div>
+          {% else %}
+          <div class="stat" data-count="120"><div class="stat__num">0</div><div class="stat__label">Projects Delivered</div></div>
+          <div class="stat" data-count="98"><div class="stat__num">0</div><div class="stat__label">Client Satisfaction</div></div>
+          <div class="stat" data-count="8"><div class="stat__num">0</div><div class="stat__label">Years of Experience</div></div>
+          {% endif %}
+        </div>
+      </section>
+
       <section id="services" class="section">
         <div class="container">
           <h2 class="section__title">Services</h2>
@@ -80,7 +94,7 @@
         </div>
       </section>
 
-      <section id="portfolio" class="section hscroll" data-hscroll>
+      <section style="padding-left: 30px;" id="portfolio" class="section hscroll" data-hscroll>
       <div class="hscroll__bg" style="position:sticky; top:3vh;">
         <div class="container hscroll__header">
           <div>
@@ -135,12 +149,52 @@
           {% for member in team %}
             <article class="card" data-pos="0">
               <div class="inner">
-                <div class="avatar"><img alt="{{ member.name }}" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop" /></div>
+                <div class="avatar"><img alt="{{ member.name }}" src="media/{{ member.avatar }}" /></div>
                 <div class="name">{{ member.name }}</div>
                 <div class="role">{{ member.role }}</div>
                 <div class="socials" aria-label="Social links">
-                  <a href="{{ member.linkedin }}" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM0 8.5h5V24H0zM8 8.5h4.8v2.1h.1c.7-1.3 2.5-2.7 5.1-2.7 5.5 0 6.5 3.6 6.5 8.3V24h-5v-6.9c0-1.7 0-3.9-2.4-3.9s-2.7 1.9-2.7 3.8V24H8z"/></svg></a>
-                  <a href="{{ member.twitter }}" aria-label="Twitter"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23 4.5a9.4 9.4 0 0 1-2.7.7 4.7 4.7 0 0 0 2-2.6 9.5 9.5 0 0 1-3 1.2 4.7 4.7 0 0 0-8 4.3A13.3 13.3 0 0 1 1.6 3.2a4.7 4.7 0 0 0 1.4 6.2 4.6 4.6 0 0 1-2.1-.6v.1a4.7 4.7 0 0 0 3.7 4.6 4.8 4.8 0 0 1-2.1.1 4.7 4.7 0 0 0 4.4 3.2A9.5 9.5 0 0 1 0 20.5 13.3 13.3 0 0 0 7.2 22c8.7 0 13.5-7.2 13.5-13.5v-.6A9.5 9.5 0 0 0 23 4.5z"/></svg></a>
+                  {% if member.linkedin %}
+                  <a href="{{ member.linkedin }}" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                  </a>
+                  {% endif %}
+                  {% if member.github %}
+                  <a href="{{ member.github }}" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                    </svg>
+                  </a>
+                  {% endif %}
+                  {% if member.gdg %}
+                  <a href="{{ member.gdg }}" aria-label="Google Developer Groups" target="_blank" rel="noopener noreferrer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/>
+                    </svg>
+                  </a>
+                  {% endif %}
+                  {% if member.stackoverflow %}
+                  <a href="{{ member.stackoverflow }}" aria-label="Stack Overflow" target="_blank" rel="noopener noreferrer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M15.725 0l-1.72 1.277 6.39 8.588 1.716-1.277L15.725 0zm-3.94 3.418l-1.369 1.644 8.225 6.844 1.369-1.644-8.225-6.844zm-3.15 4.465l-.905 1.94 9.494 4.435.906-1.94-9.495-4.435zm-1.85 4.86l-.44 2.093 10.213 2.133.44-2.093-10.213-2.133zm-.27 4.953v2.136h10.583v-2.136H6.516zM.538 21.485v2.015h23.462v-2.015H.538z"/>
+                    </svg>
+                  </a>
+                  {% endif %}
+                  {% if member.unstop %}
+                  <a href="{{ member.unstop }}" aria-label="Unstop" target="_blank" rel="noopener noreferrer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M13 2L3 14h7l-1 8 11-12h-7l1-8z"/>
+                    </svg>
+                  </a>
+                  {% endif %}
+                  {% if member.portfolio %}
+                  <a href="{{ member.portfolio }}" aria-label="Portfolio" target="_blank" rel="noopener noreferrer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm6.918 6h-2.549a15.66 15.66 0 0 0-1.382-3.516A8.02 8.02 0 0 1 18.918 8zM12 4.04c.94 1.153 1.676 2.559 2.123 3.96H9.877C10.324 6.6 11.06 5.193 12 4.04zM4.26 14a7.956 7.956 0 0 1 0-4h3.08a16.294 16.294 0 0 0 0 4H4.26zm.822 2h2.549c.319 1.265.8 2.47 1.382 3.516A8.02 8.02 0 0 1 5.082 16zm2.549-8H5.082a8.02 8.02 0 0 1 3.931-3.516C8.432 5.53 7.95 6.735 7.631 8zM12 19.96c-.94-1.153-1.676-2.56-2.123-3.96h4.246c-.447 1.4-1.183 2.807-2.123 3.96zM14.36 14H9.64a14.317 14.317 0 0 1 0-4h4.72a14.317 14.317 0 0 1 0 4zm.277 5.516A15.66 15.66 0 0 0 16.02 16h2.549a8.02 8.02 0 0 1-3.932 3.516zM16.66 14a16.294 16.294 0 0 0 0-4h3.08a7.956 7.956 0 0 1 0 4h-3.08z"/>
+                    </svg>
+                  </a>
+                  {% endif %}
                 </div>
                 <div class="chipbar">
                 {% for i in member.get_skills %}
@@ -151,14 +205,6 @@
             </article>
           {% endfor %}
           </div>
-        </div>
-      </section>
-
-      <section id="stats" class="section">
-        <div class="container stats">
-          <div class="stat" data-count="120"><div class="stat__num">0</div><div class="stat__label">Projects Delivered</div></div>
-          <div class="stat" data-count="98"><div class="stat__num">0</div><div class="stat__label">Client Satisfaction</div></div>
-          <div class="stat" data-count="8"><div class="stat__num">0</div><div class="stat__label">Years of Experience</div></div>
         </div>
       </section>
 
@@ -231,7 +277,7 @@
               </select>
               <textarea name="message" rows="6" required minlength="10" placeholder="Your message"></textarea>
               <div class="contact__actions">
-                <button class="btn btn--primary tilt" type="submit">Send Message</button>
+                <button class="btn btn--primary tilt" type="submit"><span class="btn__label">Send Message</span></button>
               </div>
             </form>
           </div>

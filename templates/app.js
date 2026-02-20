@@ -117,7 +117,7 @@
 (function(){
   const wrap=document.getElementById('reviews-slider'); if(!wrap) return; const track=wrap.querySelector('.slider__track'); let i=0; let data=[]; let timer=null;
   function render(){track.innerHTML=data.map((rv,idx)=>`<div class='review' data-index='${idx}'><div class='review__card'><div class='review__head'>${rv.profile?`<img class='review__avatar' src='${rv.profile}' alt='${rv.author}'>`:`<div class='review__avatar'></div>`}<div><div class='review__name'>${rv.author}</div><div class='review__time'>${rv.time||'Google Review'}</div></div></div><div class='review__text'>"${rv.text}"</div><div class='stars'>${'★'.repeat(Math.round(rv.rating||5))}${'☆'.repeat(5-Math.round(rv.rating||5))}</div></div></div>`).join(''); updateOpacity();}
-  function updateOpacity(){const reviews=track.querySelectorAll('.review'); reviews.forEach((review,idx)=>{const card=review.querySelector('.review__card'); if(idx===i){card.style.opacity='1'; card.style.transform='scale(1)';} else {card.style.opacity='0.3'; card.style.transform='scale(0.95)';}});}
+  function updateOpacity(){const reviews=track.querySelectorAll('.review'); reviews.forEach((review,idx)=>{const card=review.querySelector('.review__card'); if(idx===i){card.style.opacity='1'; card.style.transform='scale(1)'; card.style.transition='opacity 0.3s ease, transform 0.3s ease';} else {card.style.opacity='0'; card.style.transform='scale(0.95)'; card.style.transition='opacity 0.3s ease, transform 0.3s ease';}});}
   function go(n){if(!data.length)return; i=(n+data.length)%data.length; track.style.transform=`translateX(-${i*100}%)`; updateOpacity();}
   function play(){stop(); timer=setInterval(()=>go(i+1),3500);} function stop(){if(timer)clearInterval(timer);}
   function fallback(){data=[{author:'Aarav Shah',rating:5,text:'Phenomenal team. Speed, UX and SEO nailed.'},{author:'Riya Kapoor',rating:5,text:'Launch-ready assets and app. Highly recommended.'},{author:'Vikram Mehta',rating:5,text:'World-class craft from Mumbai.'}]; render(); play();}
@@ -149,11 +149,66 @@
 })();
 
 // Contact form: Django-compatible (POST) with optional AJAX enhancement
-// Contact form: Django-compatible (POST) with optional AJAX enhancement
 (function(){
   const form=document.getElementById('contact-form'); const toast=document.getElementById('toast'); if(!form) return;
+  const submitBtn=form.querySelector('button[type="submit"]');
+
+  function setLoading(on){
+    if(!submitBtn) return;
+    submitBtn.classList.toggle('btn--loading', on);
+    submitBtn.disabled = on;
+  }
+
+  // Inject SVG tick, animate it, then restore button after delay
+  function showSuccess(){
+    if(!submitBtn) return;
+    const ns='http://www.w3.org/2000/svg';
+    const svg=document.createElementNS(ns,'svg');
+    svg.setAttribute('class','btn__tick');
+    svg.setAttribute('width','22'); svg.setAttribute('height','22');
+    svg.setAttribute('viewBox','0 0 24 24'); svg.setAttribute('fill','none');
+
+    // Polyline: set stroke-dasharray/offset as PRESENTATION ATTRIBUTES so
+    // the browser paints the invisible initial state before the animation fires.
+    const poly=document.createElementNS(ns,'polyline');
+    poly.setAttribute('class','tick-check');
+    poly.setAttribute('points','4,13 9,18 20,7');
+    poly.setAttribute('stroke','white'); poly.setAttribute('stroke-width','2.5');
+    poly.setAttribute('stroke-linecap','round'); poly.setAttribute('stroke-linejoin','round');
+    poly.setAttribute('stroke-dasharray','23');  // initial = invisible
+    poly.setAttribute('stroke-dashoffset','23');
+
+    const circle=document.createElementNS(ns,'circle');
+    circle.setAttribute('class','tick-circle');
+    circle.setAttribute('cx','12'); circle.setAttribute('cy','12'); circle.setAttribute('r','10');
+    circle.setAttribute('stroke','white'); circle.setAttribute('stroke-width','2');
+    circle.setAttribute('stroke-linecap','round'); circle.setAttribute('fill','none');
+    circle.setAttribute('stroke-dasharray','63');  // 2π×10 ≈ 62.8
+    circle.setAttribute('stroke-dashoffset','63');
+
+    svg.appendChild(poly); svg.appendChild(circle);
+    submitBtn.appendChild(svg);
+    submitBtn.disabled = true;
+
+    // rAF: let browser commit the painted dash-invisible state first,
+    // THEN add the class that triggers the CSS keyframe animations.
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        submitBtn.classList.add('btn--success');
+      });
+    });
+
+    setTimeout(()=>{
+      submitBtn.classList.remove('btn--success');
+      submitBtn.disabled = false;
+      svg.remove();
+    }, 2400);
+  }
+
   form.addEventListener('submit',async (e)=>{
     e.preventDefault();
+    setLoading(true);
+    let success=false;
     try{
       const response = await fetch('/contact/submit/', {
         method: 'POST',
@@ -163,21 +218,25 @@
       });
       const data = await response.json();
       if(response.ok && data.success) {
-        showToast("Message sent! We'll get back within 24h."); 
+        success=true;
         form.reset();
+        showToast("Message sent! We'll get back within 24h.");
       } else {
         showToast(data.message || 'Failed to send. Please try again.');
       }
     } catch(err){ 
       console.error(err);
       showToast('Failed to send. Please try again.'); 
+    } finally {
+      setLoading(false);
+      if(success) showSuccess();
     }
   });
-  function showToast(msg){ toast.textContent=msg; toast.classList.add('is-visible'); setTimeout(()=>toast.classList.remove('is-visible'),2000); }
+  function showToast(msg){ toast.textContent=msg; toast.classList.add('is-visible'); setTimeout(()=>toast.classList.remove('is-visible'),10000); }
 })();
 
 // Footer year
-document.getElementById('copy-year').textContent=new Date().getFullYear();
+const _copyYear=document.getElementById('copy-year');if(_copyYear)_copyYear.textContent=new Date().getFullYear();
 
 // Mobile nav toggle - Hamburger Menu
 (function(){
@@ -216,147 +275,150 @@ document.getElementById('copy-year').textContent=new Date().getFullYear();
   });
 })();
 
-// Team deck scroll-hijack flip animation
+// Team deck — pure scroll-driven card animation (same pattern as portfolio hscroll)
+// No wheel hijacking, no touch prevention, no body locking.
+// The section gets extra height so the user scrolls through it naturally;
+// position:sticky on .container keeps the deck pinned while the section passes.
 (function(){
   const section = document.getElementById('team');
   if (!section) return;
-
   const deck = section.querySelector('.deck');
   if (!deck) return;
-
   const cards = [...deck.querySelectorAll('.card')];
   const n = cards.length;
   if (n === 0) return;
 
-  const clamp = (v,min,max) => Math.max(min, Math.min(max, v));
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const ease   = t => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2;
 
-  // Each card gets SCROLL_PER_CARD px of wheel delta to fully flip out
-  const SCROLL_PER_CARD = 250;
-  const TOTAL_SCROLL = (n - 1) * SCROLL_PER_CARD;
+  const SCROLL_PER_CARD = 300;
 
-  let isLocked = false;
-  let virtualScroll = 0;
-  let animationComplete = false;
-  let savedScrollY = 0;
-
-  // Base stacked position — cards fan out slightly so you can see them
-  function baseTransform(i) {
-    const dz = -i * 40;          // each card pushed back in Z
-    const dy =  i * 8;           // each card nudged down slightly
-    const rz = (i % 2 ? -1.5 : 1.5); // slight tilt left/right
-    return { dy, dz, rz };
+  // ── Fan position driven by fractional rank ─────────────────────────────────
+  // rank 0 = front card: perfectly straight, no offset
+  // rank 1 = one behind: slight lean and shift
+  // rank n = furthest back: most pronounced lean
+  // Each card's rank = max(0, i - progress), which smoothly decreases as the
+  // cards in front of it get dealt away, causing it to gradually straighten.
+  function fanAt(rank, side) {
+    return {
+      dx:  side * rank * 18,
+      dy:  rank * 16,
+      dz: -rank * 44,
+      rz:  side * rank * 3.0,  // 3° per rank level; rank-0 = 0° (straight)
+    };
   }
 
+  // ── Stable non-transform card properties ───────────────────────────────────
   function initCards() {
     cards.forEach((c, i) => {
-      const { dy, dz, rz } = baseTransform(i);
-      c.style.transition   = 'none';
-      c.style.willChange   = 'transform, opacity, filter';
-      c.style.zIndex       = String(n - i);
-      c.style.opacity      = '1';
-      c.style.filter       = 'none';
+      c.style.willChange    = 'transform';
+      c.style.zIndex        = String(n - i);
+      c.style.opacity       = '1';
+      c.style.filter        = 'none';
       c.style.pointerEvents = 'auto';
-      c.style.transform    = `translate3d(0,${dy}px,${dz}px) rotateZ(${rz}deg)`;
     });
   }
 
+  // ── Render every card for the given scroll progress (0 → n-1) ──────────────
   function renderCards(progress) {
-    // progress: 0 → n-1  (fractional: 0.0 = all stacked, 1.0 = first card gone)
+    const txMax = Math.min(72, window.innerWidth * 0.12);
+
     for (let i = 0; i < n; i++) {
-      const card = cards[i];
-      const p = clamp(progress - i, 0, 1);   // how far this card has flipped (0-1)
-      const { dy, dz, rz } = baseTransform(i);
+      const p_raw = clamp(progress - i, 0, 1);
+      const p     = ease(p_raw);
+      const side  = i % 2 === 0 ? 1 : -1;
 
-      const ty    = -220 * p;            // fly upward
-      const rx    =  80  * p;            // rotate around X axis (flip up)
-      const tz    =  120 * p;            // move toward camera
-      const scale =  1   - p * 0.12;
-      const alpha =  1   - p;
-      const blur  =       p * 5;
+      // ── Waiting cards: render at dynamic rank-based fan position ────────────
+      if (p_raw === 0) {
+        // rank smoothly shrinks as the card in front deals away:
+        //   e.g. card 2 at progress=0.7 → rank = 2 - 0.7 = 1.3 (lean decreasing)
+        const rank = i - progress;            // always ≥ 0 when p_raw === 0
+        const { dx, dy, dz, rz } = fanAt(rank, side);
+        cards[i].style.zIndex       = String(n - i);
+        cards[i].style.opacity      = '1';
+        cards[i].style.filter       = 'none';
+        cards[i].style.pointerEvents = 'auto';
+        cards[i].style.transform    = `translate3d(${dx}px,${dy}px,${dz}px) rotateZ(${rz}deg)`;
+        continue;
+      }
 
-      card.style.transform = [
-        `translate3d(0, ${dy + ty}px, ${dz + tz}px)`,
+      // ── Animating card: starts from rank-0 (straight, no offset) ───────────
+      // Phase 1 (p 0→0.5): throw upward / outward
+      // Phase 2 (p 0.5→1): arc back down and slip behind the last card
+      const phase1 = Math.min(p * 2, 1);
+      const phase2 = Math.max((p - 0.5) * 2, 0);
+
+      // Arc peak (absolute, since base is always 0,0,0 for animating card)
+      const pk_tx =  side * txMax;
+      const pk_ty = -300;
+      const pk_tz =  140;
+      const pk_rx =  72;
+      const pk_ry =  side * 20;
+
+      // Behind-stack rest: target fanAt(n, side) so the card settles into the
+      // same tilted/offset shape as every other waiting card at the back.
+      // This keeps the whole deck visually consistent as animation proceeds.
+      const bk = fanAt(n, side); // dx = side*n*18, dy = n*16, dz = -n*44, rz = side*n*3°
+
+      let tx, ty, tz, rx, ry, finalRz, scale;
+
+      if (phase2 === 0) {
+        // Phase 1 — throw: card leaves from straight-upright front position
+        tx      = pk_tx * phase1;
+        ty      = pk_ty * phase1;
+        tz      = pk_tz * phase1;
+        rx      = pk_rx * phase1;
+        ry      = pk_ry * phase1;
+        finalRz = 0;
+        scale   = 1 + 0.04 * phase1;
+      } else {
+        // Phase 2 — settle: arc from peak into the fanned back position
+        tx      = pk_tx  + (bk.dx  - pk_tx)  * phase2;  // drifts to fan x offset
+        ty      = pk_ty  + (bk.dy  - pk_ty)  * phase2;
+        tz      = pk_tz  + (bk.dz  - pk_tz)  * phase2;
+        rx      = pk_rx  * (1 - phase2);                 // tilt flattens
+        ry      = pk_ry  * (1 - phase2);
+        finalRz = bk.rz  * phase2;                       // rotates into fan angle
+        scale   = 1.04   - 0.04 * phase2;                // barely any shrink
+      }
+
+      // z-index drops to -1 the instant phase 2 begins
+      cards[i].style.zIndex        = p_raw > 0.5 ? '-1' : String(n - i);
+      cards[i].style.opacity       = '1';                // never transparent
+      cards[i].style.filter        = 'none';
+      cards[i].style.pointerEvents = p_raw > 0.5 ? 'none' : 'auto';
+      cards[i].style.transform     = [
+        `translate3d(${tx}px,${ty}px,${tz}px)`,
         `rotateX(${rx}deg)`,
-        `rotateZ(${rz * (1 - p)}deg)`,
+        `rotateY(${ry}deg)`,
+        `rotateZ(${finalRz}deg)`,
         `scale(${scale})`
       ].join(' ');
-      card.style.opacity      = Math.max(0, alpha).toFixed(3);
-      card.style.filter       = blur > 0.1 ? `blur(${blur.toFixed(1)}px)` : 'none';
-      card.style.pointerEvents = p > 0.5 ? 'none' : 'auto';
     }
   }
 
-  function lockScroll() {
-    savedScrollY = window.scrollY;
-    // Lock by fixing body position (works even when body has overflow-x:hidden)
-    document.body.style.position = 'fixed';
-    document.body.style.top      = `-${savedScrollY}px`;
-    document.body.style.left     = '0';
-    document.body.style.right    = '0';
+  // ── Section height: only n-1 cards animate; last card stays as base ────────
+  function measure() {
+    section.style.minHeight = (window.innerHeight + (n - 1) * SCROLL_PER_CARD) + 'px';
   }
 
-  function unlockScroll(restorePos) {
-    document.body.style.position = '';
-    document.body.style.top      = '';
-    document.body.style.left     = '';
-    document.body.style.right    = '';
-    if (restorePos !== undefined) {
-      window.scrollTo(0, restorePos);
-    }
+  // ── Passive scroll handler ─────────────────────────────────────────────────
+  // On desktop a 200 px lead-in ensures the deck is fully visible in the
+  // sticky pin before the first card starts dealing. On mobile it's 0.
+  function onScroll() {
+    const rect = section.getBoundingClientRect();
+    const scrollRange = rect.height - window.innerHeight;
+    if (scrollRange <= 0) return;
+    const leadIn = window.innerWidth >= 861 ? 200 : 0;
+    const raw = (-rect.top - leadIn) / Math.max(scrollRange - leadIn, 1);
+    renderCards(clamp(raw, 0, 1) * (n - 1));
   }
 
-  function deckCenteredInViewport() {
-    const r = deck.getBoundingClientRect();
-    const mid = r.top + r.height / 2;
-    return mid > window.innerHeight * 0.2 && mid < window.innerHeight * 0.8;
-  }
-
-  function onWheel(e) {
-    const down = e.deltaY > 0;
-    const up   = e.deltaY < 0;
-
-    // ── Trigger lock ──────────────────────────────────────────────────────────
-    if (!isLocked && !animationComplete && deckCenteredInViewport() && down) {
-      isLocked = true;
-      lockScroll();
-    }
-
-    if (isLocked) {
-      e.preventDefault();
-
-      virtualScroll = clamp(virtualScroll + e.deltaY, 0, TOTAL_SCROLL);
-      renderCards(virtualScroll / SCROLL_PER_CARD);
-
-      // ── Finished scrolling through all cards ──────────────────────────────
-      if (down && virtualScroll >= TOTAL_SCROLL) {
-        isLocked = false;
-        animationComplete = true;
-        unlockScroll(savedScrollY);
-        return;
-      }
-
-      // ── Scrolled back to start — release upward ───────────────────────────
-      if (up && virtualScroll <= 0) {
-        isLocked = false;
-        unlockScroll(savedScrollY);
-        return;
-      }
-    }
-
-    // ── Reset when user scrolls back up past the section ─────────────────────
-    if (animationComplete) {
-      const rect = section.getBoundingClientRect();
-      if (rect.top > window.innerHeight * 0.5) {
-        animationComplete = false;
-        virtualScroll = 0;
-        initCards();
-      }
-    }
-  }
-
-  window.addEventListener('wheel', onWheel, { passive: false });
-  window.addEventListener('resize', initCards);
-
+  measure();
   initCards();
+  onScroll();
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => { measure(); onScroll(); });
 })();
 

@@ -41,8 +41,11 @@ class TeamMember(models.Model):
     avatar = models.ImageField(upload_to='team/')
     skills = models.CharField(max_length=200, help_text="Comma-separated list")
     linkedin = models.URLField(blank=True)
-    twitter = models.URLField(blank=True)
-    dribbble = models.URLField(blank=True)
+    github = models.URLField(blank=True)
+    gdg = models.URLField(blank=True)
+    portfolio = models.URLField(blank=True)
+    stackoverflow = models.URLField(blank=True)
+    unstop = models.URLField(blank=True)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
