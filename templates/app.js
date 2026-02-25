@@ -12,10 +12,11 @@
   document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;const id=a.getAttribute('href');if(id.length>1){e.preventDefault();document.querySelector(id)?.scrollIntoView({behavior:'smooth',block:'start'});}});
 })();
 
-// Rotating focus words
+// Rotating focus words (legacy – element may not exist in new hero)
 (function(){
+  const el=document.getElementById('rotator'); if(!el) return;
   const words=['Web Development','App Development','Branding & Design','Video Editing','SEO','Social Media Marketing','Machine Learning'];
-  const el=document.getElementById('rotator');let i=0;function tick(){el.textContent=words[i%words.length];i++;}tick();setInterval(tick,2200);
+  let i=0;function tick(){el.textContent=words[i%words.length];i++;}tick();setInterval(tick,2200);
 })();
 
 // Particles background + parallax
@@ -237,6 +238,279 @@
 
 // Footer year
 const _copyYear=document.getElementById('copy-year');if(_copyYear)_copyYear.textContent=new Date().getFullYear();
+
+// ─────────────────────────────────────────────────────────────────────────────
+// HERO REDESIGN — Ethereal Tech interactions
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── A. Morphing headline words ──
+(function(){
+  const el = document.getElementById('hero-morph');
+  if (!el) return;
+  const words = ['Scalable', 'High-Motion', 'Secure', 'Premium', 'Pythonic'];
+  let idx = 0;
+  function morph() {
+    el.classList.add('morphing');
+    setTimeout(() => {
+      idx = (idx + 1) % words.length;
+      el.textContent = words[idx];
+      el.classList.remove('morphing');
+    }, 230);
+  }
+  setInterval(morph, 2600);
+})();
+
+// ── B. Cursor-tracked 3D scene with damped motion ──
+(function(){
+  const wrap = document.getElementById('hero-scene-wrap');
+  const hero = document.querySelector('.hero--ethereal');
+  if (!wrap || !hero) return;
+
+  // Skip cursor tracking on touch-only devices
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  let targetX = 0, targetY = 0;
+  let currentX = 0, currentY = 0;
+  let rafId;
+
+  hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    const cx = rect.width  / 2;
+    const cy = rect.height / 2;
+    targetX = ((e.clientY - rect.top  - cy) / rect.height) * -22;
+    targetY = ((e.clientX - rect.left - cx) / rect.width)  *  22;
+  }, { passive: true });
+
+  hero.addEventListener('mouseleave', () => {
+    targetX = 0;
+    targetY = 0;
+  });
+
+  function animScene() {
+    // Damping — give the cube a sense of physical weight
+    currentX += (targetX - currentX) * 0.065;
+    currentY += (targetY - currentY) * 0.065;
+    wrap.style.transform =
+      `perspective(900px) rotateX(${currentX.toFixed(3)}deg) rotateY(${currentY.toFixed(3)}deg)`;
+    rafId = requestAnimationFrame(animScene);
+  }
+  animScene();
+})();
+
+// ── C. Magnetic CTA buttons ──
+(function(){
+  const RADIUS  = 68;   // px — zone of magnetic pull
+  const FACTOR  = 0.40; // strength
+
+  document.querySelectorAll('[data-magnetic]').forEach(el => {
+    let isInside = false;
+
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const cx   = rect.left + rect.width  / 2;
+      const cy   = rect.top  + rect.height / 2;
+      const dx   = e.clientX - cx;
+      const dy   = e.clientY - cy;
+      const dist = Math.hypot(dx, dy);
+      if (dist < RADIUS) {
+        const pull = (1 - dist / RADIUS) * FACTOR;
+        el.style.transition = 'box-shadow .3s ease, border-color .3s ease';
+        el.style.transform  = `translate3d(${dx * pull}px, ${dy * pull}px, 0)`;
+        isInside = true;
+      }
+    });
+
+    el.addEventListener('mouseleave', () => {
+      if (!isInside) return;
+      isInside = false;
+      el.style.transition = 'transform .5s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease, border-color .3s ease';
+      el.style.transform  = 'translate3d(0,0,0)';
+    });
+  });
+})();
+
+// ── D. Dock reactive glow ──
+(function(){
+  const hero = document.querySelector('.hero--ethereal');
+  if (!hero) return;
+  const ORB_CLASSES = ['orb--python','orb--django','orb--react','orb--flutter','orb--postgres'];
+
+  document.querySelectorAll('.dock-item').forEach(item => {
+    const tech = item.dataset.tech;
+    item.addEventListener('mouseenter', () => {
+      ORB_CLASSES.forEach(c => hero.classList.remove(c));
+      if (tech) hero.classList.add(`orb--${tech}`);
+    });
+    item.addEventListener('mouseleave', () => {
+      ORB_CLASSES.forEach(c => hero.classList.remove(c));
+    });
+  });
+})();
+
+// ── E. Float card parallax ──
+(function(){
+  const hero  = document.querySelector('.hero--ethereal');
+  const cards = [...document.querySelectorAll('.hero-float-card')];
+  if (!hero || !cards.length) return;
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  const DEPTHS = [0.018, 0.028, 0.022]; // parallax factor per card
+  let mx = 0, my = 0;
+  let cx = 0, cy = 0;
+
+  hero.addEventListener('mousemove', e => {
+    const r = hero.getBoundingClientRect();
+    mx = (e.clientX - r.left - r.width  / 2) / r.width;
+    my = (e.clientY - r.top  - r.height / 2) / r.height;
+  }, { passive: true });
+
+  hero.addEventListener('mouseleave', () => { mx = 0; my = 0; });
+
+  function tick() {
+    cx += (mx - cx) * 0.07;
+    cy += (my - cy) * 0.07;
+    cards.forEach((card, i) => {
+      const d = DEPTHS[i] || 0.02;
+      const baseTransform = card.style.animation ? '' : '';
+      card.style.setProperty('--px', `${(cx * d * 120).toFixed(2)}px`);
+      card.style.setProperty('--py', `${(cy * d * 80).toFixed(2)}px`);
+    });
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+// ── F. Scroll cue fade-out on first scroll ──
+(function(){
+  const cue = document.querySelector('.hero-scroll-cue');
+  if (!cue) return;
+  let hidden = false;
+  window.addEventListener('scroll', () => {
+    if (!hidden && window.scrollY > 60) {
+      hidden = true;
+      cue.style.transition = 'opacity .6s ease';
+      cue.style.opacity = '0';
+    }
+  }, { passive: true });
+})();
+
+// ── G. Cursor spotlight glow ──
+(function(){
+  const spot = document.getElementById('hero-spotlight');
+  const hero = document.querySelector('.hero--ethereal');
+  if (!spot || !hero) return;
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  let rafId;
+  let tx = -9999, ty = -9999;
+  let cx = -9999, cy = -9999;
+
+  hero.addEventListener('mousemove', (e) => {
+    const r = hero.getBoundingClientRect();
+    tx = e.clientX - r.left;
+    ty = e.clientY - r.top;
+  }, { passive: true });
+
+  hero.addEventListener('mouseleave', () => { tx = -9999; ty = -9999; });
+
+  function tickSpot() {
+    cx += (tx - cx) * 0.1;
+    cy += (ty - cy) * 0.1;
+    spot.style.setProperty('--sx', `${cx.toFixed(1)}px`);
+    spot.style.setProperty('--sy', `${cy.toFixed(1)}px`);
+    rafId = requestAnimationFrame(tickSpot);
+  }
+  tickSpot();
+})();
+
+// ── H. Live code terminal typing animation ──
+(function(){
+  const body = document.getElementById('hero-terminal-body');
+  if (!body) return;
+  const cursor = body.querySelector('.hero-terminal__cursor');
+
+  const SEGS = [
+    [
+      { c: '#a5f3c0',            t: '$ python manage.py startproject tg' },
+      { c: 'rgba(165,243,192,.5)', t: 'Creating project structure...' },
+      { c: '#34d399',            t: '✓ 9 yrs of Pythonic excellence loaded.' },
+    ],
+    [
+      { c: '#93c5fd', t: 'class Product(ClientIdea):' },
+      { c: '#93c5fd', t: '  def build(self):' },
+      { c: '#fde68a', t: '    return world_class_code()' },
+    ],
+    [
+      { c: '#a5f3c0',            t: '$ git push origin main' },
+      { c: 'rgba(165,243,192,.5)', t: 'Deploying  ▓▓▓▓▓▓▓▓▓▓ 100%' },
+      { c: '#34d399',            t: '🚀 Live at your-domain.com' },
+    ],
+  ];
+
+  let sIdx = 0, lIdx = 0, cIdx = 0;
+  let lineEls = [];
+
+  function addLine(color) {
+    const el = document.createElement('div');
+    el.style.color = color;
+    body.insertBefore(el, cursor);
+    lineEls.push(el);
+    return el;
+  }
+  function clearLines() {
+    lineEls.forEach(el => el.remove());
+    lineEls = [];
+  }
+  function type() {
+    const seg  = SEGS[sIdx];
+    const line = seg[lIdx];
+    if (cIdx < line.t.length) {
+      if (cIdx === 0) addLine(line.c);
+      lineEls[lineEls.length - 1].textContent += line.t[cIdx];
+      cIdx++;
+      setTimeout(type, 34 + Math.random() * 26);
+    } else {
+      cIdx = 0;
+      lIdx++;
+      if (lIdx < seg.length) {
+        setTimeout(type, 360);
+      } else {
+        lIdx = 0;
+        sIdx = (sIdx + 1) % SEGS.length;
+        setTimeout(() => { clearLines(); type(); }, 2600);
+      }
+    }
+  }
+  setTimeout(type, 900);
+})();
+
+// ── I. Float card count-up animation ──
+(function(){
+  const cards = document.querySelectorAll('.hero-float-card[data-count]');
+  if (!cards.length) return;
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el    = entry.target.querySelector('.hero-float-card__count');
+      const target = parseInt(entry.target.dataset.count, 10);
+      if (!el || isNaN(target)) return;
+
+      const duration  = 1400;
+      const startTime = performance.now();
+      function step(now) {
+        const p = Math.min((now - startTime) / duration, 1);
+        const e = 1 - Math.pow(1 - p, 3); // ease-out cubic
+        el.textContent = Math.round(e * target);
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+      io.unobserve(entry.target);
+    });
+  }, { threshold: 0.6 });
+
+  cards.forEach(c => io.observe(c));
+})();
 
 // Mobile nav toggle - Hamburger Menu
 (function(){

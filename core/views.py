@@ -2,7 +2,7 @@ import json
 from django.core.mail import EmailMessage
 import logging
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST, require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.core.validators import EmailValidator
@@ -19,6 +19,24 @@ from .models import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+def robots_txt(request):
+    """Serve robots.txt for search engine crawlers."""
+    scheme = request.scheme
+    host = request.get_host()
+    lines = [
+        "User-agent: *",
+        "Allow: /",
+        "Disallow: /admin/",
+        "Disallow: /edit/",
+        "Disallow: /blogspace/*/delete",
+        "Disallow: /blogspace/*/update",
+        "Disallow: /contact/submit/",
+        "",
+        f"Sitemap: {scheme}://{host}/sitemap.xml",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
 
 def home(request):
     """Single view to serve our index page with all required data"""

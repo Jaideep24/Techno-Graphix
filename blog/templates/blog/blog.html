@@ -1,4 +1,59 @@
-{% extends 'blog/index (2).html' %} {% block content %}
+{% extends 'blog/index (2).html' %}
+
+{# ═══ PER-ARTICLE SEO OVERRIDES ═══════════════════════════════════════════ #}
+{% block seo_title %}{{ article.title }} | Techno Graphix Blog{% endblock %}
+{% block seo_description %}{{ article.content|striptags|truncatechars:155 }}{% endblock %}
+{% block seo_keywords %}{{ article.title }}, web development blog, Techno Graphix, digital agency Mumbai{% endblock %}
+{% block seo_canonical %}{{ request.scheme }}://{{ request.get_host }}{% url 'blog:detail_blog' article.id %}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_title %}{{ article.title }} | Techno Graphix Blog{% endblock %}
+{% block og_description %}{{ article.content|striptags|truncatechars:155 }}{% endblock %}
+{% block og_image %}{{ request.scheme }}://{{ request.get_host }}/media/{{ article.image }}{% endblock %}
+{% block og_image_alt %}{{ article.title }}{% endblock %}
+{% block tw_title %}{{ article.title }} | Techno Graphix Blog{% endblock %}
+{% block tw_description %}{{ article.content|striptags|truncatechars:155 }}{% endblock %}
+{% block tw_image %}{{ request.scheme }}://{{ request.get_host }}/media/{{ article.image }}{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ article.title|escapejs }}",
+  "image": "{{ request.scheme }}://{{ request.get_host }}/media/{{ article.image }}",
+  "datePublished": "{{ article.date|date:'Y-m-d' }}",
+  "dateModified": "{{ article.date|date:'Y-m-d' }}",
+  "author": {
+    "@type": "Organization",
+    "name": "Techno Graphix",
+    "url": "{{ request.scheme }}://{{ request.get_host }}/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Techno Graphix",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ request.scheme }}://{{ request.get_host }}/media/portfolio/logo.png"
+    }
+  },
+  "description": "{{ article.content|striptags|truncatechars:155|escapejs }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.scheme }}://{{ request.get_host }}{% url 'blog:detail_blog' article.id %}"
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ request.scheme }}://{{ request.get_host }}/"},
+      {"@type": "ListItem", "position": 2, "name": "Blog", "item": "{{ request.scheme }}://{{ request.get_host }}/blogspace/"},
+      {"@type": "ListItem", "position": 3, "name": "{{ article.title|escapejs }}", "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'blog:detail_blog' article.id %}"}
+    ]
+  }
+}
+</script>
+{% endblock structured_data %}
+
+{% block content %}
     <main class="main-content">
         <article class="blog-post" id="blogPost">
             <div class="container">
@@ -10,7 +65,7 @@
                 </div>
                 <center>
                 <div class="blog-image">
-                    <img style="aspect-ratio:1/1; max-width:450px" id="blogImage" src="/media/{{ article.image }}" alt="Blog Image">
+                    <img style="aspect-ratio:1/1; max-width:450px" id="blogImage" src="/media/{{ article.image }}" alt="{{ article.title }}" loading="lazy">
                 </div>
                 </center>
                 <div class="blog-content" id="blogContent">

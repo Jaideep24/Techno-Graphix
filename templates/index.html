@@ -4,7 +4,138 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#10b981" />
-    <title>Techno Graphix — Digital Agency</title>
+
+    <!-- ═══ PRIMARY SEO ═══════════════════════════════════════════════════ -->
+    <title>Techno Graphix | Mumbai's Premier Digital Agency — Web, App &amp; Design</title>
+    <meta name="description" content="Techno Graphix is Mumbai's leading digital agency specialising in web development, mobile app development (Flutter), UI/UX design, SEO, and social media marketing. 120+ projects delivered globally.">
+    <meta name="keywords" content="digital agency Mumbai, web development Mumbai, app development Mumbai, Django development, Flutter app development, UI UX design agency, SEO agency Mumbai, social media marketing Mumbai, Python web development, React development, Techno Graphix">
+    <meta name="author" content="Techno Graphix">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+
+    <!-- ═══ GEO ═══════════════════════════════════════════════════════════ -->
+    <meta name="geo.region" content="IN-MH">
+    <meta name="geo.placename" content="Mumbai, Maharashtra, India">
+    <meta name="geo.position" content="19.0760;72.8777">
+    <meta name="ICBM" content="19.0760, 72.8777">
+
+    <!-- ═══ OPEN GRAPH ════════════════════════════════════════════════════ -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Techno Graphix">
+    <meta property="og:locale" content="en_IN">
+    <meta property="og:title" content="Techno Graphix | Mumbai's Premier Digital Agency">
+    <meta property="og:description" content="Mumbai's leading digital agency — web development, Flutter apps, UI/UX design, SEO &amp; social media marketing. 120+ projects delivered. Start your project today.">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}/media/portfolio/logo.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Techno Graphix – Mumbai's Premier Digital Agency">
+
+    <!-- ═══ TWITTER CARD ══════════════════════════════════════════════════ -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@technographix">
+    <meta name="twitter:creator" content="@technographix">
+    <meta name="twitter:title" content="Techno Graphix | Mumbai's Premier Digital Agency">
+    <meta name="twitter:description" content="Mumbai's leading digital agency — web & app development, UI/UX design, SEO. 120+ projects delivered. Start your project today.">
+    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}/media/portfolio/logo.png">
+
+    <!-- ═══ LANGUAGE ALTERNATES ═══════════════════════════════════════════ -->
+    <link rel="alternate" hreflang="en-IN" href="{{ request.build_absolute_uri }}">
+    <link rel="alternate" hreflang="x-default" href="{{ request.build_absolute_uri }}">
+
+    <!-- ═══ STRUCTURED DATA ═══════════════════════════════════════════════ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": ["Organization", "LocalBusiness"],
+          "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization",
+          "name": "Techno Graphix",
+          "alternateName": "TechnoGraphix",
+          "url": "{{ request.scheme }}://{{ request.get_host }}/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "{{ request.scheme }}://{{ request.get_host }}/media/portfolio/logo.png",
+            "width": 512,
+            "height": 512
+          },
+          "image": "{{ request.scheme }}://{{ request.get_host }}/media/portfolio/logo.png",
+          "description": "Mumbai's leading digital agency specialising in web development, app development, graphic design, video editing, SEO, and social media marketing.",
+          "foundingDate": "2025",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Mumbai",
+            "addressRegion": "Maharashtra",
+            "postalCode": "400001",
+            "addressCountry": "IN"
+          },
+          "contactPoint": [
+            {
+              "@type": "ContactPoint",
+              "telephone": "+91-9819185865",
+              "contactType": "customer service",
+              "availableLanguage": ["English", "Hindi"],
+              "areaServed": "IN"
+            }
+          ],
+          "email": "viir.technographix@gmail.com",
+          "telephone": "+91-9819185865",
+          "sameAs": [
+            "https://www.facebook.com/techno.graphix.vir/",
+            "https://www.instagram.com/techno_graphix",
+            "https://linkedin.com/company/technographix",
+            "https://github.com/Viir-Phuria",
+            "https://wa.me/9819185865"
+          ],
+          "areaServed": "Worldwide",
+          "priceRange": "$$",
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Digital Agency Services",
+            "itemListElement": [
+              {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Web Development"}},
+              {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Mobile App Development"}},
+              {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "UI/UX Design"}},
+              {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "SEO"}},
+              {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Social Media Marketing"}},
+              {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Graphic Design"}}
+            ]
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "{{ request.scheme }}://{{ request.get_host }}/#website",
+          "url": "{{ request.scheme }}://{{ request.get_host }}/",
+          "name": "Techno Graphix",
+          "description": "Mumbai's Premier Digital Agency",
+          "publisher": {"@id": "{{ request.scheme }}://{{ request.get_host }}/#organization"},
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "{{ request.scheme }}://{{ request.get_host }}/#webpage",
+          "url": "{{ request.scheme }}://{{ request.get_host }}/",
+          "name": "Techno Graphix | Mumbai's Premier Digital Agency — Web, App & Design",
+          "isPartOf": {"@id": "{{ request.scheme }}://{{ request.get_host }}/#website"},
+          "about": {"@id": "{{ request.scheme }}://{{ request.get_host }}/#organization"},
+          "description": "Techno Graphix is Mumbai's leading digital agency. 120+ projects in web development, app development, design, SEO and marketing.",
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ request.scheme }}://{{ request.get_host }}/"}
+            ]
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- ═══ FAVICONS ══════════════════════════════════════════════════════ -->
+    <link rel="icon" type="image/png" href="/media/portfolio/logo.png">
+    <link rel="apple-touch-icon" href="/media/portfolio/logo.png">
+
+    <!-- ═══ FONTS & EXTERNAL ASSETS ═══════════════════════════════════════ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -14,12 +145,42 @@
     <style>
     {% include 'styles.css' %}
     </style>
+
+    <!-- Three.js hero background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+      #hero-bg-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+        display: block;
+      }
+      /* Gradient veil that dissolves the canvas into the page below */
+      .hero__bottom-fade {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 38%;
+        z-index: 1;
+        pointer-events: none;
+        background: linear-gradient(
+          to bottom,
+          transparent 0%,
+          var(--bg, #0f172a) 100%
+        );
+      }
+    </style>
   </head>
   <body style="overflow-x:hidden;">
     <header class="nav" id="top">
       <div class="container nav__inner">
         <a href="#top" class="brand">
-          <img src="media/portfolio/logo.png" style="height:52px; width:52px;">
+          <img src="media/portfolio/logo.png" style="height:52px; width:52px;" alt="Techno Graphix" width="52" height="52">
           <span class="brand__text">Techno Graphix</span>
         </a>
         
@@ -54,18 +215,197 @@
     </header>
 
     <main>
-      <section class="hero" aria-label="Hero">
-        <canvas id="bg-particles" class="particles" aria-hidden="true"></canvas>
-        <div class="container hero__content">
-          <div class="badge">Mumbai • Premium Digital Agency</div>
-          <h1 class="hero__title">Transforming ideas into <span class="accent">powerful digital experiences</span></h1>
-          <p class="hero__subtitle">We build modern websites, apps, and brands with motion, polish, and performance.</p>
-          <div class="hero__actions">
-            <a href="#contact" class="btn btn--primary tilt">Start Your Project</a>
-            <a href="#portfolio" class="btn btn--outline tilt">View Portfolio</a>
-            <span class="hero__focus">Focus: <span id="rotator" class="rotator"></span></span>
+      <!-- ═══ HERO: Ethereal Tech ═══ -->
+      <section class="hero hero--ethereal" aria-label="Hero">
+
+        <!-- Three.js particle background -->
+        <canvas id="hero-bg-canvas" aria-hidden="true"></canvas>
+
+        <!-- Trust strip -->
+        <div class="hero-trust-strip" aria-hidden="true">
+          <div class="hero-trust__track">
+            <span>Mumbai's Premier Web Development Collective</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
+            <span>Powered by Django</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
+            <span>Available Globally</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
+            <span>Python / Django Powerhouse</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
+            <span>Crafting Premium Digital Experiences</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
+            <!-- duplicate for seamless loop -->
+            <span>Mumbai's Premier Web Development Collective</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
+            <span>Powered by Django</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
+            <span>Available Globally</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
+            <span>Python / Django Powerhouse</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
+            <span>Crafting Premium Digital Experiences</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
           </div>
         </div>
+
+        <!-- Ambient orbs -->
+        <div class="hero-orb hero-orb--1" aria-hidden="true"></div>
+        <div class="hero-orb hero-orb--2" aria-hidden="true"></div>
+        <div class="hero-orb hero-orb--3" aria-hidden="true"></div>
+
+        <!-- Film grain -->
+        <div class="hero-grain" aria-hidden="true"></div>
+
+        <!-- Cursor spotlight glow -->
+        <div class="hero-spotlight" id="hero-spotlight" aria-hidden="true"></div>
+
+        <!-- Main content: 60 / 40 split -->
+        <div class="container hero__inner">
+
+          <!-- ── Left 60% ── -->
+          <div class="hero__left">
+
+            <div class="hero__kicker hero-entrance" style="--delay:.05s">
+              <span class="hero__kicker-line"></span>
+              <span>Techno Graphix Studio &nbsp;·&nbsp; Est. 2025</span>
+            </div>
+
+            <div class="hero__badge hero-entrance" style="--delay:.15s">
+              <span class="badge__pulse"></span>
+              <span>Mumbai &nbsp;•&nbsp; Premium Digital Agency</span>
+            </div>
+
+            <h1 class="hero__title hero-entrance" style="--delay:.28s">
+              Engineering<br>
+              <span class="hero__morphword" id="hero-morph">Scalable</span><br>
+              <span class="hero__title-sub">Digital Products.</span>
+            </h1>
+
+            <p class="hero__subtitle hero-entrance" style="--delay:.42s">
+              Built with <strong>Pythonic Precision</strong>.<br>
+              Delivered with <strong>Modern Motion</strong>.
+            </p>
+
+            <!-- Service chips -->
+            <div class="hero__chips hero-entrance" style="--delay:.49s">
+              <span class="hero-chip" data-tooltip="Python, Django, Next.js">Web Apps</span>
+              <span class="hero-chip" data-tooltip="Flutter cross-platform">Mobile</span>
+              <span class="hero-chip" data-tooltip="Figma → pixel-perfect UI">UI / UX</span>
+              <span class="hero-chip" data-tooltip="REST &amp; GraphQL APIs">APIs</span>
+              <span class="hero-chip" data-tooltip="Shopify &amp; custom stores">E-Commerce</span>
+              <span class="hero-chip" data-tooltip="Campaigns &amp; analytics">Marketing</span>
+            </div>
+
+            <div class="hero__actions hero-entrance" style="--delay:.56s">
+              <a href="#contact" class="btn btn--primary hero__cta" data-magnetic>
+                <span class="btn-shine"></span>
+                <span>Start Your Project</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              </a>
+              <a href="#portfolio" class="btn hero__cta hero__cta--ghost" data-magnetic>
+                <span>View Work</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+
+            <div class="hero__proof hero-entrance" style="--delay:.7s">
+              <div class="hero__proof-avatars">
+                <span class="proof-avatar proof-avatar--1"></span>
+                <span class="proof-avatar proof-avatar--2"></span>
+                <span class="proof-avatar proof-avatar--3"></span>
+              </div>
+              <span class="hero__proof-text">Trusted by <strong>80+ clients</strong> across India &amp; beyond</span>
+            </div>
+
+          </div>
+
+          <!-- ── Right 40%: Interactive 3D Scene ── -->
+          <div class="hero__right hero-entrance" style="--delay:.35s" aria-hidden="true">
+
+            <!-- Floating social-proof chips -->
+            <div class="hero-float-card hero-float-card--1" data-count="120">
+              <div class="hero-float-card__num"><span class="hero-float-card__count">0</span><small>+</small></div>
+              <div class="hero-float-card__label">Projects Delivered</div>
+            </div>
+            <div class="hero-float-card hero-float-card--2">
+              <div class="hero-float-card__stars">★★★★★</div>
+              <div class="hero-float-card__label">98% Satisfaction</div>
+            </div>
+            <div class="hero-float-card hero-float-card--3" data-count="9">
+              <div class="hero-float-card__num"><span class="hero-float-card__count">0</span><small>yr</small></div>
+              <div class="hero-float-card__label">Experience</div>
+            </div>
+
+            <div class="hero-scene" id="hero-scene">
+              <div class="hero-scene__wrap" id="hero-scene-wrap">
+              </div>
+            </div>
+
+            <!-- Live code terminal -->
+            <div class="hero-terminal hero-entrance" style="--delay:.55s" aria-hidden="true">
+              <div class="hero-terminal__bar">
+                <span class="hero-terminal__dot hero-terminal__dot--red"></span>
+                <span class="hero-terminal__dot hero-terminal__dot--yellow"></span>
+                <span class="hero-terminal__dot hero-terminal__dot--green"></span>
+                <span class="hero-terminal__title">techno-graphix — zsh</span>
+              </div>
+              <div class="hero-terminal__body" id="hero-terminal-body">
+                <span class="hero-terminal__cursor">▋</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div><!-- /hero__inner -->
+
+        <!-- ── Tech Stack Dock ── -->
+        <nav class="hero-dock" aria-label="Technology stack">
+          <div class="hero-dock__inner">
+
+            <button class="dock-item" data-tech="python" title="Python" aria-label="Python">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.914 0C5.82 0 6.2 2.656 6.2 2.656l.007 2.752h5.814v.826H3.887S0 5.789 0 11.969c0 6.18 3.403 5.96 3.403 5.96h2.032V15.04c0-3.851 3.332-3.635 3.332-3.635h5.746s3.226.052 3.226-3.118V3.184C17.739 0 11.914 0 11.914 0zm-3.116 1.806c.572 0 1.035.464 1.035 1.036 0 .573-.463 1.036-1.035 1.036-.573 0-1.036-.463-1.036-1.036 0-.572.463-1.036 1.036-1.036z" fill="#3776AB"/>
+                <path d="M12.086 24c6.094 0 5.714-2.656 5.714-2.656l-.007-2.752H12v-.826h8.113S24 18.211 24 12.031c0-6.18-3.403-5.96-3.403-5.96h-2.032V8.96c0 3.851-3.332 3.635-3.332 3.635H9.476s-3.226-.052-3.226 3.118v5.104C6.25 24 12.086 24 12.086 24zm3.116-1.806c-.572 0-1.035-.464-1.035-1.036 0-.573.463-1.036 1.035-1.036.573 0 1.036.463 1.036 1.036 0 .572-.463 1.036-1.036 1.036z" fill="#FFD43B"/>
+              </svg>
+              <span>Python</span>
+            </button>
+
+            <button class="dock-item" data-tech="django" title="Django" aria-label="Django">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.146 0h3.924v18.166c-2.013.382-3.491.535-5.096.535-4.791 0-7.288-2.166-7.288-6.32 0-4.002 2.65-6.6 6.753-6.6.637 0 1.121.05 1.707.203zm0 9.143a3.894 3.894 0 00-1.325-.204c-1.988 0-3.134 1.223-3.134 3.365 0 2.09 1.096 3.236 3.109 3.236.433 0 .79-.025 1.35-.102V9.143zM21.314 6.06v11.845c0 4.079-.3 6.041-1.198 7.735-.84 1.644-1.938 2.684-4.209 3.83l-3.644-1.732c2.27-1.071 3.367-2.01 4.056-3.45.739-1.492.968-3.19.968-7.735V6.06h4.027zm-4.049-4.483h4.049v4.097h-4.049z" fill="#0C4B33"/>
+              </svg>
+              <span>Django</span>
+            </button>
+
+            <button class="dock-item" data-tech="react" title="React" aria-label="React">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="2.05" fill="#61DAFB"/>
+                <ellipse cx="12" cy="12" rx="10.5" ry="3.8" stroke="#61DAFB" stroke-width="1.1" fill="none"/>
+                <ellipse cx="12" cy="12" rx="10.5" ry="3.8" stroke="#61DAFB" stroke-width="1.1" fill="none" transform="rotate(60 12 12)"/>
+                <ellipse cx="12" cy="12" rx="10.5" ry="3.8" stroke="#61DAFB" stroke-width="1.1" fill="none" transform="rotate(120 12 12)"/>
+              </svg>
+              <span>React</span>
+            </button>
+
+            <button class="dock-item" data-tech="flutter" title="Flutter" aria-label="Flutter">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14.314 0L2.399 11.882l3.449 3.448L21.178 0z" fill="#47C5FB"/>
+                <path d="M5.848 15.33l8.466-8.467 5.437 5.435-5.432 5.435-2.71 2.708z" fill="#00569E"/>
+                <path d="M14.314 20.439l-2.706-2.708 2.706-2.71 2.712 2.71z" fill="#00B5F8"/>
+                <path d="M11.608 17.731l3.449 3.451-3.452 2.818-3.448-3.45z" fill="#47C5FB"/>
+              </svg>
+              <span>Flutter</span>
+            </button>
+
+            <button class="dock-item" data-tech="postgres" title="PostgreSQL" aria-label="PostgreSQL">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.128 0a10.134 10.134 0 00-2.755.403l-.063.02A10.922 10.922 0 0012.6.258C11.422.238 10.41.524 9.594 1 8.58.695 7.122.32 5.372.186 4.228.1 3.01.172 1.944.61 .879 1.05.05 1.954.008 2.9-.038 3.96.3 5.085.817 6.117a11.06 11.06 0 001.532 2.243c.375.426.758.795 1.134 1.092.292.23.567.41.83.54-.02.206-.045.41-.065.614A7.801 7.801 0 004.8 9.7c0 3.937 2.9 7.153 6.84 7.875a5.46 5.46 0 001.083.11c.42 0 .838-.048 1.24-.143a5.34 5.34 0 001.618-.67 5.44 5.44 0 001.28-1.08l.047-.057c.218-.016.451-.04.69-.07l.087.006c1.854.143 3.407-.084 4.587-.637 1.138-.534 1.882-1.357 2.067-2.325.089-.47.032-.95-.144-1.394a2.96 2.96 0 00-.765-1.128 5.39 5.39 0 00-.64-.499c.091-.31.17-.625.235-.943.366-1.77.278-3.575-.5-4.908-.397-.688-.97-1.218-1.715-1.553A6.37 6.37 0 0017.128 0zm.08 1.259c.57 0 1.086.102 1.527.302.53.23.94.587 1.212 1.063.641 1.11.694 2.736.35 4.352-.053.25-.115.497-.184.74a7.01 7.01 0 00-1.255-.815 6.364 6.364 0 00-1.64-.54c-.18-.03-.36-.053-.537-.07.006-.096.013-.192.013-.288 0-.667-.209-1.227-.443-1.682-.078-.15-.16-.296-.25-.438.267-.17.495-.352.67-.539.402-.423.456-.814.27-1.059-.19-.25-.613-.298-1.18-.113a5.38 5.38 0 00-.814.358 5.378 5.378 0 00-.39.231c-.17-.07-.346-.13-.526-.185A9.46 9.46 0 0012.6 1.496a9.68 9.68 0 001.24-.2 8.87 8.87 0 012.454-.036h.002c.307.032.617.087.913 0zm-5.039.73c.43 0 .855.063 1.234.189.363.122.645.296.824.508.062.073.094.141.106.207.012.066 0 .136-.04.216-.08.165-.27.343-.613.478a4.45 4.45 0 01-1.496.222c-.445 0-.828-.06-1.1-.175-.27-.115-.408-.265-.38-.562.056-.583.722-.984 1.465-1.083z" fill="#336791"/>
+              </svg>
+              <span>PostgreSQL</span>
+            </button>
+
+          </div>
+        </nav>
+
+        <!-- Bottom fade: blends canvas into the page -->
+        <div class="hero__bottom-fade" aria-hidden="true"></div>
+
+        <!-- Scroll cue -->
+        <div class="hero-scroll-cue" aria-hidden="true">
+          <div class="hero-scroll-cue__label">Scroll</div>
+          <div class="hero-scroll-cue__track"><div class="hero-scroll-cue__dot"></div></div>
+        </div>
+
       </section>
 
       <section id="stats" class="section">
@@ -88,7 +428,7 @@
           <p class="section__lead">Full‑stack capabilities to support your growth across web, mobile, content and performance.</p>
           <div class="grid grid--3" id="services-grid">
           {% for service in services %}
-            <article class="card tilt" data-title="{{ service.title }}"><div class="card__icon">{{ service.icon|safe }}</div><h3>{{ service.title }}</h3><p>{{ service.description }}</p><button class="btn btn--ghost">Learn More</button></article>
+            <article class="card tilt" data-title="{{ service.title }}"><div class="card__icon">{{ service.icon|safe }}</div><h3>{{ service.title }}</h3><p>{{ service.description }}</p></article>
           {% endfor %}
           </div>
         </div>
@@ -113,7 +453,7 @@
           <div class="hscroll__track" id="portfolio-track">
           {% for folio in portfolio %}
           <article class="portfolio__card tilt {{ folio.category }}">
-            <img style="height: 48vh;" src="media/{{ folio.image }}"></img>
+            <img style="height: 48vh;" src="media/{{ folio.image }}" alt="{{ folio.title }} — {{ folio.category }} project by Techno Graphix" loading="lazy">
             <div class="portfolio__meta">
               <div class="meta__cat">{{ folio.category|upper }}</div>
               <div class="meta__title">{{ folio.title }}</div>
@@ -135,7 +475,7 @@
           <div class="about__media">
             <div class="glow"></div>
             <div class="placeholder">
-            <img src="media/portfolio/logo_text.png">
+            <img src="media/portfolio/logo_text.png" alt="Techno Graphix — Mumbai Digital Agency" loading="lazy">
             </div>
           </div>
         </div>
@@ -231,9 +571,8 @@
           {% for blog in blog_posts %}
           <a style="text-decoration:none;" href="{% url 'blog:detail_blog' blog.id %}">
             <article class="post tilt">
-              <div class="post__media" style="overflow-y:hidden;"> <img src="media/{{ blog.image }}"> </div>
+              <div class="post__media" style="overflow-y:hidden;"> <img src="media/{{ blog.image }}" alt="{{ blog.title }}" loading="lazy"> </div>
               <div class="post__content">
-                <div class="post__meta"><span class="post__tag"> {{ blog.category}} </span><time> {{ blog.date }} </time></div>
                 <h3>{{ blog.title }}</h3>
                 <p>{{ blog.content }}</p>
               </div>
@@ -313,5 +652,146 @@
     {% include 'app.js' %}
      
         </script>
+
+    <!-- ═══ THREE.JS HERO BACKGROUND ═══════════════════════════════════ -->
+    <script>
+    (function () {
+      if (typeof THREE === 'undefined') return;
+      var canvas = document.getElementById('hero-bg-canvas');
+      if (!canvas) return;
+
+      var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setClearColor(0x000000, 0);
+
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(65, 1, 0.1, 1000);
+      camera.position.z = 32;
+
+      function resize() {
+        var parent = canvas.parentElement;
+        var w = parent.offsetWidth;
+        var h = parent.offsetHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      /* ── Brand colour palette ───────────────────────────────────────── */
+      var palette = [
+        new THREE.Color(0x00B4D8),   // primary cyan
+        new THREE.Color(0x00ffcc),   // teal
+        new THREE.Color(0x0ea5e9),   // sky blue
+        new THREE.Color(0x38bdf8),   // light blue
+        new THREE.Color(0xFF6F3C),   // brand orange (accent)
+      ];
+
+      /* ── Particle field ─────────────────────────────────────────────── */
+      var COUNT = 700;
+      var geoP  = new THREE.BufferGeometry();
+      var pos   = new Float32Array(COUNT * 3);
+      var col   = new Float32Array(COUNT * 3);
+
+      for (var i = 0; i < COUNT; i++) {
+        pos[i * 3]     = (Math.random() - 0.5) * 90;
+        pos[i * 3 + 1] = (Math.random() - 0.5) * 70;
+        pos[i * 3 + 2] = (Math.random() - 0.5) * 55;
+        // 80% cyan family, 20% orange accent
+        var c = Math.random() < 0.2 ? palette[4] : palette[Math.floor(Math.random() * 4)];
+        col[i * 3]     = c.r;
+        col[i * 3 + 1] = c.g;
+        col[i * 3 + 2] = c.b;
+      }
+
+      geoP.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      geoP.setAttribute('color',    new THREE.BufferAttribute(col, 3));
+
+      var matP = new THREE.PointsMaterial({
+        size: 0.45,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.88,
+        sizeAttenuation: true,
+      });
+
+      var points = new THREE.Points(geoP, matP);
+      scene.add(points);
+
+      /* ── Wireframe icosahedron (large, fills depth) ─────────────────── */
+      var icoGeo = new THREE.IcosahedronGeometry(20, 1);
+      var icoMat = new THREE.MeshBasicMaterial({
+        color: 0x00B4D8, wireframe: true, transparent: true, opacity: 0.055
+      });
+      var ico = new THREE.Mesh(icoGeo, icoMat);
+      scene.add(ico);
+
+      /* ── Orange wireframe torus (right side accent) ─────────────────── */
+      var torGeo = new THREE.TorusGeometry(12, 0.22, 8, 52);
+      var torMat = new THREE.MeshBasicMaterial({
+        color: 0xFF6F3C, wireframe: true, transparent: true, opacity: 0.05
+      });
+      var tor = new THREE.Mesh(torGeo, torMat);
+      tor.position.set(20, -6, -10);
+      tor.rotation.x = Math.PI / 4;
+      scene.add(tor);
+
+      /* ── Second smaller icosahedron (left side depth) ───────────────── */
+      var ico2Geo = new THREE.IcosahedronGeometry(10, 1);
+      var ico2Mat = new THREE.MeshBasicMaterial({
+        color: 0x00ffcc, wireframe: true, transparent: true, opacity: 0.04
+      });
+      var ico2 = new THREE.Mesh(ico2Geo, ico2Mat);
+      ico2.position.set(-18, 8, -6);
+      scene.add(ico2);
+
+      /* ── Mouse parallax ─────────────────────────────────────────────── */
+      var mx = 0, my = 0;
+      var heroEl = document.querySelector('.hero--ethereal');
+      if (heroEl) {
+        heroEl.addEventListener('mousemove', function (e) {
+          var r = heroEl.getBoundingClientRect();
+          mx =  ((e.clientX - r.left) / r.width  - 0.5) * 2;
+          my = -((e.clientY - r.top)  / r.height - 0.5) * 2;
+        });
+        heroEl.addEventListener('mouseleave', function () { mx = 0; my = 0; });
+      }
+
+      /* ── Animation loop ─────────────────────────────────────────────── */
+      var frame = 0;
+      function animate() {
+        requestAnimationFrame(animate);
+        frame++;
+        var t = frame * 0.004;
+
+        // Slow rotations on each group
+        points.rotation.y += 0.0005;
+        points.rotation.x += 0.00025;
+        ico.rotation.y    += 0.0012;
+        ico.rotation.x    -= 0.0007;
+        ico2.rotation.y   -= 0.0015;
+        ico2.rotation.z   += 0.0009;
+        tor.rotation.z    += 0.0018;
+        tor.rotation.y    -= 0.001;
+
+        // Subtle sine-wave drift on Y so particles feel alive
+        var p = geoP.attributes.position.array;
+        for (var j = 0; j < COUNT; j++) {
+          p[j * 3 + 1] += Math.sin(t + p[j * 3] * 0.08) * 0.003;
+        }
+        geoP.attributes.position.needsUpdate = true;
+
+        // Smooth camera parallax following mouse
+        camera.position.x += (mx * 7 - camera.position.x) * 0.028;
+        camera.position.y += (my * 5 - camera.position.y) * 0.028;
+        camera.lookAt(scene.position);
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    }());
+    </script>
   </body>
 </html>
