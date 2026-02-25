@@ -599,7 +599,7 @@ footer .br-footer-detail .br-social ul li a:hover {
 .hero--ethereal .hero__title {
   font-size: clamp(2.1rem, 6vw, 4.8rem);
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.0;
   margin: 0;
   letter-spacing: -.025em;
   color: #edfaf6;
