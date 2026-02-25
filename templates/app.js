@@ -414,8 +414,8 @@ const _copyYear=document.getElementById('copy-year');if(_copyYear)_copyYear.text
   hero.addEventListener('mouseleave', () => { tx = -9999; ty = -9999; });
 
   function tickSpot() {
-    cx += (tx - cx) * 0.1;
-    cy += (ty - cy) * 0.1;
+    cx += (tx - cx) * 0.18;
+    cy += (ty - cy) * 0.18;
     spot.style.setProperty('--sx', `${cx.toFixed(1)}px`);
     spot.style.setProperty('--sy', `${cy.toFixed(1)}px`);
     rafId = requestAnimationFrame(tickSpot);

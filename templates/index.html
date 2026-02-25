@@ -257,13 +257,10 @@
 
             <div class="hero__kicker hero-entrance" style="--delay:.05s">
               <span class="hero__kicker-line"></span>
-              <span>Techno Graphix Studio &nbsp;·&nbsp; Est. 2025</span>
+              <span>Techno Graphix Studio &nbsp;·&nbsp; Est. 2023</span>
             </div>
 
-            <div class="hero__badge hero-entrance" style="--delay:.15s">
-              <span class="badge__pulse"></span>
-              <span>Mumbai &nbsp;•&nbsp; Premium Digital Agency</span>
-            </div>
+            
 
             <h1 class="hero__title hero-entrance" style="--delay:.28s">
               Engineering<br>
@@ -401,10 +398,7 @@
         <div class="hero__bottom-fade" aria-hidden="true"></div>
 
         <!-- Scroll cue -->
-        <div class="hero-scroll-cue" aria-hidden="true">
-          <div class="hero-scroll-cue__label">Scroll</div>
-          <div class="hero-scroll-cue__track"><div class="hero-scroll-cue__dot"></div></div>
-        </div>
+       
 
       </section>
 
@@ -705,46 +699,34 @@
         col[i * 3 + 2] = c.b;
       }
 
+      // Restrict z so particles never come close enough to the camera (z=32)
+      // to appear as oversized squares due to sizeAttenuation.
+      for (var i = 0; i < COUNT; i++) {
+        pos[i * 3 + 2] = (Math.random() - 0.5) * 30 - 10;
+      }
+
       geoP.setAttribute('position', new THREE.BufferAttribute(pos, 3));
       geoP.setAttribute('color',    new THREE.BufferAttribute(col, 3));
 
       var matP = new THREE.PointsMaterial({
-        size: 0.45,
+        size: 0.42,
         vertexColors: true,
         transparent: true,
-        opacity: 0.88,
+        opacity: 0.82,
         sizeAttenuation: true,
       });
 
       var points = new THREE.Points(geoP, matP);
       scene.add(points);
 
-      /* ── Wireframe icosahedron (large, fills depth) ─────────────────── */
-      var icoGeo = new THREE.IcosahedronGeometry(20, 1);
+      /* ── Wireframe icosahedron (large) ──────────────────────────────── */
+      var icoGeo = new THREE.IcosahedronGeometry(17, 1);
       var icoMat = new THREE.MeshBasicMaterial({
         color: 0x00B4D8, wireframe: true, transparent: true, opacity: 0.055
       });
       var ico = new THREE.Mesh(icoGeo, icoMat);
       scene.add(ico);
 
-      /* ── Orange wireframe torus (right side accent) ─────────────────── */
-      var torGeo = new THREE.TorusGeometry(12, 0.22, 8, 52);
-      var torMat = new THREE.MeshBasicMaterial({
-        color: 0xFF6F3C, wireframe: true, transparent: true, opacity: 0.05
-      });
-      var tor = new THREE.Mesh(torGeo, torMat);
-      tor.position.set(20, -6, -10);
-      tor.rotation.x = Math.PI / 4;
-      scene.add(tor);
-
-      /* ── Second smaller icosahedron (left side depth) ───────────────── */
-      var ico2Geo = new THREE.IcosahedronGeometry(10, 1);
-      var ico2Mat = new THREE.MeshBasicMaterial({
-        color: 0x00ffcc, wireframe: true, transparent: true, opacity: 0.04
-      });
-      var ico2 = new THREE.Mesh(ico2Geo, ico2Mat);
-      ico2.position.set(-18, 8, -6);
-      scene.add(ico2);
 
       /* ── Mouse parallax ─────────────────────────────────────────────── */
       var mx = 0, my = 0;
@@ -765,15 +747,12 @@
         frame++;
         var t = frame * 0.004;
 
-        // Slow rotations on each group
-        points.rotation.y += 0.0005;
-        points.rotation.x += 0.00025;
+        // Gentle oscillating tilt on cloud — gives 3D depth without ever
+        // spinning particles into the near-camera zone (max ±7° on Y, ±3.4° on X)
+        points.rotation.y = Math.sin(t * 0.18) * 0.12;
+        points.rotation.x = Math.sin(t * 0.11) * 0.06;
         ico.rotation.y    += 0.0012;
         ico.rotation.x    -= 0.0007;
-        ico2.rotation.y   -= 0.0015;
-        ico2.rotation.z   += 0.0009;
-        tor.rotation.z    += 0.0018;
-        tor.rotation.y    -= 0.001;
 
         // Subtle sine-wave drift on Y so particles feel alive
         var p = geoP.attributes.position.array;

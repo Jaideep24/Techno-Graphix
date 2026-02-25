@@ -463,10 +463,11 @@ footer .br-footer-detail .br-social ul li a:hover {
 
 /* ── 2. Trust strip ── */
 .hero-trust-strip {
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
   background: rgba(16,185,129,.07);
   border-bottom: 1px solid rgba(16,185,129,.14);
-  height: 34px;
+  height: 52px;
   display: flex;
   align-items: center;
   flex-shrink: 0;
@@ -483,7 +484,8 @@ footer .br-footer-detail .br-social ul li a:hover {
   letter-spacing: .08em;
   text-transform: uppercase;
   color: rgba(94,236,212,.78);
-  padding: 0;
+  padding: 6px 0 8px;
+  line-height: 1.8;
 }
 @keyframes trust-marquee {
   from { transform: translate3d(0,0,0); }
@@ -597,7 +599,7 @@ footer .br-footer-detail .br-social ul li a:hover {
 .hero--ethereal .hero__title {
   font-size: clamp(2.1rem, 6vw, 4.8rem);
   font-weight: 800;
-  line-height: 1.0;
+  line-height: 1.2;
   margin: 0;
   letter-spacing: -.025em;
   color: #edfaf6;
@@ -691,20 +693,16 @@ footer .br-footer-detail .br-social ul li a:hover {
   align-items: center;
   justify-content: center;
 }
-/* Ambient glow halo */
+/* Ambient glow halo — faint, static */
 .hero-scene::before {
   content: '';
   position: absolute;
-  inset: -24px;
-  background: radial-gradient(circle, rgba(16,185,129,.22) 0%, rgba(99,102,241,.12) 55%, transparent 70%);
+  inset: -8px;
+  background: radial-gradient(circle, rgba(16,185,129,.07) 0%, transparent 70%);
   border-radius: 50%;
-  filter: blur(16px);
-  animation: scene-pulse 5s ease-in-out infinite alternate;
+  filter: blur(22px);
+  opacity: .5;
   pointer-events: none;
-}
-@keyframes scene-pulse {
-  from { opacity: .5; transform: scale(.88); }
-  to   { opacity: 1; transform: scale(1.12); }
 }
 /* Subtle grid overlay on scene */
 .hero-scene::after {
@@ -1032,6 +1030,7 @@ footer .br-footer-detail .br-social ul li a:hover {
 /* ── Cursor spotlight glow ── */
 .hero-spotlight {
   position: absolute;
+  top: 0; left: 0;
   width: 520px; height: 520px;
   border-radius: 50%;
   pointer-events: none;
