@@ -455,6 +455,7 @@ footer .br-footer-detail .br-social ul li a:hover {
   color: #edfaf6;
   padding-top: 64px;           /* clear fixed nav */
   min-height: 100vh;
+  min-height: 100svh;          /* accounts for mobile browser chrome */
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -467,7 +468,7 @@ footer .br-footer-detail .br-social ul li a:hover {
   overflow-y: visible;
   background: rgba(16,185,129,.07);
   border-bottom: 1px solid rgba(16,185,129,.14);
-  height: 52px;
+  height: 34px;
   display: flex;
   align-items: center;
   flex-shrink: 0;
@@ -480,12 +481,12 @@ footer .br-footer-detail .br-social ul li a:hover {
   white-space: nowrap;
   will-change: transform;
   animation: trust-marquee 38s linear infinite;
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: .08em;
   text-transform: uppercase;
   color: rgba(94,236,212,.78);
-  padding: 6px 0 8px;
-  line-height: 1.8;
+  padding: 3px 0 4px;
+  line-height: 1.6;
 }
 @keyframes trust-marquee {
   from { transform: translate3d(0,0,0); }
@@ -556,15 +557,15 @@ footer .br-footer-detail .br-social ul li a:hover {
   z-index: 3;
   display: grid;
   grid-template-columns: 60fr 40fr;
-  gap: 48px;
+  gap: clamp(24px, 3vw, 48px);
   align-items: center;
   flex: 1;
-  padding-top: 48px;
-  padding-bottom: 120px;  /* space for dock */
+  padding-top: clamp(24px, 4vh, 48px);
+  padding-bottom: clamp(32px, 4vh, 56px); /* no dock — removed phantom 120px */
 }
 
 /* ── 6. Left column ── */
-.hero__left { display: flex; flex-direction: column; gap: 30px; }
+.hero__left { display: flex; flex-direction: column; gap: clamp(16px, 2.4vh, 30px); }
 
 /* Badge */
 .hero__badge {
@@ -681,8 +682,8 @@ footer .br-footer-detail .br-social ul li a:hover {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 18px;
-  position: relative;
+  gap: clamp(10px, 1.8vh, 18px);
+  position: relative; /* contains absolutely-positioned float cards */
 }
 .hero-scene {
   --geo: 220px;
@@ -877,26 +878,132 @@ footer .br-footer-detail .br-social ul li a:hover {
 }
 
 /* ── 9. Responsive ── */
+
+/* ── Tablet landscape / small laptop (1100px) ── */
+@media (max-width: 1100px) {
+  .hero--ethereal .hero__title { font-size: clamp(2rem, 5vw, 4rem); }
+  .hero-scene { --geo: 190px; width: clamp(220px, 28vw, 300px); height: clamp(220px, 28vw, 300px); }
+  .hero-scene__wrap { --geo: 190px; }
+}
+
+/* ── Tablet portrait / small laptop (900px) ── */
 @media (max-width: 900px) {
   .hero__inner {
     grid-template-columns: 1fr;
-    padding-bottom: 140px;
-    padding-top: 28px;
-    gap: 20px;
+    padding-top: 20px;
+    padding-bottom: 28px;
+    gap: 18px;
+    align-items: start;
   }
-  .hero__right { order: -1; }
-  .hero-scene { --geo: 160px; width: 230px; height: 230px; }
-  .hero-scene__wrap { --geo: 160px; }
+  .hero__right {
+    order: -1;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding-top: 12px;
+  }
+  .hero-scene { --geo: 150px; width: 210px; height: 210px; flex-shrink: 0; }
+  .hero-scene__wrap { --geo: 150px; }
+  /* Terminal: full width, height fixed at slightly smaller on tablet */
+  .hero-terminal {
+    max-width: 100%;
+    width: 100%;
+    height: 134px;
+  }
+  .hero-terminal__body { height: 98px; }
+  /* Float cards hidden on single-col — no room for absolute positioned cards */
+  .hero-float-card { display: none; }
 }
-@media (max-width: 600px) {
-  .hero--ethereal .hero__title { font-size: clamp(1.9rem, 10vw, 3rem); }
-  .hero--ethereal .hero__actions { flex-direction: column; align-items: flex-start; gap: 10px; }
-  .hero--ethereal .hero__cta { width: 100%; justify-content: center; }
-  .hero-scene { --geo: 130px; width: 190px; height: 190px; }
+
+/* ── Large phones / phablets (768px) ── */
+@media (max-width: 768px) {
+  .hero__inner {
+    padding-top: 14px;
+    padding-bottom: 20px;
+    gap: 14px;
+  }
+  .hero__left { gap: 14px; }
+  .hero--ethereal .hero__title { font-size: clamp(1.75rem, 8vw, 2.8rem); }
+  .hero--ethereal .hero__cta { padding: 12px 22px; font-size: 14px; }
+  .hero-chip { font-size: 11px; padding: 5px 11px; }
+  .hero-scene { --geo: 130px; width: 180px; height: 180px; }
   .hero-scene__wrap { --geo: 130px; }
+  /* Terminal: compact fixed height, full width */
+  .hero-terminal {
+    max-width: 100%;
+    width: 100%;
+    height: 124px;
+  }
+  .hero-terminal__bar { padding: 7px 12px; }
+  .hero-terminal__body { height: 90px; font-size: 11px; padding: 8px 14px 8px; }
+}
+
+/* ── Phones (600px) ── */
+@media (max-width: 600px) {
+  .hero__inner {
+    padding-top: 10px;
+    padding-bottom: 16px;
+    gap: 12px;
+  }
+  .hero__left { gap: 12px; }
+  .hero--ethereal .hero__title { font-size: clamp(1.65rem, 9vw, 2.4rem); line-height: 1.05; }
+  .hero--ethereal .hero__actions { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+  .hero--ethereal .hero__cta { flex: 1; min-width: 140px; justify-content: center; padding: 11px 16px; font-size: 13.5px; }
+  .hero-chip { font-size: 10.5px; padding: 4px 10px; }
+  .hero__chips { gap: 6px; }
+  /* Phone split: scene top, terminal bottom — both inside hero__right (order:-1) */
+  .hero__right {
+    display: grid;
+    grid-template-rows: auto auto;  /* 1: scene, 2: terminal */
+    align-items: center;
+    justify-items: center;
+    gap: 10px;
+    padding-top: 8px;
+  }
+  .hero-scene { --geo: 110px; width: 155px; height: 155px; }
+  .hero-scene__wrap { --geo: 110px; }
+  /* Terminal: visible, full width, compact fixed height */
+  .hero-terminal {
+    display: block !important;  /* override any hide rule */
+    max-width: 100%;
+    width: 100%;
+    height: 112px;
+  }
+  .hero-terminal__bar { padding: 6px 12px; }
+  .hero-terminal__body { height: 80px; font-size: 10.5px; padding: 7px 12px 7px; }
   .hero-dock__inner { gap: 6px; padding: 8px 12px; }
   .dock-item { padding: 7px; }
   .dock-item svg { width: 22px; height: 22px; }
+  .hero__proof { flex-direction: column; align-items: flex-start; gap: 6px; }
+}
+
+/* ── Small phones (480px) ── */
+@media (max-width: 480px) {
+  .hero__inner {
+    padding-top: 8px;
+    padding-bottom: 12px;
+    gap: 10px;
+  }
+  .hero__left { gap: 10px; }
+  .hero--ethereal .hero__title { font-size: clamp(1.5rem, 9.5vw, 2rem); }
+  .hero__kicker { font-size: 9px; letter-spacing: .12em; }
+  .hero__kicker-line { width: 20px; }
+  .hero-chip { font-size: 10px; padding: 4px 8px; }
+  .hero__chips { gap: 5px; }
+  .hero-scene { --geo: 100px; width: 140px; height: 140px; }
+  .hero-scene__wrap { --geo: 100px; }
+  /* Terminal: fully visible on small phones — scene top, terminal bottom */
+  .hero-terminal {
+    display: block !important;
+    max-width: 100%;
+    width: 100%;
+    height: 104px;
+  }
+  .hero-terminal__bar { padding: 5px 10px; }
+  .hero-terminal__dot { width: 9px; height: 9px; }
+  .hero-terminal__body { height: 74px; font-size: 10px; padding: 6px 10px 6px; }
+  .hero--ethereal .hero__cta { padding: 10px 14px; font-size: 13px; min-width: 120px; }
 }
 
 /* Hide the old particles canvas inside new hero */
@@ -977,14 +1084,17 @@ footer .br-footer-detail .br-social ul li a:hover {
   flex-shrink: 0;
   position: relative;
   z-index: 6;
+  /* Fixed total height = titlebar (36px) + body (108px) — never grows */
+  height: 144px;
 }
 .hero-terminal__bar {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 10px 14px;
+  padding: 8px 14px;
   background: rgba(255,255,255,.035);
   border-bottom: 1px solid rgba(255,255,255,.07);
+  flex-shrink: 0;
 }
 .hero-terminal__dot {
   width: 11px; height: 11px;
@@ -1003,8 +1113,9 @@ footer .br-footer-detail .br-social ul li a:hover {
   letter-spacing: .04em;
 }
 .hero-terminal__body {
-  padding: 14px 18px 18px;
-  min-height: 96px;
+  padding: 10px 18px 10px;
+  height: 108px;        /* locked — content clips inside */
+  overflow: hidden;     /* never grows, never shows scrollbar */
   font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
   font-size: 12px;
   line-height: 1.95;
@@ -1042,95 +1153,95 @@ footer .br-footer-detail .br-social ul li a:hover {
 /* ═══════════════════════════════════════════════════════════════
    HERO — LIGHT THEME  ("Aurora White")
    Scope: html:not(.dark)  — dark theme above is unaffected
-   Concept: Clean, crisp, premium — Stripe / Linear / Vercel feel
-   Palette: Brand Cyan #00B4D8 · Brand Orange #FF6F3C · Ink #0a0f1e
+   Concept: Clean, crisp, premium — same green/cyan/indigo family as dark theme
+   Palette: Emerald #10b981 · Cyan #22d3ee · Indigo #6366f1 · Ink #0a0f1e
 ═══════════════════════════════════════════════════════════════ */
 
 /* ── 1. Base: rich gradient + dot-grid texture ── */
 html:not(.dark) .hero--ethereal {
   background:
-    /* dot grid */
-    radial-gradient(circle, rgba(0,180,216,.18) 1px, transparent 1px),
-    /* colour pools */
-    radial-gradient(ellipse 72% 60% at 4% 12%, rgba(0,180,216,.22) 0%, transparent 70%),
-    radial-gradient(ellipse 64% 55% at 96% 88%, rgba(255,111,60,.18) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(16,185,129,.09) 0%, transparent 80%),
+    /* dot grid — same green as dark theme */
+    radial-gradient(circle, rgba(16,185,129,.07) 1px, transparent 1px),
+    /* colour pools — green-dominant, cyan secondary, indigo accent */
+    radial-gradient(ellipse 72% 60% at 4% 12%,  rgba(16,185,129,.07) 0%, transparent 70%),
+    radial-gradient(ellipse 64% 55% at 96% 88%, rgba(34,211,238,.05)  0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(99,102,241,.03)  0%, transparent 80%),
     /* base */
-    linear-gradient(160deg, #f8fffe 0%, #fafcff 50%, #fff9f7 100%);
+    linear-gradient(160deg, #f4fdf8 0%, #f8fbff 50%, #f6f4ff 100%);
   background-size: 22px 22px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
   color: #0a0f1e;
 }
 
 /* ── 2. Trust strip ── */
 html:not(.dark) .hero-trust-strip {
-  background: linear-gradient(90deg, rgba(0,180,216,.12), rgba(255,111,60,.08), rgba(0,180,216,.12));
-  border-bottom: 1px solid rgba(0,180,216,.28);
+  background: linear-gradient(90deg, rgba(16,185,129,.12), rgba(34,211,238,.08), rgba(16,185,129,.12));
+  border-bottom: 1px solid rgba(16,185,129,.3);
 }
 html:not(.dark) .hero-trust__track {
-  color: #007b98;
+  color: #065f46;
   font-weight: 700;
   letter-spacing: .1em;
 }
-html:not(.dark) .hero-trust__sep { color: #FF6F3C; opacity: .5; }
+html:not(.dark) .hero-trust__sep { color: #0891b2; opacity: .7; }
 
-/* ── 3. Ambient orbs — vivid, pushed to edges so they rim-light the scene ── */
+/* ── 3. Ambient orbs — green/cyan/indigo, matching dark theme family ── */
 html:not(.dark) .hero-orb--1 {
-  background: radial-gradient(circle, rgba(0,180,216,.45) 0%, rgba(0,180,216,.0) 65%);
-  filter: blur(70px);
+  background: radial-gradient(circle, rgba(16,185,129,.13) 0%, rgba(16,185,129,.0) 65%);
+  filter: blur(80px);
   top: -140px; left: -100px;
 }
 html:not(.dark) .hero-orb--2 {
-  background: radial-gradient(circle, rgba(255,111,60,.4) 0%, rgba(255,111,60,.0) 65%);
-  filter: blur(60px);
+  background: radial-gradient(circle, rgba(34,211,238,.11) 0%, rgba(34,211,238,.0) 65%);
+  filter: blur(72px);
   bottom: -60px; right: 0;
 }
 html:not(.dark) .hero-orb--3 {
-  background: radial-gradient(circle, rgba(16,185,129,.28) 0%, transparent 65%);
-  filter: blur(52px);
+  background: radial-gradient(circle, rgba(99,102,241,.07) 0%, transparent 65%);
+  filter: blur(64px);
   top: 40%; right: 10%;
 }
 
 /* Dock-driven colour shifts */
-html:not(.dark) .hero--ethereal.orb--django .hero-orb--1  { background: radial-gradient(circle, rgba(9,180,75,.45) 0%, transparent 65%); }
-html:not(.dark) .hero--ethereal.orb--django .hero-orb--2  { background: radial-gradient(circle, rgba(6,110,45,.3) 0%, transparent 65%); }
-html:not(.dark) .hero--ethereal.orb--python .hero-orb--1  { background: radial-gradient(circle, rgba(55,118,171,.45) 0%, transparent 65%); }
-html:not(.dark) .hero--ethereal.orb--python .hero-orb--2  { background: radial-gradient(circle, rgba(220,180,0,.38) 0%, transparent 65%); }
-html:not(.dark) .hero--ethereal.orb--react  .hero-orb--1  { background: radial-gradient(circle, rgba(0,180,216,.5) 0%, transparent 65%); }
-html:not(.dark) .hero--ethereal.orb--react  .hero-orb--2  { background: radial-gradient(circle, rgba(0,160,200,.38) 0%, transparent 65%); }
-html:not(.dark) .hero--ethereal.orb--flutter .hero-orb--1 { background: radial-gradient(circle, rgba(54,150,216,.45) 0%, transparent 65%); }
-html:not(.dark) .hero--ethereal.orb--postgres .hero-orb--1{ background: radial-gradient(circle, rgba(51,103,145,.42) 0%, transparent 65%); }
+html:not(.dark) .hero--ethereal.orb--django .hero-orb--1  { background: radial-gradient(circle, rgba(9,180,75,.14) 0%, transparent 65%); }
+html:not(.dark) .hero--ethereal.orb--django .hero-orb--2  { background: radial-gradient(circle, rgba(6,110,45,.10) 0%, transparent 65%); }
+html:not(.dark) .hero--ethereal.orb--python .hero-orb--1  { background: radial-gradient(circle, rgba(55,118,171,.14) 0%, transparent 65%); }
+html:not(.dark) .hero--ethereal.orb--python .hero-orb--2  { background: radial-gradient(circle, rgba(220,180,0,.12) 0%, transparent 65%); }
+html:not(.dark) .hero--ethereal.orb--react  .hero-orb--1  { background: radial-gradient(circle, rgba(34,211,238,.14) 0%, transparent 65%); }
+html:not(.dark) .hero--ethereal.orb--react  .hero-orb--2  { background: radial-gradient(circle, rgba(34,180,220,.11) 0%, transparent 65%); }
+html:not(.dark) .hero--ethereal.orb--flutter .hero-orb--1 { background: radial-gradient(circle, rgba(54,150,216,.14) 0%, transparent 65%); }
+html:not(.dark) .hero--ethereal.orb--postgres .hero-orb--1{ background: radial-gradient(circle, rgba(51,103,145,.13) 0%, transparent 65%); }
 
 /* ── 4. Film grain — very faint on white ── */
 html:not(.dark) .hero-grain { opacity: .012; }
 
 /* ── 5. Kicker ── */
-html:not(.dark) .hero__kicker { color: #FF6F3C; opacity: .85; }
+html:not(.dark) .hero__kicker { color: #0d9488; opacity: 1; }
 html:not(.dark) .hero__kicker-line {
-  background: linear-gradient(90deg, #FF6F3C, transparent);
+  background: linear-gradient(90deg, #10b981, transparent);
   height: 2px;
 }
 
 /* ── 6. Badge ── */
 html:not(.dark) .hero__badge {
-  border: 1px solid rgba(0,180,216,.35);
-  background: rgba(0,180,216,.08);
-  color: #006e8a;
+  border: 1px solid rgba(16,185,129,.4);
+  background: rgba(16,185,129,.09);
+  color: #065f46;
   font-weight: 700;
 }
-html:not(.dark) .badge__pulse { background: #00B4D8; }
+html:not(.dark) .badge__pulse { background: #10b981; }
 html:not(.dark) .badge__pulse { animation: pulse-ring-light 2.4s ease-out infinite; }
 @keyframes pulse-ring-light {
-  0%   { box-shadow: 0 0 0 0 rgba(0,180,216,.7); }
-  70%  { box-shadow: 0 0 0 9px rgba(0,180,216,0); }
-  100% { box-shadow: 0 0 0 0 rgba(0,180,216,0); }
+  0%   { box-shadow: 0 0 0 0 rgba(16,185,129,.7); }
+  70%  { box-shadow: 0 0 0 9px rgba(16,185,129,0); }
+  100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
 }
 
 /* ── 7. Headline ── */
 html:not(.dark) .hero--ethereal .hero__title { color: #0a0f1e; }
 
-/* Morphword: brand orange → brand cyan — maximum pop on white */
+/* Morphword: emerald → cyan — same family as dark theme */
 html:not(.dark) .hero__morphword {
-  background: linear-gradient(128deg, #FF6F3C 0%, #e8501a 40%, #00B4D8 100%);
+  background: linear-gradient(128deg, #059669 0%, #10b981 40%, #22d3ee 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1138,24 +1249,24 @@ html:not(.dark) .hero__morphword {
 }
 
 /* "Digital Products." sub-line — slightly muted ink colour */
-html:not(.dark) .hero__title-sub { color: rgba(10,15,30,.7); }
+html:not(.dark) .hero__title-sub { color: rgba(10,15,30,.78); }
 
 /* ── 8. Sub-headline ── */
-html:not(.dark) .hero--ethereal .hero__subtitle { color: rgba(10,15,30,.52); }
-html:not(.dark) .hero--ethereal .hero__subtitle strong { color: rgba(10,15,30,.82); }
+html:not(.dark) .hero--ethereal .hero__subtitle { color: rgba(10,15,30,.68); }
+html:not(.dark) .hero--ethereal .hero__subtitle strong { color: rgba(10,15,30,.92); }
 
 /* ── 9. CTAs ──
-   Primary: brand ORANGE — commanding contrast on white, warmer feeling
-   Ghost:   clean ink border with cyan hover
+   Primary: emerald green — matches the dark theme's dominant accent
+   Ghost:   ink border with green hover
 ── */
 html:not(.dark) .hero--ethereal .btn--primary.hero__cta {
-  background: linear-gradient(135deg, #FF6F3C 0%, #e05520 100%);
-  border: 1px solid rgba(255,111,60,.3);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: 1px solid rgba(16,185,129,.35);
   color: #fff;
-  box-shadow: 0 6px 30px rgba(255,111,60,.32), 0 2px 8px rgba(255,111,60,.18);
+  box-shadow: 0 6px 30px rgba(16,185,129,.32), 0 2px 8px rgba(16,185,129,.18);
 }
 html:not(.dark) .hero--ethereal .btn--primary.hero__cta:hover {
-  box-shadow: 0 0 36px rgba(255,111,60,.55), 0 0 80px rgba(255,111,60,.15), 0 8px 32px rgba(0,0,0,.14);
+  box-shadow: 0 0 36px rgba(16,185,129,.55), 0 0 80px rgba(16,185,129,.15), 0 8px 32px rgba(0,0,0,.14);
 }
 html:not(.dark) .hero__cta--ghost {
   background: rgba(255,255,255,.7) !important;
@@ -1164,26 +1275,26 @@ html:not(.dark) .hero__cta--ghost {
   box-shadow: 0 2px 8px rgba(0,0,0,.06);
 }
 html:not(.dark) .hero__cta--ghost:hover {
-  background: rgba(0,180,216,.07) !important;
-  border-color: rgba(0,180,216,.55) !important;
-  color: #005f78 !important;
-  box-shadow: 0 4px 18px rgba(0,180,216,.15);
+  background: rgba(16,185,129,.07) !important;
+  border-color: rgba(16,185,129,.55) !important;
+  color: #065f46 !important;
+  box-shadow: 0 4px 18px rgba(16,185,129,.15);
 }
 
 /* ── 10. Social proof ── */
-html:not(.dark) .hero__proof-text { color: rgba(10,15,30,.48); }
-html:not(.dark) .hero__proof-text strong { color: rgba(10,15,30,.78); }
-html:not(.dark) .proof-avatar { border-color: rgba(0,180,216,.45); }
+html:not(.dark) .hero__proof-text { color: rgba(10,15,30,.64); }
+html:not(.dark) .hero__proof-text strong { color: rgba(10,15,30,.9); }
+html:not(.dark) .proof-avatar { border-color: rgba(16,185,129,.6); }
 
 /* ── 11. 3D scene — halo, grid, cube ── */
 
-/* Glow halo: cyan top-left + orange bottom-right */
+/* Glow halo: green (matches dark theme’s ambient halo) */
 html:not(.dark) .hero-scene::before {
   background:
-    radial-gradient(circle at 30% 30%, rgba(0,180,216,.3) 0%, transparent 60%),
-    radial-gradient(circle at 70% 70%, rgba(255,111,60,.22) 0%, transparent 60%);
-  filter: blur(20px);
-  opacity: .85;
+    radial-gradient(circle at 30% 30%, rgba(16,185,129,.10) 0%, transparent 60%),
+    radial-gradient(circle at 70% 70%, rgba(34,211,238,.07) 0%, transparent 60%);
+  filter: blur(24px);
+  opacity: .50;
 }
 /* Dot grid on scene — removed so TG watermark shows through */
 html:not(.dark) .hero-scene::after {
@@ -1191,45 +1302,45 @@ html:not(.dark) .hero-scene::after {
   opacity: 0;
 }
 
-/* Cube faces — vibrant, clearly visible on white */
+/* Cube faces — deep teal strokes, high contrast against pale-green background */
 html:not(.dark) .geo-face {
-  border: 1.5px solid rgba(0,180,216,.55);
-  background: linear-gradient(135deg, rgba(0,180,216,.1) 0%, rgba(255,111,60,.05) 100%);
+  border: 1.5px solid rgba(13,110,94,.82);
+  background: linear-gradient(135deg, rgba(13,110,94,.06) 0%, rgba(99,102,241,.04) 100%);
   backdrop-filter: blur(4px);
   box-shadow:
-    0 0 28px rgba(0,180,216,.14) inset,
+    0 0 18px rgba(13,110,94,.14) inset,
     0 0 0 1px rgba(255,255,255,.6) inset;
 }
 html:not(.dark) .geo-face::after {
-  background: radial-gradient(circle at 35% 25%, rgba(0,180,216,.2) 0%, transparent 60%);
+  background: radial-gradient(circle at 35% 25%, rgba(13,110,94,.18) 0%, transparent 60%);
 }
 
-/* Rings */
-html:not(.dark) .geo-ring--h { border: 1.5px solid rgba(0,180,216,.5); }
-html:not(.dark) .geo-ring--v { border: 1.5px solid rgba(255,111,60,.42); }
-html:not(.dark) .geo-ring--d { border: 1.5px solid rgba(16,185,129,.32); }
+/* Rings — boosted opacity; ring-d shifted to deep forest so it pops off the light-green bg */
+html:not(.dark) .geo-ring--h { border: 1.5px solid rgba(34,211,238,.88); }
+html:not(.dark) .geo-ring--v { border: 1.5px solid rgba(99,102,241,.78); }
+html:not(.dark) .geo-ring--d { border: 1.5px solid rgba(4,80,60,.85); }
 
-/* ── 12. Vertex nodes ── orange accent in light mode */
+/* ── 12. Vertex nodes — bright cyan: maximum contrast against the green-tinted bg ── */
 html:not(.dark) .geo-vert {
-  background: #FF6F3C;
-  box-shadow: 0 0 10px 3px rgba(255,111,60,.9), 0 0 22px 6px rgba(255,111,60,.4);
+  background: #06b6d4;
+  box-shadow: 0 0 8px 2px rgba(6,182,212,.98), 0 0 16px 5px rgba(6,182,212,.5);
 }
 
-/* ── 13. Pulsing core sphere ── cyan in light mode */
+/* ── 13. Pulsing core sphere — deeper gradient so it reads against pale bg ── */
 html:not(.dark) .geo-core-center {
-  background: radial-gradient(circle, #67e8f9 0%, #00B4D8 55%, #0077a8 100%);
+  background: radial-gradient(circle, #6ee7b7 0%, #059669 55%, #064e3b 100%);
   box-shadow:
-    0 0 18px 6px rgba(0,180,216,.9),
-    0 0 50px 14px rgba(0,180,216,.5),
-    0 0 90px 22px rgba(0,180,216,.18);
+    0 0 14px 4px rgba(5,150,105,.98),
+    0 0 36px 10px rgba(5,150,105,.55),
+    0 0 60px 16px rgba(5,150,105,.2);
 }
 @keyframes core-pulse-light {
   from {
-    box-shadow: 0 0 14px 4px rgba(0,180,216,.8), 0 0 40px 10px rgba(0,180,216,.4);
+    box-shadow: 0 0 10px 3px rgba(5,150,105,.88), 0 0 28px 8px rgba(5,150,105,.42);
     transform: scale(.82);
   }
   to {
-    box-shadow: 0 0 26px 9px rgba(0,180,216,1), 0 0 70px 20px rgba(0,180,216,.6), 0 0 110px 30px rgba(0,180,216,.18);
+    box-shadow: 0 0 22px 8px rgba(5,150,105,1), 0 0 52px 18px rgba(5,150,105,.6), 0 0 82px 26px rgba(5,150,105,.18);
     transform: scale(1.08);
   }
 }
@@ -1246,14 +1357,14 @@ html:not(.dark) .hero-float-card {
   backdrop-filter: blur(12px);
 }
 html:not(.dark) .hero-float-card__num { color: #0a0f1e; }
-html:not(.dark) .hero-float-card__num small { color: #FF6F3C; }
-html:not(.dark) .hero-float-card__label { color: rgba(10,15,30,.45); }
+html:not(.dark) .hero-float-card__num small { color: #059669; }
+html:not(.dark) .hero-float-card__label { color: rgba(10,15,30,.62); }
 html:not(.dark) .hero-float-card__stars { color: #f59e0b; }
 
 /* Accent left border on each card */
-html:not(.dark) .hero-float-card--1 { border-left: 3px solid #00B4D8; }
-html:not(.dark) .hero-float-card--2 { border-left: 3px solid #FF6F3C; }
-html:not(.dark) .hero-float-card--3 { border-left: 3px solid #10b981; }
+html:not(.dark) .hero-float-card--1 { border-left: 3px solid #10b981; }
+html:not(.dark) .hero-float-card--2 { border-left: 3px solid #22d3ee; }
+html:not(.dark) .hero-float-card--3 { border-left: 3px solid #6366f1; }
 
 /* ── 15. Tech-stack dock — frosted white bar ── */
 html:not(.dark) .hero-dock__inner {
@@ -1264,13 +1375,13 @@ html:not(.dark) .hero-dock__inner {
     0 12px 40px rgba(0,0,0,.1),
     0 0 0 1px rgba(255,255,255,1) inset;
 }
-html:not(.dark) .dock-item { color: rgba(10,15,30,.55); }
+html:not(.dark) .dock-item { color: rgba(10,15,30,.68); }
 html:not(.dark) .dock-item:hover {
   color: #0a0f1e;
-  background: rgba(0,180,216,.08);
+  background: rgba(16,185,129,.1);
 }
-html:not(.dark) .dock-item:hover svg { filter: drop-shadow(0 0 7px rgba(0,180,216,.75)); }
-html:not(.dark) .dock-item span { color: rgba(10,15,30,.7); }
+html:not(.dark) .dock-item:hover svg { filter: drop-shadow(0 0 7px rgba(16,185,129,.85)); }
+html:not(.dark) .dock-item span { color: rgba(10,15,30,.8); }
 html:not(.dark) .dock-item::before {
   background: rgba(255,255,255,.96);
   border: 1px solid rgba(0,0,0,.1);
@@ -1280,30 +1391,30 @@ html:not(.dark) .dock-item::before {
 
 /* ── 16. Watermark ── */
 html:not(.dark) .hero__inner::before {
-  -webkit-text-stroke: 1.5px rgba(0,180,216,.07);
+  -webkit-text-stroke: 1.5px rgba(16,185,129,.07);
   color: transparent;
 }
 
 /* ── 17. Scroll cue ── */
 html:not(.dark) .hero-scroll-cue { opacity: .5; }
-html:not(.dark) .hero-scroll-cue__label { color: #FF6F3C; font-weight: 700; }
-html:not(.dark) .hero-scroll-cue__track { border-color: rgba(255,111,60,.4); }
+html:not(.dark) .hero-scroll-cue__label { color: #059669; font-weight: 700; }
+html:not(.dark) .hero-scroll-cue__track { border-color: rgba(5,150,105,.4); }
 html:not(.dark) .hero-scroll-cue__dot {
-  background: #FF6F3C;
-  box-shadow: 0 0 8px rgba(255,111,60,.8);
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16,185,129,.8);
 }
 
 /* ── 18. Service chips (light) ── */
 html:not(.dark) .hero-chip {
-  border-color: rgba(0,180,216,.3);
-  background: rgba(0,180,216,.07);
-  color: rgba(10,15,30,.65);
+  border-color: rgba(16,185,129,.38);
+  background: rgba(16,185,129,.07);
+  color: rgba(10,15,30,.75);
 }
 html:not(.dark) .hero-chip:hover {
-  background: rgba(0,180,216,.15);
-  border-color: rgba(0,180,216,.65);
-  color: #005f78;
-  box-shadow: 0 4px 16px rgba(0,180,216,.14);
+  background: rgba(16,185,129,.14);
+  border-color: rgba(16,185,129,.65);
+  color: #065f46;
+  box-shadow: 0 4px 16px rgba(16,185,129,.14);
 }
 html:not(.dark) .hero-chip::after {
   background: rgba(255,255,255,.97);
@@ -1318,12 +1429,15 @@ html:not(.dark) .hero-terminal {
   box-shadow:
     0 20px 60px rgba(0,0,0,.16),
     0 0 0 1px rgba(0,0,0,.06) inset,
-    0 0 40px rgba(0,180,216,.06);
+    0 0 40px rgba(16,185,129,.06);
 }
 
-/* ── 20. Spotlight (light — orange tint) ── */
+/* ── 20. Spotlight (light — green tint matching dark theme) ── */
 html:not(.dark) .hero-spotlight {
-  background: radial-gradient(circle, rgba(255,111,60,.1) 0%, rgba(0,180,216,.07) 45%, transparent 68%);
+  background: radial-gradient(circle, rgba(16,185,129,.28) 0%, rgba(34,211,238,.20) 45%, transparent 68%);
+  width: 600px; height: 600px;
+  filter: blur(22px);
+  transform: translate3d(calc(var(--sx, -9999px) - 300px), calc(var(--sy, -9999px) - 300px), 0);
 }
 
 
@@ -1517,16 +1631,18 @@ html:not(.dark) .hero-spotlight {
 }
 
 /* Card positions + individual float animations */
+/* Contained within .hero__right (position: relative) */
 .hero-float-card--1 {
-  top: 6%; right: -18px;
+  top: 5%; right: -14px;
   animation: float-a 7s ease-in-out infinite alternate;
 }
 .hero-float-card--2 {
-  bottom: 28%; left: -22px;
+  top: 50%; left: -18px;
+  transform: translateY(-50%);
   animation: float-b 9s ease-in-out infinite alternate;
 }
 .hero-float-card--3 {
-  bottom: 14%; right: -12px;
+  bottom: 8%; right: -14px;
   animation: float-c 8s ease-in-out infinite alternate;
 }
 /* Parallax offset applied independently of the CSS float animation */
@@ -1548,8 +1664,8 @@ html:not(.dark) .hero-spotlight {
 .hero__inner::before {
   content: 'TG';
   position: absolute;
-  right: -2%;
-  top: 50%;
+  right: 1%;
+  top: 58%;
   transform: translateY(-50%);
   font-size: clamp(160px, 22vw, 300px);
   font-weight: 900;
@@ -1614,20 +1730,15 @@ html:not(.dark) .hero-spotlight {
 /* Adjust hero grid so ::before watermark doesn't bleed left */
 .hero__inner { overflow: hidden; }
 
-/* ── Responsive tweaks for new elements ── */
+/* ── Responsive tweaks for new / v2 elements ── */
 @media (max-width: 900px) {
-  .hero-float-card--1 { top: -14px; right: 4px; }
-  .hero-float-card--2 { bottom: auto; top: -14px; left: 4px; }
-  .hero-float-card--3 { bottom: -10px; right: 4px; }
   .hero__inner::before { display: none; }
-  .hero-scroll-cue { bottom: 100px; }
-  .hero__kicker { font-size: 10px; }
+  .hero-scroll-cue { display: none; }
 }
 @media (max-width: 600px) {
-  .hero-float-card { padding: 8px 12px; }
-  .hero-float-card__num { font-size: 17px; }
-  .hero-float-card--2 { display: none; }
-  .hero__proof { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .hero-scroll-cue { display: none; }
+}
+@media (max-width: 480px) {
   .hero-scroll-cue { display: none; }
 }
 

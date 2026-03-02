@@ -23,7 +23,7 @@
 (function(){
   const c=document.getElementById('bg-particles');if(!c)return;const ctx=c.getContext('2d');let parts=[];function resize(){c.width=innerWidth;c.height=innerHeight;const count=Math.floor(innerWidth*innerHeight*0.0009);parts=Array.from({length:count},()=>({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-.5)*.6,vy:(Math.random()-.5)*.6}));}resize();addEventListener('resize',resize);
   function frame(){ctx.clearRect(0,0,c.width,c.height);for(const p of parts){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>c.width)p.vx*=-1;if(p.y<0||p.y>c.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,1.3,0,Math.PI*2);ctx.fillStyle='rgba(16,185,129,.9)';ctx.fill();}
-    for(let i=0;i<parts.length;i++){for(let j=i+1;j<parts.length;j++){const a=parts[i],b=parts[j];const dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);if(d<120){ctx.strokeStyle=`rgba(45,212,191,${(1-d/120)*.35})`;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}}
+    for(let i=0;i<parts.length;i++){for(let j=i+1;j<parts.length;j++){const a=parts[i],b=parts[j];const dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);if(d<120){ctx.strokeStyle=`rgba(13,148,136,${(1-d/120)*.55})`;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}}}
     requestAnimationFrame(frame);
   }requestAnimationFrame(frame);
 })();
@@ -107,6 +107,13 @@
 
 // Stats animation
 (function(){
+  // Resolve any years-from overrides before the count is read
+  const _start = new Date('2023-06-01');
+  const _now   = new Date();
+  const _years = _now.getFullYear() - _start.getFullYear() -
+    (_now < new Date(_now.getFullYear(), _start.getMonth(), _start.getDate()) ? 1 : 0);
+  document.querySelectorAll('.stat[data-years-from]').forEach(function(el){ el.dataset.count = _years; });
+
   document.querySelectorAll('.stat').forEach(el=>{
     const target=parseInt(el.dataset.count||'0',10); const numEl=el.querySelector('.stat__num');
     const io=new IntersectionObserver(([entry])=>{ if(!entry.isIntersecting) return; const start=performance.now(); const dur=1200; function tick(t){ const p=Math.min(1,(t-start)/dur); numEl.textContent = Math.floor(target*p)+(el.dataset.count==='98'?'%':''); if(p<1) requestAnimationFrame(tick);} requestAnimationFrame(tick); io.disconnect(); },{threshold:.4});
@@ -482,6 +489,17 @@ const _copyYear=document.getElementById('copy-year');if(_copyYear)_copyYear.text
     }
   }
   setTimeout(type, 900);
+})();
+
+// ── J. Years-of-experience auto-calculation (since June 2023) ──
+(function(){
+  const start = new Date('2023-06-01');
+  const now   = new Date();
+  const years = now.getFullYear() - start.getFullYear() -
+    (now < new Date(now.getFullYear(), start.getMonth(), start.getDate()) ? 1 : 0);
+  document.querySelectorAll('[data-years-from]').forEach(function(el){
+    el.dataset.count = years;
+  });
 })();
 
 // ── I. Float card count-up animation ──
