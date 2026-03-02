@@ -256,8 +256,8 @@
           <div class="hero__left">
 
             <div class="hero__kicker hero-entrance" style="--delay:.05s">
-              <span class="hero__kicker-line"></span>
-              <span>Techno Graphix Studio &nbsp;·&nbsp; Est. 2023</span>
+              
+              <span>Techno Graphix &nbsp;·&nbsp; Est. 2023</span>
             </div>
 
             
@@ -267,11 +267,6 @@
               <span class="hero__morphword" id="hero-morph" style="line-height:1.2;">Scalable</span><br>
               <span class="hero__title-sub">Digital Products.</span>
             </h1>
-
-            <p class="hero__subtitle hero-entrance" style="--delay:.42s">
-              Built with <strong>Pythonic Precision</strong>.<br>
-              Delivered with <strong>Modern Motion</strong>.
-            </p>
 
             <!-- Service chips -->
             <div class="hero__chips hero-entrance" style="--delay:.49s">
@@ -294,31 +289,21 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
               </a>
             </div>
-
-            <div class="hero__proof hero-entrance" style="--delay:.7s">
-              <div class="hero__proof-avatars">
-                <span class="proof-avatar proof-avatar--1"></span>
-                <span class="proof-avatar proof-avatar--2"></span>
-                <span class="proof-avatar proof-avatar--3"></span>
-              </div>
-              <span class="hero__proof-text">Trusted by <strong>80+ clients</strong> across India &amp; beyond</span>
-            </div>
-
           </div>
 
           <!-- ── Right 40%: Interactive 3D Scene ── -->
           <div class="hero__right hero-entrance" style="--delay:.35s" aria-hidden="true">
 
             <!-- Floating social-proof chips -->
-            <div class="hero-float-card hero-float-card--1" data-count="120">
+            <div class="hero-float-card hero-float-card--1" data-count="{{ stats.projects_delivered }}">
               <div class="hero-float-card__num"><span class="hero-float-card__count">0</span><small>+</small></div>
               <div class="hero-float-card__label">Projects Delivered</div>
             </div>
             <div class="hero-float-card hero-float-card--2">
               <div class="hero-float-card__stars">★★★★★</div>
-              <div class="hero-float-card__label">98% Satisfaction</div>
+              <div class="hero-float-card__label">{{ stats.client_satisfaction }}% Satisfaction</div>
             </div>
-            <div class="hero-float-card hero-float-card--3" data-count="9">
+            <div class="hero-float-card hero-float-card--3" data-count="{{ stats.years_experience }}">
               <div class="hero-float-card__num"><span class="hero-float-card__count">0</span><small>yr</small></div>
               <div class="hero-float-card__label">Experience</div>
             </div>
@@ -346,53 +331,7 @@
         </div><!-- /hero__inner -->
 
         <!-- ── Tech Stack Dock ── -->
-        <nav class="hero-dock" aria-label="Technology stack">
-          <div class="hero-dock__inner">
-
-            <button class="dock-item" data-tech="python" title="Python" aria-label="Python">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M11.914 0C5.82 0 6.2 2.656 6.2 2.656l.007 2.752h5.814v.826H3.887S0 5.789 0 11.969c0 6.18 3.403 5.96 3.403 5.96h2.032V15.04c0-3.851 3.332-3.635 3.332-3.635h5.746s3.226.052 3.226-3.118V3.184C17.739 0 11.914 0 11.914 0zm-3.116 1.806c.572 0 1.035.464 1.035 1.036 0 .573-.463 1.036-1.035 1.036-.573 0-1.036-.463-1.036-1.036 0-.572.463-1.036 1.036-1.036z" fill="#3776AB"/>
-                <path d="M12.086 24c6.094 0 5.714-2.656 5.714-2.656l-.007-2.752H12v-.826h8.113S24 18.211 24 12.031c0-6.18-3.403-5.96-3.403-5.96h-2.032V8.96c0 3.851-3.332 3.635-3.332 3.635H9.476s-3.226-.052-3.226 3.118v5.104C6.25 24 12.086 24 12.086 24zm3.116-1.806c-.572 0-1.035-.464-1.035-1.036 0-.573.463-1.036 1.035-1.036.573 0 1.036.463 1.036 1.036 0 .572-.463 1.036-1.036 1.036z" fill="#FFD43B"/>
-              </svg>
-              <span>Python</span>
-            </button>
-
-            <button class="dock-item" data-tech="django" title="Django" aria-label="Django">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M11.146 0h3.924v18.166c-2.013.382-3.491.535-5.096.535-4.791 0-7.288-2.166-7.288-6.32 0-4.002 2.65-6.6 6.753-6.6.637 0 1.121.05 1.707.203zm0 9.143a3.894 3.894 0 00-1.325-.204c-1.988 0-3.134 1.223-3.134 3.365 0 2.09 1.096 3.236 3.109 3.236.433 0 .79-.025 1.35-.102V9.143zM21.314 6.06v11.845c0 4.079-.3 6.041-1.198 7.735-.84 1.644-1.938 2.684-4.209 3.83l-3.644-1.732c2.27-1.071 3.367-2.01 4.056-3.45.739-1.492.968-3.19.968-7.735V6.06h4.027zm-4.049-4.483h4.049v4.097h-4.049z" fill="#0C4B33"/>
-              </svg>
-              <span>Django</span>
-            </button>
-
-            <button class="dock-item" data-tech="react" title="React" aria-label="React">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="2.05" fill="#61DAFB"/>
-                <ellipse cx="12" cy="12" rx="10.5" ry="3.8" stroke="#61DAFB" stroke-width="1.1" fill="none"/>
-                <ellipse cx="12" cy="12" rx="10.5" ry="3.8" stroke="#61DAFB" stroke-width="1.1" fill="none" transform="rotate(60 12 12)"/>
-                <ellipse cx="12" cy="12" rx="10.5" ry="3.8" stroke="#61DAFB" stroke-width="1.1" fill="none" transform="rotate(120 12 12)"/>
-              </svg>
-              <span>React</span>
-            </button>
-
-            <button class="dock-item" data-tech="flutter" title="Flutter" aria-label="Flutter">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14.314 0L2.399 11.882l3.449 3.448L21.178 0z" fill="#47C5FB"/>
-                <path d="M5.848 15.33l8.466-8.467 5.437 5.435-5.432 5.435-2.71 2.708z" fill="#00569E"/>
-                <path d="M14.314 20.439l-2.706-2.708 2.706-2.71 2.712 2.71z" fill="#00B5F8"/>
-                <path d="M11.608 17.731l3.449 3.451-3.452 2.818-3.448-3.45z" fill="#47C5FB"/>
-              </svg>
-              <span>Flutter</span>
-            </button>
-
-            <button class="dock-item" data-tech="postgres" title="PostgreSQL" aria-label="PostgreSQL">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M17.128 0a10.134 10.134 0 00-2.755.403l-.063.02A10.922 10.922 0 0012.6.258C11.422.238 10.41.524 9.594 1 8.58.695 7.122.32 5.372.186 4.228.1 3.01.172 1.944.61 .879 1.05.05 1.954.008 2.9-.038 3.96.3 5.085.817 6.117a11.06 11.06 0 001.532 2.243c.375.426.758.795 1.134 1.092.292.23.567.41.83.54-.02.206-.045.41-.065.614A7.801 7.801 0 004.8 9.7c0 3.937 2.9 7.153 6.84 7.875a5.46 5.46 0 001.083.11c.42 0 .838-.048 1.24-.143a5.34 5.34 0 001.618-.67 5.44 5.44 0 001.28-1.08l.047-.057c.218-.016.451-.04.69-.07l.087.006c1.854.143 3.407-.084 4.587-.637 1.138-.534 1.882-1.357 2.067-2.325.089-.47.032-.95-.144-1.394a2.96 2.96 0 00-.765-1.128 5.39 5.39 0 00-.64-.499c.091-.31.17-.625.235-.943.366-1.77.278-3.575-.5-4.908-.397-.688-.97-1.218-1.715-1.553A6.37 6.37 0 0017.128 0zm.08 1.259c.57 0 1.086.102 1.527.302.53.23.94.587 1.212 1.063.641 1.11.694 2.736.35 4.352-.053.25-.115.497-.184.74a7.01 7.01 0 00-1.255-.815 6.364 6.364 0 00-1.64-.54c-.18-.03-.36-.053-.537-.07.006-.096.013-.192.013-.288 0-.667-.209-1.227-.443-1.682-.078-.15-.16-.296-.25-.438.267-.17.495-.352.67-.539.402-.423.456-.814.27-1.059-.19-.25-.613-.298-1.18-.113a5.38 5.38 0 00-.814.358 5.378 5.378 0 00-.39.231c-.17-.07-.346-.13-.526-.185A9.46 9.46 0 0012.6 1.496a9.68 9.68 0 001.24-.2 8.87 8.87 0 012.454-.036h.002c.307.032.617.087.913 0zm-5.039.73c.43 0 .855.063 1.234.189.363.122.645.296.824.508.062.073.094.141.106.207.012.066 0 .136-.04.216-.08.165-.27.343-.613.478a4.45 4.45 0 01-1.496.222c-.445 0-.828-.06-1.1-.175-.27-.115-.408-.265-.38-.562.056-.583.722-.984 1.465-1.083z" fill="#336791"/>
-              </svg>
-              <span>PostgreSQL</span>
-            </button>
-
-          </div>
-        </nav>
+        
 
         <!-- Bottom fade: blends canvas into the page -->
         <div class="hero__bottom-fade" aria-hidden="true"></div>
@@ -720,7 +659,7 @@
       scene.add(points);
 
       /* ── Wireframe icosahedron (large) ──────────────────────────────── */
-      var icoGeo = new THREE.IcosahedronGeometry(17, 1);
+      var icoGeo = new THREE.IcosahedronGeometry(14, 1);
       var icoMat = new THREE.MeshBasicMaterial({
         color: 0x00B4D8, wireframe: true, transparent: true, opacity: 0.055
       });

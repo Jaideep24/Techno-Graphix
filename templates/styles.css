@@ -704,15 +704,12 @@ footer .br-footer-detail .br-social ul li a:hover {
   opacity: .5;
   pointer-events: none;
 }
-/* Subtle grid overlay on scene */
+/* Subtle grid overlay on scene — removed background so TG watermark shows through */
 .hero-scene::after {
   content: '';
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(16,185,129,.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(16,185,129,.045) 1px, transparent 1px);
-  background-size: 28px 28px;
+  background-image: none;
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
@@ -1188,13 +1185,10 @@ html:not(.dark) .hero-scene::before {
   filter: blur(20px);
   opacity: .85;
 }
-/* Dot grid on scene */
+/* Dot grid on scene — removed so TG watermark shows through */
 html:not(.dark) .hero-scene::after {
-  background-image:
-    radial-gradient(circle, rgba(0,180,216,.22) 1px, transparent 1px);
-  background-size: 22px 22px;
-  border-radius: 50%;
-  opacity: 1;
+  background-image: none;
+  opacity: 0;
 }
 
 /* Cube faces — vibrant, clearly visible on white */
