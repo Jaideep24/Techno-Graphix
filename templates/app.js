@@ -107,6 +107,13 @@
 
 // Stats animation
 (function(){
+  // Resolve any years-from overrides before the count is read
+  const _start = new Date('2023-06-01');
+  const _now   = new Date();
+  const _years = _now.getFullYear() - _start.getFullYear() -
+    (_now < new Date(_now.getFullYear(), _start.getMonth(), _start.getDate()) ? 1 : 0);
+  document.querySelectorAll('.stat[data-years-from]').forEach(function(el){ el.dataset.count = _years; });
+
   document.querySelectorAll('.stat').forEach(el=>{
     const target=parseInt(el.dataset.count||'0',10); const numEl=el.querySelector('.stat__num');
     const io=new IntersectionObserver(([entry])=>{ if(!entry.isIntersecting) return; const start=performance.now(); const dur=1200; function tick(t){ const p=Math.min(1,(t-start)/dur); numEl.textContent = Math.floor(target*p)+(el.dataset.count==='98'?'%':''); if(p<1) requestAnimationFrame(tick);} requestAnimationFrame(tick); io.disconnect(); },{threshold:.4});
@@ -482,6 +489,17 @@ const _copyYear=document.getElementById('copy-year');if(_copyYear)_copyYear.text
     }
   }
   setTimeout(type, 900);
+})();
+
+// ── J. Years-of-experience auto-calculation (since June 2023) ──
+(function(){
+  const start = new Date('2023-06-01');
+  const now   = new Date();
+  const years = now.getFullYear() - start.getFullYear() -
+    (now < new Date(now.getFullYear(), start.getMonth(), start.getDate()) ? 1 : 0);
+  document.querySelectorAll('[data-years-from]').forEach(function(el){
+    el.dataset.count = years;
+  });
 })();
 
 // ── I. Float card count-up animation ──

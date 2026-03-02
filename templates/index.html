@@ -303,7 +303,7 @@
               <div class="hero-float-card__stars">★★★★★</div>
               <div class="hero-float-card__label">{{ stats.client_satisfaction }}% Satisfaction</div>
             </div>
-            <div class="hero-float-card hero-float-card--3" data-count="{{ stats.years_experience }}">
+            <div class="hero-float-card hero-float-card--3" data-count="{{ stats.years_experience }}" data-years-from="2023-06">
               <div class="hero-float-card__num"><span class="hero-float-card__count">0</span><small>yr</small></div>
               <div class="hero-float-card__label">Experience</div>
             </div>
@@ -346,11 +346,11 @@
           {% if stats %}
           <div class="stat" data-count="{{ stats.projects_delivered }}"><div class="stat__num">0</div><div class="stat__label">Projects Delivered</div></div>
           <div class="stat" data-count="{{ stats.client_satisfaction }}"><div class="stat__num">0</div><div class="stat__label">Client Satisfaction</div></div>
-          <div class="stat" data-count="{{ stats.years_experience }}"><div class="stat__num">0</div><div class="stat__label">Years of Experience</div></div>
+          <div class="stat" data-count="{{ stats.years_experience }}" data-years-from="2023-06"><div class="stat__num">0</div><div class="stat__label">Years of Experience</div></div>
           {% else %}
           <div class="stat" data-count="120"><div class="stat__num">0</div><div class="stat__label">Projects Delivered</div></div>
           <div class="stat" data-count="98"><div class="stat__num">0</div><div class="stat__label">Client Satisfaction</div></div>
-          <div class="stat" data-count="8"><div class="stat__num">0</div><div class="stat__label">Years of Experience</div></div>
+          <div class="stat" data-count="8" data-years-from="2023-06"><div class="stat__num">0</div><div class="stat__label">Years of Experience</div></div>
           {% endif %}
         </div>
       </section>
