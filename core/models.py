@@ -18,7 +18,7 @@ class Portfolio(models.Model):
         ('web', 'Web Development'),
         ('app', 'App Development'),
         ('design', 'Branding & Design'),
-        ('video', 'Video Editing'),
+        ('tech', 'Tech Services'),
         ('seo', 'SEO'),
         ('marketing', 'Social Media Marketing'),
         ('ml', 'Machine Learning'),
