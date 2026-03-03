@@ -15,7 +15,8 @@ from .models import (
     Stats,
     Testimonial,
     BlogPost,
-    Contact
+    Contact,
+    MarqueeItem,
 )
 
 logger = logging.getLogger(__name__)
@@ -46,7 +47,8 @@ def home(request):
         'team': TeamMember.objects.all(),
         'stats': Stats.objects.first(),  # We only need one instance
         'testimonials': Testimonial.objects.all(),
-        'blog_posts': Article.objects.all()  # Latest 3 posts
+        'blog_posts': Article.objects.all(),  # Latest 3 posts
+        'marquee_items': MarqueeItem.objects.all(),
     }
     return render(request, 'index.html', context)
 

@@ -464,8 +464,7 @@ footer .br-footer-detail .br-social ul li a:hover {
 
 /* ── 2. Trust strip ── */
 .hero-trust-strip {
-  overflow-x: clip;
-  overflow-y: visible;
+  overflow: hidden;
   background: rgba(16,185,129,.07);
   border-bottom: 1px solid rgba(16,185,129,.14);
   height: 34px;
@@ -476,8 +475,8 @@ footer .br-footer-detail .br-social ul li a:hover {
   z-index: 2;
 }
 .hero-trust__track {
-  display: flex;
-  gap: 0;
+  display: inline-flex;
+  flex-shrink: 0;
   white-space: nowrap;
   will-change: transform;
   animation: trust-marquee 38s linear infinite;
@@ -485,12 +484,13 @@ footer .br-footer-detail .br-social ul li a:hover {
   letter-spacing: .08em;
   text-transform: uppercase;
   color: rgba(94,236,212,.78);
-  padding: 3px 0 4px;
+  padding: 3px 0;
   line-height: 1.6;
 }
 @keyframes trust-marquee {
-  from { transform: translate3d(0,0,0); }
-  to   { transform: translate3d(-50%,0,0); }
+  /* -25% of the element = exactly one set (4 identical sets × 25% = 1) */
+  from { transform: translateX(0); }
+  to   { transform: translateX(-25%); }
 }
 .hero-trust__sep { opacity: .32; }
 

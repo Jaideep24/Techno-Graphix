@@ -224,17 +224,10 @@
         <!-- Trust strip -->
         <div class="hero-trust-strip" aria-hidden="true">
           <div class="hero-trust__track">
-            <span>Mumbai's Premier Web Development Collective</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
-            <span>Powered by Django</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
-            <span>Available Globally</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
-            <span>Python / Django Powerhouse</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
-            <span>Crafting Premium Digital Experiences</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
-            <!-- duplicate for seamless loop -->
-            <span>Mumbai's Premier Web Development Collective</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
-            <span>Powered by Django</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
-            <span>Available Globally</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
-            <span>Python / Django Powerhouse</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
-            <span>Crafting Premium Digital Experiences</span><span class="hero-trust__sep"> &nbsp;•&nbsp; </span>
+            {% for item in marquee_items %}<span>{{ item.text }}</span><span class="hero-trust__sep"> &nbsp;&bull;&nbsp; </span>{% endfor %}
+            {% for item in marquee_items %}<span>{{ item.text }}</span><span class="hero-trust__sep"> &nbsp;&bull;&nbsp; </span>{% endfor %}
+            {% for item in marquee_items %}<span>{{ item.text }}</span><span class="hero-trust__sep"> &nbsp;&bull;&nbsp; </span>{% endfor %}
+            {% for item in marquee_items %}<span>{{ item.text }}</span><span class="hero-trust__sep"> &nbsp;&bull;&nbsp; </span>{% endfor %}
           </div>
         </div>
 
@@ -376,10 +369,13 @@
           </div>
           <div class="tabs" id="portfolio-filters">
             <button class="tab is-active" data-cat="all">All</button>
-            <button class="tab" data-cat="web">Web</button>
-            <button class="tab" data-cat="apps">Apps</button>
-            <button class="tab" data-cat="design">Design</button>
+            <button class="tab" data-cat="web">Web Dev</button>
+            <button class="tab" data-cat="app">App Dev</button>
+            <button class="tab" data-cat="design">Branding</button>
             <button class="tab" data-cat="video">Video</button>
+            <button class="tab" data-cat="seo">SEO</button>
+            <button class="tab" data-cat="marketing">Marketing</button>
+            <button class="tab" data-cat="ml">ML / AI</button>
           </div>
         </div>
         <div class="hscroll__viewport">

@@ -15,10 +15,13 @@ class Portfolio(models.Model):
     description = models.TextField()
     slug = models.SlugField(unique=True, blank=True)
     category = models.CharField(max_length=50, choices=[
-        ('web', 'Web'),
-        ('apps', 'Apps'),
-        ('design', 'Design'),
-        ('video', 'Video'),
+        ('web', 'Web Development'),
+        ('app', 'App Development'),
+        ('design', 'Branding & Design'),
+        ('video', 'Video Editing'),
+        ('seo', 'SEO'),
+        ('marketing', 'Social Media Marketing'),
+        ('ml', 'Machine Learning'),
     ])
     image = models.ImageField(upload_to='portfolio/')
     order = models.PositiveIntegerField(default=0)
@@ -115,3 +118,16 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.service}"
+
+
+class MarqueeItem(models.Model):
+    text = models.CharField(max_length=200)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
+        verbose_name = 'Marquee Item'
+        verbose_name_plural = 'Marquee Items'
+
+    def __str__(self):
+        return self.text
